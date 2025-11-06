@@ -60,6 +60,18 @@ This project includes comprehensive documentation:
    - Database functions and triggers
    - Views and performance considerations
 
+6. **[FRONTEND_TASKS.md](./docs/FRONTEND_TASKS.md)**
+   - Complete frontend development task breakdown
+   - Organized by phases and priorities
+   - Local storage implementation strategy
+   - Progress tracking checklist
+
+7. **[LOCAL_STORAGE_GUIDE.md](./docs/LOCAL_STORAGE_GUIDE.md)**
+   - AsyncStorage implementation guide
+   - Code examples and patterns
+   - Data models and services
+   - Migration strategy to backend
+
 ## 🚀 Recommended Tech Stack
 
 ### Mobile Application

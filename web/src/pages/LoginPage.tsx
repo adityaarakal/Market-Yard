@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { colors, theme } from '../theme';
+import StorageService from '../services/StorageService';
 
 const styles: React.CSSProperties = {
   minHeight: '100vh',
@@ -63,12 +64,12 @@ export default function LoginPage() {
     if (result.success) {
       // Wait a moment for auth context to update, then navigate
       setTimeout(() => {
-        const session = JSON.parse(localStorage.getItem('@market_yard_session') || '{}');
+        const session = StorageService.getSession();
         const currentUser = session?.user;
         if (currentUser?.user_type === 'shop_owner') {
-          navigate('/shop-owner/dashboard');
+          navigate('/shop-owner/dashboard', { replace: true });
         } else {
-          navigate('/end-user/home');
+          navigate('/end-user/home', { replace: true });
         }
       }, 50);
     } else {

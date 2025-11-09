@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '../types';
 import StorageService from '../services/StorageService';
+import SeedDataService from '../services/SeedDataService';
 
 type AuthResponse = { success: boolean; error?: string };
 
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load session on app start
   useEffect(() => {
+    SeedDataService.seedAll();
     loadSession();
   }, []);
 

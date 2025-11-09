@@ -7,7 +7,7 @@ import { RootStackParamList } from './types';
 import AuthNavigator from './AuthNavigator';
 import ShopOwnerNavigator from './ShopOwnerNavigator';
 import EndUserNavigator from './EndUserNavigator';
-import { colors } from '../theme';
+import { colors } from '../theme/colors';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -16,7 +16,14 @@ export default function RootNavigator() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
@@ -25,19 +32,22 @@ export default function RootNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
+        screenOptions={
+          {
+            headerShown: false,
+          } as const
+        }
       >
         {!isAuthenticated ? (
-          <Stack.Screen name="Welcome" component={AuthNavigator} />
+          <Stack.Screen name="Auth" component={AuthNavigator} />
         ) : user?.user_type === 'shop_owner' ? (
           <Stack.Screen name="ShopOwnerStack" component={ShopOwnerNavigator} />
-        ) : (
+        ) : user?.user_type === 'end_user' ? (
           <Stack.Screen name="EndUserStack" component={EndUserNavigator} />
+        ) : (
+          <Stack.Screen name="Auth" component={AuthNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-

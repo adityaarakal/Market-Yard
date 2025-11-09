@@ -1,6 +1,6 @@
 import StorageService from './StorageService';
 import { STORAGE_KEYS } from '../utils/constants';
-import { User, Shop, Product, ShopProduct } from '../types';
+import { User, Shop, Product } from '../types';
 
 class SeedDataService {
   async seedProducts(): Promise<void> {
@@ -227,4 +227,3 @@ class SeedDataService {
 }
 
 export default new SeedDataService();
-

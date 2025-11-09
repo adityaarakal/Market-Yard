@@ -9,11 +9,7 @@ interface CardProps {
 }
 
 export default function Card({ children, style, elevation = 2 }: CardProps) {
-  return (
-    <View style={[styles.card, { shadowOpacity: elevation * 0.1 }, style]}>
-      {children}
-    </View>
-  );
+  return <View style={[styles.card, { shadowOpacity: elevation * 0.1 }, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -30,4 +26,3 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
 });
-

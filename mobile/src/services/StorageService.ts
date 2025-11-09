@@ -1,14 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '../utils/constants';
-import {
-  User,
-  Shop,
-  Product,
-  ShopProduct,
-  PriceUpdate,
-  Subscription,
-  Session,
-} from '../types';
+import { User, Shop, Product, ShopProduct, PriceUpdate, Subscription, Session } from '../types';
 
 class StorageService {
   // Generic methods
@@ -24,7 +16,10 @@ class StorageService {
   async getItem<T>(key: string): Promise<T | null> {
     try {
       const value = await AsyncStorage.getItem(key);
-      return value ? JSON.parse(value) : null;
+      if (!value) return null;
+      const parsed = JSON.parse(value);
+      // Ensure boolean values are properly typed
+      return parsed as T;
     } catch (error) {
       console.error(`Error reading ${key}:`, error);
       return null;
@@ -209,4 +204,3 @@ class StorageService {
 }
 
 export default new StorageService();
-

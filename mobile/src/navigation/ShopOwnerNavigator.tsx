@@ -1,25 +1,31 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ShopOwnerStackParamList } from './types';
+import PlaceholderScreen from '../screens/PlaceholderScreen';
 
 // Placeholder screens - will be implemented later
-const DashboardScreen = () => null;
-const ShopRegistrationScreen = () => null;
-const ProductManagementScreen = () => null;
-const PriceUpdateScreen = () => null;
-const EarningsScreen = () => null;
-const ProfileScreen = () => null;
+const DashboardScreen = () => <PlaceholderScreen title="Dashboard" subtitle="Shop Owner" />;
+const ShopRegistrationScreen = () => (
+  <PlaceholderScreen title="Shop Registration" subtitle="Register your shop" />
+);
+const ProductManagementScreen = () => (
+  <PlaceholderScreen title="Product Management" subtitle="Manage your products" />
+);
+const PriceUpdateScreen = () => (
+  <PlaceholderScreen title="Price Update" subtitle="Update product prices" />
+);
+const EarningsScreen = () => <PlaceholderScreen title="Earnings" subtitle="View your earnings" />;
+const ProfileScreen = () => <PlaceholderScreen title="Profile" subtitle="Your profile" />;
 
 const Stack = createNativeStackNavigator<ShopOwnerStackParamList>();
 
+const screenOptions = {
+  headerShown: true,
+};
+
 export default function ShopOwnerNavigator() {
   return (
-    <Stack.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={{
-        headerShown: true,
-      }}
-    >
+    <Stack.Navigator initialRouteName="Dashboard" screenOptions={screenOptions}>
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="ShopRegistration" component={ShopRegistrationScreen} />
       <Stack.Screen name="ProductManagement" component={ProductManagementScreen} />
@@ -29,4 +35,3 @@ export default function ShopOwnerNavigator() {
     </Stack.Navigator>
   );
 }
-

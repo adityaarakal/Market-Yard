@@ -1,8 +1,8 @@
-# Market Yard - Mobile Application
+# Market Yard - Progressive Web Application
 
 ## 📱 Project Overview
 
-Market Yard is a full-stack mobile application designed to solve price discovery and comparison challenges in local market yards. The app connects shop owners, retailers, and individual buyers in a centralized platform for transparent pricing and efficient purchasing decisions.
+Market Yard is a Progressive Web App (PWA) built with React.js and TypeScript, designed to solve price discovery and comparison challenges in local market yards. The app connects shop owners, retailers, and individual buyers in a centralized platform for transparent pricing and efficient purchasing decisions.
 
 ## 🎯 Problem Statement
 
@@ -72,33 +72,37 @@ This project includes comprehensive documentation:
    - Data models and services
    - Migration strategy to backend
 
-## 🚀 Recommended Tech Stack
+## 🚀 Tech Stack
 
-### Mobile Application
-- **React Native + Expo** (Cross-platform iOS & Android)
+### Frontend (Current - PWA)
+- **React.js + TypeScript** (Progressive Web App)
+- **React Router** (Client-side routing)
+- **LocalStorage** (Data persistence - for testing)
+- **PWA** (Service Worker, Manifest)
 
-### Backend
+### Backend (Future)
 - **Node.js + Express.js (TypeScript)** (REST API)
 - **PostgreSQL** (Primary database)
 - **Redis** (Caching & sessions)
 
-### Payment & Services
+### Payment & Services (Future)
 - **Razorpay** (Payment gateway for subscriptions)
 - **Socket.io** (Real-time price updates)
 - **AWS S3/Cloudinary** (File storage)
 
 ### Hosting
+- **Vercel/Netlify** (Frontend hosting)
 - **Railway/AWS** (Backend hosting)
 - **Supabase/AWS RDS** (Database hosting)
 
 ## 🏗️ Architecture
 
 ```
-Mobile App (React Native)
+Web App (React.js PWA)
     ↓
-API Gateway (Node.js + Express)
+LocalStorage (Current - for testing)
     ↓
-Backend Services (Auth, Products, Payments, Subscriptions)
+[Future: Backend API]
     ↓
 PostgreSQL + Redis + Razorpay
 ```
@@ -163,7 +167,26 @@ PostgreSQL + Redis + Razorpay
 
 ## 🛠️ Development Setup
 
-*Setup instructions will be added once the project structure is created.*
+### Web App (PWA)
+
+```bash
+cd web
+npm install
+npm start
+```
+
+The app will open at `http://localhost:3000`
+
+### Build for Production
+
+```bash
+cd web
+npm run build
+```
+
+## 📱 Mobile App (Deprecated)
+
+The mobile app development has been paused. The project now focuses on the Progressive Web App which works on all devices including mobile browsers.
 
 ## 📝 Project Status
 

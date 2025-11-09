@@ -1,10 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  Welcome: undefined;
-  Login: undefined;
-  Register: undefined;
-  OTPVerification: { phone: string };
+  Auth: undefined;
   ShopOwnerStack: NavigatorScreenParams<ShopOwnerStackParamList>;
   EndUserStack: NavigatorScreenParams<EndUserStackParamList>;
 };
@@ -34,9 +31,10 @@ export type EndUserStackParamList = {
   Profile: undefined;
 };
 
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace ReactNavigation {
+    /* eslint-disable @typescript-eslint/no-empty-object-type */
     interface RootParamList extends RootStackParamList {}
   }
 }
-

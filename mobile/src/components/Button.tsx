@@ -1,5 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import { colors, theme } from '../theme';
 
 interface ButtonProps {
@@ -95,7 +102,9 @@ export default function Button({
       activeOpacity={0.7}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'outline' || variant === 'text' ? colors.primary : colors.white} />
+        <ActivityIndicator
+          color={variant === 'outline' || variant === 'text' ? colors.primary : colors.white}
+        />
       ) : (
         <Text style={[getTextStyle(), textStyle]}>{title}</Text>
       )}
@@ -108,4 +117,3 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 });
-

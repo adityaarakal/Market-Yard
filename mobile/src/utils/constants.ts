@@ -14,8 +14,8 @@ export const STORAGE_KEYS = {
 
 // App Constants
 export const APP_CONFIG = {
-  PRICE_UPDATE_INCENTIVE: 1.00, // ₹1 per price update
-  PREMIUM_SUBSCRIPTION_PRICE: 100.00, // ₹100 per month
+  PRICE_UPDATE_INCENTIVE: 1.0, // ₹1 per price update
+  PREMIUM_SUBSCRIPTION_PRICE: 100.0, // ₹100 per month
   MOCK_OTP: '123456', // For testing
 };
 
@@ -26,4 +26,3 @@ export const VALIDATION = {
   MAX_NAME_LENGTH: 100,
   MAX_DESCRIPTION_LENGTH: 500,
 };
-

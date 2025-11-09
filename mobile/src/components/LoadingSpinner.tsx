@@ -7,7 +7,10 @@ interface LoadingSpinnerProps {
   color?: string;
 }
 
-export default function LoadingSpinner({ size = 'large', color = colors.primary }: LoadingSpinnerProps) {
+export default function LoadingSpinner({
+  size = 'large',
+  color = colors.primary,
+}: LoadingSpinnerProps) {
   return (
     <View style={styles.container}>
       <ActivityIndicator size={size} color={color} />
@@ -22,4 +25,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-

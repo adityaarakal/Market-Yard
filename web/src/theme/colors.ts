@@ -1,0 +1,33 @@
+export const colors = {
+  primary: '#4CAF50', // Green for market/fresh theme
+  primaryDark: '#388E3C',
+  primaryLight: '#81C784',
+  secondary: '#FF9800', // Orange accent
+  secondaryDark: '#F57C00',
+  secondaryLight: '#FFB74D',
+  background: '#FFFFFF',
+  surface: '#F5F5F5',
+  error: '#F44336',
+  success: '#4CAF50',
+  warning: '#FF9800',
+  info: '#2196F3',
+  text: '#212121',
+  textSecondary: '#757575',
+  border: '#E0E0E0',
+  divider: '#BDBDBD',
+  white: '#FFFFFF',
+  black: '#000000',
+  grey: {
+    50: '#FAFAFA',
+    100: '#F5F5F5',
+    200: '#EEEEEE',
+    300: '#E0E0E0',
+    400: '#BDBDBD',
+    500: '#9E9E9E',
+    600: '#757575',
+    700: '#616161',
+    800: '#424242',
+    900: '#212121',
+  },
+};
+

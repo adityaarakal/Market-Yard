@@ -2,12 +2,14 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, Session } from '../types';
 import StorageService from '../services/StorageService';
 
+type AuthResponse = { success: boolean; error?: string };
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (phone: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (phone: string, password: string) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   register: (userData: {
     phone: string;
@@ -15,7 +17,7 @@ interface AuthContextType {
     password: string;
     userType: 'shop_owner' | 'end_user';
     email?: string;
-  }) => Promise<{ success: boolean; error?: string }>;
+  }) => Promise<AuthResponse>;
   updateUser: (user: User) => Promise<void>;
 }
 
@@ -34,21 +36,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loadSession = async () => {
     try {
       const savedSession = await StorageService.getSession();
-      if (savedSession) {
+      if (savedSession && savedSession.user) {
         setSession(savedSession);
         setUser(savedSession.user);
       }
     } catch (error) {
       console.error('Error loading session:', error);
+      // Continue without session if there's an error
+      setSession(null);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const login = async (
-    phone: string,
-    password: string
-  ): Promise<{ success: boolean; error?: string }> {
+  const login: (phone: string, password: string) => Promise<AuthResponse> = async (
+    phone,
+    password
+  ) => {
     try {
       setIsLoading(true);
       const foundUser = await StorageService.getUserByPhone(phone);
@@ -87,13 +92,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (userData: {
+  const register: (userData: {
     phone: string;
     name: string;
     password: string;
     userType: 'shop_owner' | 'end_user';
     email?: string;
-  }): Promise<{ success: boolean; error?: string }> {
+  }) => Promise<AuthResponse> = async userData => {
     try {
       setIsLoading(true);
 
@@ -190,4 +195,3 @@ export function useAuth() {
   }
   return context;
 }
-

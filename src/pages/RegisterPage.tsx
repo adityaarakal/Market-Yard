@@ -2,54 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import StorageService from '../services/StorageService';
-import { colors, theme } from '../theme';
+import { colors } from '../theme';
 
 type RegistrationStep = 'phone' | 'otp' | 'details';
-
-const containerStyle: React.CSSProperties = {
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: theme.spacing.lg,
-  backgroundColor: colors.background,
-};
-
-const cardStyle: React.CSSProperties = {
-  width: '100%',
-  maxWidth: '440px',
-  backgroundColor: colors.white,
-  padding: theme.spacing.xl,
-  borderRadius: theme.borderRadius.lg,
-  boxShadow: '0 12px 32px rgba(0,0,0,0.08)',
-};
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: theme.spacing.md,
-  marginBottom: theme.spacing.md,
-  border: `1px solid ${colors.border}`,
-  borderRadius: theme.borderRadius.md,
-  fontSize: theme.typography.body.fontSize,
-};
-
-const buttonStyle: React.CSSProperties = {
-  width: '100%',
-  padding: theme.spacing.md,
-  borderRadius: theme.borderRadius.md,
-  border: 'none',
-  fontSize: theme.typography.body.fontSize,
-  fontWeight: 600,
-  cursor: 'pointer',
-};
-
-const secondaryButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  backgroundColor: 'transparent',
-  border: `1px solid ${colors.border}`,
-  color: colors.textSecondary,
-};
 
 interface PasswordStrength {
   label: 'Weak' | 'Medium' | 'Strong' | '';
@@ -208,206 +163,162 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={containerStyle}>
-      <form style={cardStyle} onSubmit={handleSubmit}>
-        <div style={{ marginBottom: theme.spacing.md, color: colors.textSecondary, fontSize: '14px' }}>
-          Step {step === 'phone' ? '1' : step === 'otp' ? '2' : '3'} of 3 ·{' '}
-          {step === 'phone' ? 'Verify your phone' : step === 'otp' ? 'Enter OTP' : 'Complete profile'}
-        </div>
-        <h2 style={{ marginBottom: theme.spacing.md, color: colors.text }}>Create your Market Yard account</h2>
-        <div
-          style={{
-            marginBottom: theme.spacing.lg,
-            padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-            borderRadius: theme.borderRadius.md,
-            backgroundColor: colors.surface,
-            border: `1px solid ${colors.border}`,
-            color: colors.textSecondary,
-            fontSize: '14px',
-          }}
-        >
-          Signing up as{' '}
-          <span style={{ fontWeight: 600, color: colors.text }}>
-            {formData.userType === 'shop_owner' ? 'Shop Owner' : 'End User'}
-          </span>
+    <div className="auth-layout">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <div className="auth-card__heading" style={{ alignItems: 'center', gap: '0.35rem' }}>
+          <span className="auth-card__title">Create your Market Yard account</span>
+          <p className="auth-card__subtitle">
+            Step {step === 'phone' ? '1' : step === 'otp' ? '2' : '3'} of 3 ·{' '}
+            {step === 'phone' ? 'Verify your phone' : step === 'otp' ? 'Enter OTP' : 'Complete profile'}
+          </p>
         </div>
 
-        {error && (
-          <div style={{ color: colors.error, marginBottom: theme.spacing.md, fontSize: '14px' }}>
-            {error}
-          </div>
-        )}
-        {info && (
-          <div style={{ color: colors.primary, marginBottom: theme.spacing.md, fontSize: '14px' }}>
-            {info}
-          </div>
-        )}
+        {error && <div className="form-error">{error}</div>}
+        {info && <div className="form-info">{info}</div>}
 
         {step === 'phone' && (
           <>
-            <label style={{ display: 'block', marginBottom: theme.spacing.xs, color: colors.textSecondary }}>
-              User Type
-            </label>
-            <div style={{ display: 'flex', gap: theme.spacing.sm, marginBottom: theme.spacing.md }}>
-              {(['shop_owner', 'end_user'] as Array<'shop_owner' | 'end_user'>).map(type => {
-                const isSelected = formData.userType === type;
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, userType: type }))}
-                    style={{
-                      flex: 1,
-                      padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-                      borderRadius: theme.borderRadius.md,
-                      border: `1px solid ${isSelected ? colors.primary : colors.border}`,
-                      backgroundColor: isSelected ? colors.primaryLight : 'transparent',
-                      color: isSelected ? colors.primary : colors.textSecondary,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {type === 'shop_owner' ? 'Shop Owner' : 'End User'}
-                  </button>
-                );
-              })}
+            <div className="segmented-control" style={{ marginBottom: '1rem' }}>
+              <button
+                type="button"
+                className={`segmented-control__button${formData.userType === 'shop_owner' ? ' segmented-control__button--active' : ''}`}
+                onClick={() => setFormData(prev => ({ ...prev, userType: 'shop_owner' }))}
+              >
+                Shop Owner
+              </button>
+              <button
+                type="button"
+                className={`segmented-control__button${formData.userType === 'end_user' ? ' segmented-control__button--active' : ''}`}
+                onClick={() => setFormData(prev => ({ ...prev, userType: 'end_user' }))}
+              >
+                End User
+              </button>
             </div>
-            <label style={{ display: 'block', marginBottom: theme.spacing.xs, color: colors.textSecondary }}>
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              placeholder="Enter 10-digit phone number"
-              value={formData.phone}
-              onChange={event => setFormData({ ...formData, phone: event.target.value })}
-              style={inputStyle}
-              inputMode="numeric"
-              maxLength={14}
-            />
-            <button
-              type="submit"
-              style={{ ...buttonStyle, backgroundColor: colors.primary, color: colors.white, marginTop: theme.spacing.sm }}
-            >
+            <div className="form-field">
+              <label htmlFor="register-phone">Phone number</label>
+              <input
+                id="register-phone"
+                className="form-input"
+                type="tel"
+                placeholder="Enter 10-digit phone"
+                value={formData.phone}
+                onChange={event => setFormData(prev => ({ ...prev, phone: event.target.value }))}
+                required
+              />
+            </div>
+            <button type="submit" className="button button--primary">
               Send OTP
             </button>
-            <div style={{ marginTop: theme.spacing.md, fontSize: '14px', color: colors.textSecondary }}>
+            <p className="form-helper" style={{ textAlign: 'center' }}>
               We will send a 6-digit verification code to confirm your phone number.
-            </div>
+            </p>
           </>
         )}
 
         {step === 'otp' && (
           <>
-            <label style={{ display: 'block', marginBottom: theme.spacing.sm, color: colors.text }}>
-              Enter the 6-digit OTP
-            </label>
-            <input
-              type="tel"
-              placeholder="123456"
-              value={otpValue}
-              onChange={event => setOtpValue(event.target.value.replace(/\D/g, '').slice(0, 6))}
-              style={{ ...inputStyle, letterSpacing: '6px', textAlign: 'center', fontWeight: 600 }}
-              inputMode="numeric"
-              maxLength={6}
-            />
-            <button
-              type="submit"
-              style={{ ...buttonStyle, backgroundColor: colors.primary, color: colors.white }}
-            >
-              Verify OTP
-            </button>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: theme.spacing.sm }}>
-              <button type="button" style={secondaryButtonStyle} onClick={handleBack}>
+            <div className="form-field">
+              <label htmlFor="register-otp">Enter the 6-digit OTP</label>
+              <input
+                id="register-otp"
+                className="form-input"
+                type="tel"
+                placeholder="123456"
+                value={otpValue}
+                onChange={event => setOtpValue(event.target.value.replace(/\D/g, '').slice(0, 6))}
+                inputMode="numeric"
+                maxLength={6}
+                style={{ letterSpacing: '6px', textAlign: 'center', fontWeight: 600 }}
+              />
+            </div>
+            <div className="action-row">
+              <button type="button" className="button button--outline" onClick={handleBack}>
                 Back
               </button>
-              <button
-                type="button"
-                style={{ ...secondaryButtonStyle, color: colors.primary, borderColor: colors.primary }}
-                onClick={handleResendOtp}
-              >
+              <button type="button" className="button button--ghost" onClick={handleResendOtp}>
                 Resend OTP
               </button>
             </div>
+            <button type="submit" className="button button--primary">
+              Verify OTP
+            </button>
           </>
         )}
 
         {step === 'details' && (
           <>
-            <label style={{ display: 'block', marginBottom: theme.spacing.xs, color: colors.textSecondary }}>
-              Full Name
-            </label>
-            <input
-              type="text"
-              placeholder="Your name"
-              value={formData.name}
-              onChange={event => setFormData({ ...formData, name: event.target.value })}
-              style={inputStyle}
-              required
-            />
-            <label style={{ display: 'block', marginBottom: theme.spacing.xs, color: colors.textSecondary }}>
-              Email (Optional)
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={formData.email}
-              onChange={event => setFormData({ ...formData, email: event.target.value })}
-              style={inputStyle}
-            />
-            <label style={{ display: 'block', marginBottom: theme.spacing.xs, color: colors.textSecondary }}>
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={event => setFormData({ ...formData, password: event.target.value })}
-              style={inputStyle}
-            />
-            <div style={{ marginTop: -theme.spacing.sm, marginBottom: theme.spacing.md, fontSize: '13px', color: passwordStrength.color }}>
-              {passwordStrength.label && `Password strength: ${passwordStrength.label}`}
+            <div className="form-field">
+              <label htmlFor="register-name">Full name</label>
+              <input
+                id="register-name"
+                className="form-input"
+                type="text"
+                placeholder="Your name"
+                value={formData.name}
+                onChange={event => setFormData(prev => ({ ...prev, name: event.target.value }))}
+                required
+              />
             </div>
-            <input
-              type="password"
-              placeholder="Confirm password"
-              value={formData.confirmPassword}
-              onChange={event => setFormData({ ...formData, confirmPassword: event.target.value })}
-              style={inputStyle}
-            />
-            <label
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: theme.spacing.sm,
-                fontSize: '14px',
-                color: colors.textSecondary,
-                marginBottom: theme.spacing.lg,
-              }}
-            >
+            <div className="form-field">
+              <label htmlFor="register-email">Email (optional)</label>
+              <input
+                id="register-email"
+                className="form-input"
+                type="email"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={event => setFormData(prev => ({ ...prev, email: event.target.value }))}
+              />
+            </div>
+            <div className="form-field">
+              <label htmlFor="register-password">Password</label>
+              <input
+                id="register-password"
+                className="form-input"
+                type="password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={event => setFormData(prev => ({ ...prev, password: event.target.value }))}
+              />
+              {passwordStrength.label && (
+                <span className="form-helper" style={{ color: passwordStrength.color }}>
+                  Password strength: {passwordStrength.label}
+                </span>
+              )}
+            </div>
+            <div className="form-field">
+              <label htmlFor="register-confirm-password">Confirm password</label>
+              <input
+                id="register-confirm-password"
+                className="form-input"
+                type="password"
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                onChange={event => setFormData(prev => ({ ...prev, confirmPassword: event.target.value }))}
+              />
+            </div>
+            <label className="checkbox-row">
               <input
                 type="checkbox"
                 checked={formData.termsAccepted}
-                onChange={event => setFormData({ ...formData, termsAccepted: event.target.checked })}
-                style={{ marginTop: 4 }}
+                onChange={event => setFormData(prev => ({ ...prev, termsAccepted: event.target.checked }))}
               />
-              I agree to the Market Yard terms & conditions and understand that OTP verification is simulated during prototype
-              testing.
+              I agree to the Market Yard terms & conditions and understand that OTP verification is simulated during
+              prototype testing.
             </label>
-            <button
-              type="submit"
-              style={{ ...buttonStyle, backgroundColor: colors.primary, color: colors.white }}
-              disabled={loading}
-            >
-              {loading ? 'Creating account...' : 'Create account'}
-            </button>
-            <button type="button" style={{ ...secondaryButtonStyle, marginTop: theme.spacing.sm }} onClick={handleBack}>
-              Back
-            </button>
+            <div className="action-row">
+              <button type="button" className="button button--outline" onClick={handleBack}>
+                Back
+              </button>
+              <button type="submit" className="button button--primary" disabled={loading}>
+                {loading ? 'Creating account...' : 'Create account'}
+              </button>
+            </div>
           </>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: theme.spacing.lg }}>
-          <Link to="/login" style={{ color: colors.primary, textDecoration: 'none' }}>
+        <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
+          <Link to="/login" className="link">
             Already have an account? Login
           </Link>
         </div>

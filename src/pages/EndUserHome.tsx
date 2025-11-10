@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { colors, theme } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
@@ -96,6 +97,7 @@ function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
 
 export default function EndUserHome() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [globalPrices, setGlobalPrices] = useState<GlobalPriceEntry[]>([]);
 
   const refreshData = () => {
@@ -125,9 +127,18 @@ export default function EndUserHome() {
             Welcome, {user?.name}! {user?.is_premium ? <span style={tagStyle}>Premium</span> : <span style={tagStyle}>Free</span>}
           </div>
         </div>
-        <button type="button" style={refreshButtonStyle} onClick={logout}>
-          Logout
-        </button>
+        <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+          <button
+            type="button"
+            style={{ ...refreshButtonStyle, backgroundColor: colors.surface, color: colors.text, border: `1px solid ${colors.border}` }}
+            onClick={() => navigate('/profile')}
+          >
+            Profile
+          </button>
+          <button type="button" style={refreshButtonStyle} onClick={logout}>
+            Logout
+          </button>
+        </div>
       </div>
 
       <section style={{ marginBottom: theme.spacing.xl }}>

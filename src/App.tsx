@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ShopOwnerDashboard from './pages/ShopOwnerDashboard';
 import EndUserHome from './pages/EndUserHome';
+import ProfilePage from './pages/ProfilePage';
 import './App.css';
 
 // Protected Route Component
@@ -89,6 +90,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <EndUserHome />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />

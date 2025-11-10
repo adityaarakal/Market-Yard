@@ -135,7 +135,7 @@ class StorageService {
   saveShopProduct(shopProduct: ShopProduct): void {
     const shopProducts = this.getShopProducts();
     const existingIndex = shopProducts.findIndex(
-      sp => sp.shop_id === shopProduct.shop_id && sp.product_id === shopProduct.product_id
+      sp => sp.id === shopProduct.id || (sp.shop_id === shopProduct.shop_id && sp.product_id === shopProduct.product_id)
     );
 
     if (existingIndex >= 0) {
@@ -145,6 +145,21 @@ class StorageService {
     }
 
     this.setItem(STORAGE_KEYS.SHOP_PRODUCTS, shopProducts);
+  }
+
+  removeShopProduct(shopProductId: string): void {
+    const shopProducts = this.getShopProducts().filter(sp => sp.id !== shopProductId);
+    this.setItem(STORAGE_KEYS.SHOP_PRODUCTS, shopProducts);
+  }
+
+  setShopProductAvailability(shopProductId: string, isAvailable: boolean): void {
+    const shopProducts = this.getShopProducts();
+    const target = shopProducts.find(sp => sp.id === shopProductId);
+    if (target) {
+      target.is_available = isAvailable;
+      target.updated_at = new Date().toISOString();
+      this.setItem(STORAGE_KEYS.SHOP_PRODUCTS, shopProducts);
+    }
   }
 
   getShopProductsByShopId(shopId: string): ShopProduct[] {

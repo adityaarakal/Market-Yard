@@ -18,7 +18,7 @@ Shop owners also face challenges:
 
 ## 💡 Solution
 
-Market Yard automates the entire price discovery process through a mobile application where:
+Market Yard automates the entire price discovery process through a progressive web application where:
 - **Shop owners** can update daily prices and earn incentives (₹1 per update)
 - **End users** can browse and compare prices across all shops
 - **Free users** get basic price ranges and best value information
@@ -170,7 +170,6 @@ PostgreSQL + Redis + Razorpay
 ### Web App (PWA)
 
 ```bash
-cd web
 npm install
 npm start
 ```
@@ -180,13 +179,12 @@ The app will open at `http://localhost:3000`
 ### Build for Production
 
 ```bash
-cd web
 npm run build
 ```
 
-## 📱 Mobile App (Deprecated)
+## 📱 Mobile App
 
-The mobile app development has been paused. The project now focuses on the Progressive Web App which works on all devices including mobile browsers.
+The former React Native mobile app has been removed from this repository. The Progressive Web App now serves as the single codebase and works across desktop and mobile browsers.
 
 ## 📝 Project Status
 
@@ -205,12 +203,11 @@ The mobile app development has been paused. The project now focuses on the Progr
 1. Set up project structure
 2. Initialize backend API (Node.js + Express)
 3. Set up database (PostgreSQL)
-4. Initialize mobile app (React Native + Expo)
-5. Implement authentication system
-6. Build shop owner features
-7. Build end user features
-8. Integrate payment gateway (Razorpay)
-9. Testing and deployment
+4. Implement authentication system
+5. Build shop owner features
+6. Build end user features
+7. Integrate payment gateway (Razorpay)
+8. Testing and deployment
 
 ## 📄 License
 

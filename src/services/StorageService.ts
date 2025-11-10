@@ -132,6 +132,11 @@ class StorageService {
     this.setItem(STORAGE_KEYS.PRODUCTS, products);
   }
 
+  deleteProduct(productId: string): void {
+    const products = this.getProducts().filter(p => p.id !== productId);
+    this.setItem(STORAGE_KEYS.PRODUCTS, products);
+  }
+
   getProductById(id: string): Product | null {
     const products = this.getProducts();
     return products.find(p => p.id === id) || null;

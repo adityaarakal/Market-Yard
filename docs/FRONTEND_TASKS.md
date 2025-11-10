@@ -349,12 +349,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Filter and sort prices
   - [x] Cache global prices
 
-- [ ] **TASK-607**: Subscription Service
-  - [ ] Create subscription
-  - [ ] Check subscription status
-  - [ ] Update subscription
-  - [ ] Cancel subscription
-  - [ ] Get payment history
+- [x] **TASK-607**: Subscription Service
+  - [x] Create subscription
+  - [x] Check subscription status
+  - [x] Update subscription
+  - [x] Cancel subscription
+  - [x] Get payment history
 
 ---
 
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 10  
+**Completed**: 11  
 **In Progress**: 0  
-**Pending**: 50
+**Pending**: 49
 
 **Current Phase**: Project Setup
 

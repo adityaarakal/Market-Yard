@@ -233,6 +233,15 @@ class StorageService {
     return subscriptions.find(s => s.user_id === userId && s.status === 'active') || null;
   }
 
+  getSubscriptionHistoryByUser(userId: string): Subscription[] {
+    return this.getSubscriptions().filter(s => s.user_id === userId);
+  }
+
+  deleteSubscription(subscriptionId: string): void {
+    const subscriptions = this.getSubscriptions().filter(s => s.id !== subscriptionId);
+    this.setItem(STORAGE_KEYS.SUBSCRIPTIONS, subscriptions);
+  }
+
   // Session methods
   saveSession(session: Session): void {
     this.setItem(STORAGE_KEYS.SESSION, session);

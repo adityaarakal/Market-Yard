@@ -198,6 +198,11 @@ class StorageService {
     this.setItem(STORAGE_KEYS.PRICE_UPDATES, updates);
   }
 
+  deletePriceUpdatesByShopProduct(shopProductId: string): void {
+    const updates = this.getPriceUpdates().filter(update => update.shop_product_id !== shopProductId);
+    this.setItem(STORAGE_KEYS.PRICE_UPDATES, updates);
+  }
+
   getPriceUpdatesByShopId(shopId: string): PriceUpdate[] {
     const updates = this.getPriceUpdates();
     const shopProducts = this.getShopProductsByShopId(shopId);

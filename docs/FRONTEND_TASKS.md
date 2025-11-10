@@ -118,12 +118,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Save shop data to AsyncStorage
   - [x] Link shop to logged-in user
 
-- [ ] **TASK-202**: Shop Owner Dashboard
-  - [ ] Overview statistics (total products, earnings, etc.)
-  - [ ] Quick actions (update prices, add products)
-  - [ ] Recent price updates
-  - [ ] Earnings summary card
-  - [ ] Navigation to key features
+- [x] **TASK-202**: Shop Owner Dashboard
+  - [x] Overview statistics (total products, earnings, etc.)
+  - [x] Quick actions (update prices, add products)
+  - [x] Recent price updates
+  - [x] Earnings summary card
+  - [x] Navigation to key features
 
 - [ ] **TASK-203**: Product Management Screen
   - [ ] List of products in shop catalog
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 12  
+**Completed**: 13  
 **In Progress**: 0  
-**Pending**: 48
+**Pending**: 47
 
 **Current Phase**: Project Setup
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { colors } from '../theme';
 import StorageService from '../services/StorageService';
 import { getShopProductsForOwner } from '../services/PriceService';
 import { Product, ShopProduct } from '../types';

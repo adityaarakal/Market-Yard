@@ -223,5 +223,10 @@ The former React Native mobile app has been removed from this repository. The Pr
 
 ---
 
+🌐 **Deployments**  
+- GitHub Pages (main branch): https://adityaarakal.github.io/Market-Yard
+
+---
+
 **Last Updated**: 2024
 

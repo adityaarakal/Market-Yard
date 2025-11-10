@@ -8,6 +8,7 @@ import ShopOwnerDashboard from './pages/ShopOwnerDashboard';
 import EndUserHome from './pages/EndUserHome';
 import ProfilePage from './pages/ProfilePage';
 import ShopRegistrationPage from './pages/ShopRegistrationPage';
+import ShopProductManagementPage from './pages/ShopProductManagementPage';
 import './App.css';
 
 // Protected Route Component
@@ -91,6 +92,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="shop_owner">
             <ShopRegistrationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/shop-owner/products"
+        element={
+          <ProtectedRoute requiredUserType="shop_owner">
+            <ShopProductManagementPage />
           </ProtectedRoute>
         }
       />

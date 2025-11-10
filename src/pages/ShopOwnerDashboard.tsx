@@ -232,8 +232,8 @@ export default function ShopOwnerDashboard() {
             <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/register')}>
               Edit shop details
             </button>
-            <button type="button" className="button button--outline" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/dashboard')}>
-              Update prices
+            <button type="button" className="button button--outline" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/products')}>
+              Manage catalog
             </button>
             <button type="button" className="button button--ghost" style={{ width: 'auto' }} onClick={() => navigate('/end-user/home')}>
               View as customer

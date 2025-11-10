@@ -182,6 +182,11 @@ class StorageService {
     return shopProducts.filter(sp => sp.shop_id === shopId);
   }
 
+  getShopProduct(shopId: string, productId: string): ShopProduct | null {
+    const shopProducts = this.getShopProducts();
+    return shopProducts.find(sp => sp.shop_id === shopId && sp.product_id === productId) || null;
+  }
+
   // Price Update methods
   getPriceUpdates(): PriceUpdate[] {
     return this.getItem<PriceUpdate[]>(STORAGE_KEYS.PRICE_UPDATES) || [];

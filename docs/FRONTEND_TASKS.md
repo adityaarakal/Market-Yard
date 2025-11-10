@@ -330,11 +330,11 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Search products
   - [x] Get product by ID
 
-- [ ] **TASK-604**: Shop Products Service
-  - [ ] Add product to shop
-  - [ ] Remove product from shop
-  - [ ] Get shop products
-  - [ ] Update product availability
+- [x] **TASK-604**: Shop Products Service
+  - [x] Add product to shop
+  - [x] Remove product from shop
+  - [x] Get shop products
+  - [x] Update product availability
 
 - [ ] **TASK-605**: Price Update Service
   - [ ] Create price update
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 7  
+**Completed**: 8  
 **In Progress**: 0  
-**Pending**: 53
+**Pending**: 52
 
 **Current Phase**: Project Setup
 

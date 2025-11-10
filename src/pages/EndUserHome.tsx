@@ -1,60 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { colors, theme } from '../theme';
+import { colors } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
 import { formatCurrency } from '../utils/format';
-
-const containerStyle: React.CSSProperties = {
-  minHeight: '100vh',
-  padding: theme.spacing.lg,
-  backgroundColor: colors.background,
-};
-
-const tableStyle: React.CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  backgroundColor: colors.white,
-  borderRadius: theme.borderRadius.md,
-  overflow: 'hidden',
-};
-
-const thStyle: React.CSSProperties = {
-  textAlign: 'left',
-  padding: theme.spacing.md,
-  backgroundColor: colors.primary,
-  color: colors.white,
-};
-
-const tdStyle: React.CSSProperties = {
-  padding: theme.spacing.md,
-  borderBottom: `1px solid ${colors.border}`,
-};
-
-const headerStyle: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: theme.spacing.lg,
-};
-
-const tagStyle: React.CSSProperties = {
-  display: 'inline-block',
-  padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-  borderRadius: theme.borderRadius.sm,
-  backgroundColor: colors.secondaryLight,
-  color: colors.white,
-  fontSize: '12px',
-};
-
-const refreshButtonStyle: React.CSSProperties = {
-  padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-  backgroundColor: colors.primary,
-  color: colors.white,
-  border: 'none',
-  borderRadius: theme.borderRadius.md,
-  cursor: 'pointer',
-};
 
 function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
   if (data.length === 0) {
@@ -62,36 +11,38 @@ function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
   }
 
   return (
-    <table style={tableStyle}>
-      <thead>
-        <tr>
-          <th style={thStyle}>Product</th>
-          <th style={thStyle}>Category</th>
-          <th style={thStyle}>Best Price</th>
-          <th style={thStyle}>Best Shop</th>
-          <th style={thStyle}>Average Price</th>
-          <th style={thStyle}>Price Range</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map(entry => (
-          <tr key={entry.product.id}>
-            <td style={tdStyle}>
-              <div style={{ fontWeight: 600 }}>{entry.product.name}</div>
-              <div style={{ color: colors.textSecondary, fontSize: '12px' }}>{entry.product.unit}</div>
-            </td>
-            <td style={tdStyle}>{entry.product.category.replace('_', ' ')}</td>
-            <td style={tdStyle}>{formatCurrency(entry.minPrice)}</td>
-            <td style={tdStyle}>{entry.bestShop ? entry.bestShop.shop_name : 'N/A'}</td>
-            <td style={tdStyle}>{formatCurrency(entry.avgPrice)}</td>
-            <td style={tdStyle}>
-              {formatCurrency(entry.minPrice)} - {formatCurrency(entry.maxPrice)}
-              <div style={{ fontSize: '12px', color: colors.textSecondary }}>{entry.shopCount} shops</div>
-            </td>
+    <div className="table-container">
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Best Price</th>
+            <th>Best Shop</th>
+            <th>Average Price</th>
+            <th>Price Range</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map(entry => (
+            <tr key={entry.product.id}>
+              <td>
+                <div style={{ fontWeight: 600 }}>{entry.product.name}</div>
+                <div className="form-helper" style={{ marginTop: '0.25rem' }}>{entry.product.unit}</div>
+              </td>
+              <td>{entry.product.category.replace('_', ' ')}</td>
+              <td>{formatCurrency(entry.minPrice)}</td>
+              <td>{entry.bestShop ? entry.bestShop.shop_name : 'N/A'}</td>
+              <td>{formatCurrency(entry.avgPrice)}</td>
+              <td>
+                {formatCurrency(entry.minPrice)} - {formatCurrency(entry.maxPrice)}
+                <div className="form-helper" style={{ marginTop: '0.25rem' }}>{entry.shopCount} shops</div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -119,75 +70,79 @@ export default function EndUserHome() {
   }, [globalPrices]);
 
   return (
-    <div style={containerStyle}>
-      <div style={headerStyle}>
-        <div>
-          <h1 style={{ color: colors.text, marginBottom: theme.spacing.sm }}>Market Yard Prices</h1>
-          <div style={{ color: colors.textSecondary }}>
-            Welcome, {user?.name}! {user?.is_premium ? <span style={tagStyle}>Premium</span> : <span style={tagStyle}>Free</span>}
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-          <button
-            type="button"
-            style={{ ...refreshButtonStyle, backgroundColor: colors.surface, color: colors.text, border: `1px solid ${colors.border}` }}
-            onClick={() => navigate('/profile')}
-          >
-            Profile
-          </button>
-          <button type="button" style={refreshButtonStyle} onClick={logout}>
-            Logout
-          </button>
-        </div>
-      </div>
-
-      <section style={{ marginBottom: theme.spacing.xl }}>
-        <h2 style={{ marginBottom: theme.spacing.md }}>Top Deals</h2>
-        {bestDeals.length === 0 ? (
-          <p>No deals available yet.</p>
-        ) : (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: theme.spacing.md,
-            }}
-          >
-            {bestDeals.map(deal => (
-              <div
-                key={deal.product.id}
-                style={{
-                  backgroundColor: colors.white,
-                  padding: theme.spacing.md,
-                  borderRadius: theme.borderRadius.md,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                }}
-              >
-                <div style={{ fontWeight: 600, marginBottom: theme.spacing.sm }}>{deal.product.name}</div>
-                <div style={{ color: colors.textSecondary, fontSize: '12px', marginBottom: theme.spacing.sm }}>
-                  {deal.product.category.replace('_', ' ')}
-                </div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: colors.primary }}>
-                  {formatCurrency(deal.minPrice)}
-                </div>
-                <div style={{ fontSize: '12px', color: colors.textSecondary }}>
-                  Best from {deal.bestShop ? deal.bestShop.shop_name : 'N/A'}
-                </div>
+    <div className="page-shell">
+      <div className="page-shell__content" style={{ gap: '1.75rem' }}>
+        <header className="surface-card surface-card--compact" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="action-row" style={{ alignItems: 'flex-start', gap: '1rem' }}>
+            <div>
+              <h1 className="page-heading__title" style={{ fontSize: 'clamp(1.75rem, 2vw + 1rem, 2.5rem)', textAlign: 'left' }}>
+                Market Yard Prices
+              </h1>
+              <div className="form-helper" style={{ textAlign: 'left' }}>
+                Welcome, {user?.name}!{' '}
+                {user?.is_premium ? (
+                  <span className="welcome-option__tag" style={{ background: 'rgba(76, 175, 80, 0.18)', color: colors.primary }}>
+                    Premium
+                  </span>
+                ) : (
+                  <span className="welcome-option__tag" style={{ background: 'rgba(255, 152, 0, 0.15)', color: colors.secondary }}>
+                    Free
+                  </span>
+                )}
               </div>
-            ))}
+            </div>
+            <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="button button--outline"
+                style={{ width: 'auto' }}
+                onClick={() => navigate('/profile')}
+              >
+                Profile
+              </button>
+              <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={logout}>
+                Logout
+              </button>
+            </div>
           </div>
-        )}
-      </section>
+        </header>
 
-      <section>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.md }}>
-          <h2>Global Price Comparison</h2>
-          <button type="button" style={refreshButtonStyle} onClick={refreshData}>
-            Refresh
-          </button>
-        </div>
-        <PriceTable data={globalPrices} />
-      </section>
+        <section className="surface-card surface-card--compact">
+          <h2 style={{ marginBottom: '1rem' }}>Top Deals</h2>
+          {bestDeals.length === 0 ? (
+            <p>No deals available yet.</p>
+          ) : (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '1rem',
+              }}
+            >
+              {bestDeals.map(deal => (
+                <div key={deal.product.id} className="surface-card surface-card--compact" style={{ boxShadow: 'var(--shadow-soft)' }}>
+                  <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{deal.product.name}</div>
+                  <div className="form-helper" style={{ marginBottom: '0.75rem' }}>
+                    {deal.product.category.replace('_', ' ')}
+                  </div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: colors.primary }}>{formatCurrency(deal.minPrice)}</div>
+                  <div className="form-helper">Best from {deal.bestShop ? deal.bestShop.shop_name : 'N/A'}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="surface-card">
+          <div className="action-row" style={{ marginBottom: '1rem' }}>
+            <h2>Global Price Comparison</h2>
+            <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={refreshData}>
+              Refresh
+            </button>
+          </div>
+          <PriceTable data={globalPrices} />
+        </section>
+      </div>
     </div>
   );
 }

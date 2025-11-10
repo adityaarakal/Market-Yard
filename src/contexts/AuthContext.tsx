@@ -54,7 +54,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (phone: string, password: string): Promise<AuthResponse> => {
     try {
       setIsLoading(true);
-      const foundUser = StorageService.getUserByPhone(phone);
+      const normalizedPhone = phone.replace(/\D/g, '');
+      const foundUser = StorageService.getUserByPhone(normalizedPhone);
 
       if (!foundUser) {
         return { success: false, error: 'User not found' };
@@ -98,9 +99,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }): Promise<AuthResponse> => {
     try {
       setIsLoading(true);
+      const normalizedPhone = userData.phone.replace(/\D/g, '');
 
       // Check if user already exists
-      const existingUser = StorageService.getUserByPhone(userData.phone);
+      const existingUser = StorageService.getUserByPhone(normalizedPhone);
       if (existingUser) {
         return { success: false, error: 'Phone number already registered' };
       }
@@ -109,9 +111,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const now = new Date().toISOString();
       const newUser: User = {
         id: `user_${Date.now()}`,
-        phone_number: userData.phone,
-        name: userData.name,
-        email: userData.email,
+        phone_number: normalizedPhone,
+        name: userData.name.trim(),
+        email: userData.email?.trim(),
         user_type: userData.userType,
         password_hash: userData.password, // In production, hash this
         is_premium: false,

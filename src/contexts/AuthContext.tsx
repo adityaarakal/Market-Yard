@@ -3,6 +3,7 @@ import { User, Session } from '../types';
 import StorageService from '../services/StorageService';
 import SeedDataService from '../services/SeedDataService';
 import { APP_CONFIG } from '../utils/constants';
+import { createUser as createUserRecord, getUserByPhone as findUserByPhone } from '../services/UserService';
 
 type AuthResponse = { success: boolean; error?: string };
 type LoginOptions = { rememberMe?: boolean };
@@ -54,12 +55,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const persistSession = (newSession: Session, rememberMe?: boolean) => {
-    if (rememberMe) {
-      StorageService.saveSession(newSession);
-    } else {
-      StorageService.clearSession();
-    }
+  const persistSession = (newSession: Session, _rememberMe?: boolean) => {
+    StorageService.saveSession(newSession);
     setSession(newSession);
     setUser(newSession.user);
   };
@@ -68,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
-      const foundUser = StorageService.getUserByPhone(normalizedPhone);
+      const foundUser = await findUserByPhone(normalizedPhone);
 
       if (!foundUser) {
         return { success: false, error: 'User not found' };
@@ -105,7 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
-      const foundUser = StorageService.getUserByPhone(normalizedPhone);
+      const foundUser = await findUserByPhone(normalizedPhone);
 
       if (!foundUser) {
         return { success: false, error: 'User not found' };
@@ -145,31 +142,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }): Promise<AuthResponse> => {
     try {
       setIsLoading(true);
-      const normalizedPhone = userData.phone.replace(/\D/g, '');
 
       // Check if user already exists
-      const existingUser = StorageService.getUserByPhone(normalizedPhone);
+      const existingUser = await findUserByPhone(userData.phone);
       if (existingUser) {
         return { success: false, error: 'Phone number already registered' };
       }
 
       // Create new user
-      const now = new Date().toISOString();
-      const newUser: User = {
-        id: `user_${Date.now()}`,
-        phone_number: normalizedPhone,
-        name: userData.name.trim(),
-        email: userData.email?.trim(),
-        user_type: userData.userType,
-        password_hash: userData.password, // In production, hash this
-        is_premium: false,
-        is_active: true,
-        is_verified: true, // For testing, auto-verify
-        created_at: now,
-        updated_at: now,
-      };
-
-      StorageService.saveUser(newUser);
+      const newUser = await createUserRecord({
+        phone: userData.phone,
+        name: userData.name,
+        userType: userData.userType,
+        password: userData.password,
+        email: userData.email,
+        isVerified: true,
+        isActive: true,
+        isPremium: false,
+      });
 
       // Auto-login after registration
       const token = `mock_token_${Date.now()}`;
@@ -178,9 +168,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
       };
 
-      StorageService.saveSession(newSession);
-      setSession(newSession);
-      setUser(newUser);
+      persistSession(newSession);
 
       return { success: true };
     } catch (error) {

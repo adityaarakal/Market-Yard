@@ -66,6 +66,11 @@ class StorageService {
     this.setItem(STORAGE_KEYS.USERS, users);
   }
 
+  deleteUser(userId: string): void {
+    const users = this.getUsers().filter(u => u.id !== userId);
+    this.setItem(STORAGE_KEYS.USERS, users);
+  }
+
   getUserByPhone(phone: string): User | null {
     const users = this.getUsers();
     return users.find(u => u.phone_number === phone) || null;

@@ -316,12 +316,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Delete user (for testing)
   - [x] Get all users (for admin)
 
-- [ ] **TASK-602**: Shop Data Service
-  - [ ] Create shop
-  - [ ] Get shop by owner ID
-  - [ ] Get all shops
-  - [ ] Update shop details
-  - [ ] Delete shop
+- [x] **TASK-602**: Shop Data Service
+  - [x] Create shop
+  - [x] Get shop by owner ID
+  - [x] Get all shops
+  - [x] Update shop details
+  - [x] Delete shop
 
 - [ ] **TASK-603**: Product Data Service
   - [ ] Seed master product list
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 5  
+**Completed**: 6  
 **In Progress**: 0  
-**Pending**: 55
+**Pending**: 54
 
 **Current Phase**: Project Setup
 

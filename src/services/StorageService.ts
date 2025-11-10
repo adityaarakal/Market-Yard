@@ -99,6 +99,11 @@ class StorageService {
     this.setItem(STORAGE_KEYS.SHOPS, shops);
   }
 
+  deleteShop(shopId: string): void {
+    const shops = this.getShops().filter(s => s.id !== shopId);
+    this.setItem(STORAGE_KEYS.SHOPS, shops);
+  }
+
   getShopByOwnerId(ownerId: string): Shop | null {
     const shops = this.getShops();
     return shops.find(s => s.owner_id === ownerId) || null;

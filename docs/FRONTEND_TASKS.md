@@ -343,11 +343,11 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Get price history
   - [x] Calculate earnings
 
-- [ ] **TASK-606**: Global Price Service
-  - [ ] Calculate global prices (min, max, avg)
-  - [ ] Get best shop for each product
-  - [ ] Filter and sort prices
-  - [ ] Cache global prices
+- [x] **TASK-606**: Global Price Service
+  - [x] Calculate global prices (min, max, avg)
+  - [x] Get best shop for each product
+  - [x] Filter and sort prices
+  - [x] Cache global prices
 
 - [ ] **TASK-607**: Subscription Service
   - [ ] Create subscription
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 9  
+**Completed**: 10  
 **In Progress**: 0  
-**Pending**: 51
+**Pending**: 50
 
 **Current Phase**: Project Setup
 

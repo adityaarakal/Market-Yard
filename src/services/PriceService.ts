@@ -1,6 +1,9 @@
 import StorageService from './StorageService';
 import { Product, Shop, ShopProduct } from '../types';
 
+const GLOBAL_PRICE_CACHE_KEY = 'global_price_cache_v1';
+const GLOBAL_PRICE_CACHE_TTL_MS = 1000 * 60 * 5; // 5 minutes
+
 export interface GlobalPriceEntry {
   product: Product;
   shopCount: number;
@@ -8,6 +11,16 @@ export interface GlobalPriceEntry {
   maxPrice: number | null;
   avgPrice: number | null;
   bestShop: Shop | null;
+  bestShopProductId?: string;
+}
+
+interface GlobalPriceCache {
+  data: GlobalPriceEntry[];
+  generatedAt: string;
+  filters?: {
+    category?: string;
+    search?: string;
+  };
 }
 
 function calculateGlobalPriceEntry(product: Product, shopProducts: ShopProduct[]): GlobalPriceEntry {
@@ -42,19 +55,87 @@ function calculateGlobalPriceEntry(product: Product, shopProducts: ShopProduct[]
     maxPrice,
     avgPrice,
     bestShop,
+    bestShopProductId: bestShopProduct?.id,
   };
 }
 
-export function getGlobalPriceSummary(): GlobalPriceEntry[] {
+function storeCache(cache: GlobalPriceCache) {
+  try {
+    localStorage.setItem(GLOBAL_PRICE_CACHE_KEY, JSON.stringify(cache));
+  } catch (error) {
+    console.warn('Unable to persist global price cache', error);
+  }
+}
+
+function getCache(filters?: GlobalPriceCache['filters']): GlobalPriceCache | null {
+  try {
+    const raw = localStorage.getItem(GLOBAL_PRICE_CACHE_KEY);
+    if (!raw) {
+      return null;
+    }
+    const cache: GlobalPriceCache = JSON.parse(raw);
+    const age = Date.now() - new Date(cache.generatedAt).getTime();
+    if (age > GLOBAL_PRICE_CACHE_TTL_MS) {
+      return null;
+    }
+    if (
+      filters?.category !== cache.filters?.category ||
+      (filters?.search || '').toLowerCase() !== (cache.filters?.search || '').toLowerCase()
+    ) {
+      return null;
+    }
+    return cache;
+  } catch (error) {
+    console.warn('Unable to read global price cache', error);
+    return null;
+  }
+}
+
+export function getGlobalPriceSummary(filters?: { category?: string; search?: string }): GlobalPriceEntry[] {
+  const cache = getCache(filters);
+  if (cache) {
+    return cache.data;
+  }
+
   const products = StorageService.getProducts();
   const shopProducts = StorageService.getShopProducts();
 
-  return products
-    .map(product => {
-      const productShopProducts = shopProducts.filter(sp => sp.product_id === product.id);
-      return calculateGlobalPriceEntry(product, productShopProducts);
-    })
-    .sort((a, b) => a.product.name.localeCompare(b.product.name));
+  let entries = products.map(product => {
+    const productShopProducts = shopProducts.filter(sp => sp.product_id === product.id);
+    return calculateGlobalPriceEntry(product, productShopProducts);
+  });
+
+  if (filters?.category) {
+    entries = entries.filter(entry => entry.product.category === filters.category);
+  }
+
+  if (filters?.search) {
+    const query = filters.search.toLowerCase();
+    entries = entries.filter(entry =>
+      [entry.product.name, entry.product.category, entry.product.unit]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(query)
+    );
+  }
+
+  entries.sort((a, b) => {
+    const aPrice = a.minPrice ?? Number.POSITIVE_INFINITY;
+    const bPrice = b.minPrice ?? Number.POSITIVE_INFINITY;
+    if (aPrice === bPrice) {
+      return a.product.name.localeCompare(b.product.name);
+    }
+    return aPrice - bPrice;
+  });
+
+  storeCache({
+    data: entries,
+    generatedAt: new Date().toISOString(),
+    filters,
+  });
+
+  return entries;
 }
 
 export function getShopProductsForOwner(ownerId: string): Array<ShopProduct & { productName: string; unit: string }> {

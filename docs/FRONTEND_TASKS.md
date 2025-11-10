@@ -2,9 +2,9 @@
 
 ## 📋 Overview
 
-This document tracks all frontend development tasks for the Market Yard mobile application. **All data persistence will use AsyncStorage (React Native's local storage)** during initial development phase for testing and UI feedback collection.
+This document tracks all frontend development tasks for the Market Yard Progressive Web App. **All data persistence will use browser `localStorage`** during the initial development phase for testing and UI feedback collection.
 
-**Note**: All API calls and backend integration will be implemented later. For now, we'll simulate backend behavior using local storage.
+**Note**: All API calls and backend integration will be implemented later. For now, we simulate backend behavior using local storage.
 
 ---
 
@@ -72,10 +72,10 @@ This document tracks all frontend development tasks for the Market Yard mobile a
 
 ### Phase 1: Authentication Screens
 
-- [ ] **TASK-101**: Onboarding/Welcome Screen
-  - [ ] Design welcome screen
-  - [ ] User type selection (Shop Owner / End User)
-  - [ ] Navigation to registration/login
+- [x] **TASK-101**: Onboarding/Welcome Screen
+  - [x] Design welcome screen
+  - [x] User type selection (Shop Owner / End User)
+  - [x] Navigation to registration/login
 
 - [ ] **TASK-102**: Registration Screen
   - [ ] Phone number input with validation
@@ -94,13 +94,13 @@ This document tracks all frontend development tasks for the Market Yard mobile a
   - [ ] Navigate based on user type
   - [ ] Store session in AsyncStorage
 
-- [ ] **TASK-104**: Profile Management Screen
-  - [ ] View profile information
-  - [ ] Edit profile form
+- [x] **TASK-104**: Profile Management Screen
+  - [x] View profile information
+  - [x] Edit profile form
   - [ ] Profile picture upload (local storage)
-  - [ ] Change password (update in AsyncStorage)
-  - [ ] View subscription status
-  - [ ] Logout functionality
+  - [x] Change password (update in storage)
+  - [x] View subscription status
+  - [x] Logout functionality
 
 ---
 
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 0  
+**Completed**: 2  
 **In Progress**: 0  
-**Pending**: 60
+**Pending**: 58
 
 **Current Phase**: Project Setup
 
@@ -593,6 +593,6 @@ interface Subscription {
 
 ---
 
-**Last Updated**: 2024  
+**Last Updated**: 2025  
 **Status**: Planning Phase
 

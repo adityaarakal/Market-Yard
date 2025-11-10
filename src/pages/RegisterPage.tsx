@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { colors, theme } from '../theme';
 
@@ -45,11 +45,16 @@ const buttonStyle: React.CSSProperties = {
 };
 
 export default function RegisterPage() {
+  const location = useLocation();
+  const initialUserType = useMemo(() => {
+    const state = location.state as { userType?: 'shop_owner' | 'end_user' } | null;
+    return state?.userType || 'end_user';
+  }, [location.state]);
   const [formData, setFormData] = useState({
     phone: '',
     name: '',
     password: '',
-    userType: 'end_user' as 'shop_owner' | 'end_user',
+    userType: initialUserType,
     email: '',
   });
   const [error, setError] = useState('');
@@ -79,7 +84,23 @@ export default function RegisterPage() {
   return (
     <div style={styles}>
       <form style={formStyle} onSubmit={handleSubmit}>
-        <h2 style={{ marginBottom: theme.spacing.lg, color: colors.text }}>Register</h2>
+        <h2 style={{ marginBottom: theme.spacing.md, color: colors.text }}>Register</h2>
+        <div
+          style={{
+            marginBottom: theme.spacing.lg,
+            padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+            borderRadius: theme.borderRadius.md,
+            backgroundColor: colors.surface,
+            border: `1px solid ${colors.border}`,
+            color: colors.textSecondary,
+            fontSize: '14px',
+          }}
+        >
+          Signing up as{' '}
+          <span style={{ fontWeight: 600, color: colors.text }}>
+            {formData.userType === 'shop_owner' ? 'Shop Owner' : 'End User'}
+          </span>
+        </div>
         {error && <div style={{ color: colors.error, marginBottom: theme.spacing.md }}>{error}</div>}
         <input
           type="tel"
@@ -117,8 +138,8 @@ export default function RegisterPage() {
           onChange={e => setFormData({ ...formData, userType: e.target.value as 'shop_owner' | 'end_user' })}
           style={inputStyle}
         >
-          <option value="end_user">End User</option>
           <option value="shop_owner">Shop Owner</option>
+          <option value="end_user">End User</option>
         </select>
         <button type="submit" style={buttonStyle} disabled={loading}>
           {loading ? 'Registering...' : 'Register'}

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { colors, theme } from '../theme';
 import SeedDataService from '../services/SeedDataService';
 import StorageService from '../services/StorageService';
@@ -22,62 +22,36 @@ const titleStyle: React.CSSProperties = {
   textAlign: 'center',
 };
 
-const subtitleStyle: React.CSSProperties = {
-  fontSize: theme.typography.body.fontSize,
-  color: colors.textSecondary,
-  marginBottom: theme.spacing.xl,
-  textAlign: 'center',
-};
-
-const buttonContainerStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing.md,
-  width: '100%',
-  maxWidth: '400px',
-};
-
-const buttonStyle: React.CSSProperties = {
-  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-  borderRadius: theme.borderRadius.md,
-  border: 'none',
-  fontSize: theme.typography.body.fontSize,
-  fontWeight: '600',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  display: 'block',
-  textAlign: 'center',
-  transition: 'opacity 0.2s',
-};
-
-const primaryButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  backgroundColor: colors.primary,
-  color: colors.white,
-};
-
-const secondaryButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  backgroundColor: 'transparent',
-  color: colors.primary,
-  border: `1px solid ${colors.primary}`,
-};
-
-const tertiaryButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  backgroundColor: colors.surface,
-  color: colors.text,
-  border: `1px solid ${colors.border}`,
-};
-
 export default function WelcomePage() {
+  const navigate = useNavigate();
   const [hasData, setHasData] = useState(false);
   const [message, setMessage] = useState('');
+  const [selectedUserType, setSelectedUserType] = useState<'shop_owner' | 'end_user'>('shop_owner');
 
   useEffect(() => {
     const products = StorageService.getProducts();
     setHasData(products.length > 0);
   }, []);
+
+  const userTypeDescriptions = useMemo(
+    () => ({
+      shop_owner: {
+        title: 'Shop Owner',
+        description: 'Manage your catalog, update daily prices, and track earnings from the market yard.',
+      },
+      end_user: {
+        title: 'End User',
+        description: 'Compare prices across shops, discover top deals, and plan your market purchases smartly.',
+      },
+    }),
+    []
+  );
+
+  const handleContinue = () => {
+    navigate('/register', {
+      state: { userType: selectedUserType },
+    });
+  };
 
   const handleSeed = () => {
     SeedDataService.seedAll(true);
@@ -94,7 +68,155 @@ export default function WelcomePage() {
   return (
     <div style={styles}>
       <h1 style={titleStyle}>Market Yard</h1>
-      <p style={subtitleStyle}>Compare prices across market yard shops</p>
+      <p
+        style={{
+          fontSize: theme.typography.body.fontSize,
+          color: colors.textSecondary,
+          marginBottom: theme.spacing.md,
+          textAlign: 'center',
+          maxWidth: '580px',
+        }}
+      >
+        Transparent pricing for every market yard visit. Choose how you use Market Yard and get started in minutes.
+      </p>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing.lg,
+          width: '100%',
+          maxWidth: '720px',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: theme.spacing.md,
+          }}
+        >
+          {(['shop_owner', 'end_user'] as Array<'shop_owner' | 'end_user'>).map(type => {
+            const isSelected = selectedUserType === type;
+            const content = userTypeDescriptions[type];
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setSelectedUserType(type)}
+                style={{
+                  borderRadius: theme.borderRadius.lg,
+                  border: `2px solid ${isSelected ? colors.primary : colors.border}`,
+                  backgroundColor: isSelected ? colors.surface : colors.white,
+                  padding: theme.spacing.xl,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  transition: 'border 0.2s ease, transform 0.2s ease',
+                  transform: isSelected ? 'translateY(-4px)' : 'none',
+                  boxShadow: isSelected ? '0 12px 24px rgba(33, 64, 118, 0.12)' : '0 4px 12px rgba(0,0,0,0.05)',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-block',
+                    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+                    borderRadius: theme.borderRadius.sm,
+                    backgroundColor: isSelected ? colors.primary : colors.secondaryLight,
+                    color: colors.white,
+                    fontSize: '12px',
+                    marginBottom: theme.spacing.sm,
+                  }}
+                >
+                  {isSelected ? 'Selected' : 'Tap to select'}
+                </div>
+                <div style={{ fontSize: '20px', fontWeight: 700, marginBottom: theme.spacing.sm, color: colors.text }}>
+                  {content.title}
+                </div>
+                <p style={{ color: colors.textSecondary, lineHeight: 1.5, marginBottom: theme.spacing.sm }}>
+                  {content.description}
+                </p>
+                {type === 'shop_owner' ? (
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: '18px',
+                      color: colors.textSecondary,
+                      lineHeight: 1.4,
+                      fontSize: '14px',
+                    }}
+                  >
+                    <li>₹1 incentive per price update</li>
+                    <li>Manage catalog and availability</li>
+                    <li>Track earnings and payouts</li>
+                  </ul>
+                ) : (
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: '18px',
+                      color: colors.textSecondary,
+                      lineHeight: 1.4,
+                      fontSize: '14px',
+                    }}
+                  >
+                    <li>See best prices across shops</li>
+                    <li>Discover top deals instantly</li>
+                    <li>Upgrade for shop-level insights</li>
+                  </ul>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing.md,
+            marginTop: theme.spacing.md,
+          }}
+        >
+          <button
+            type="button"
+            onClick={handleContinue}
+            style={{
+              padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+              borderRadius: theme.borderRadius.md,
+              border: 'none',
+              fontSize: theme.typography.body.fontSize,
+              fontWeight: 600,
+              cursor: 'pointer',
+              backgroundColor: colors.primary,
+              color: colors.white,
+              boxShadow: '0 10px 20px rgba(33, 64, 118, 0.18)',
+            }}
+          >
+            Continue as {userTypeDescriptions[selectedUserType].title}
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              navigate('/login', {
+                state: { userType: selectedUserType },
+              })
+            }
+            style={{
+              padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+              borderRadius: theme.borderRadius.md,
+              border: `1px solid ${colors.primary}`,
+              fontSize: theme.typography.body.fontSize,
+              fontWeight: 600,
+              cursor: 'pointer',
+              backgroundColor: 'transparent',
+              color: colors.primary,
+            }}
+          >
+            Already onboarded? Log in
+          </button>
+        </div>
+      </div>
+
       {message && (
         <div
           style={{
@@ -107,35 +229,70 @@ export default function WelcomePage() {
           {message}
         </div>
       )}
-      {!hasData && (
-        <div
-          style={{
-            marginBottom: theme.spacing.lg,
-            maxWidth: '400px',
-            textAlign: 'center',
-            color: colors.warning,
-          }}
-        >
-          No data found. Use "Seed Sample Data" to load demo content.
+      <div
+        style={{
+          marginTop: theme.spacing.xl,
+          padding: theme.spacing.lg,
+          borderRadius: theme.borderRadius.md,
+          backgroundColor: colors.surface,
+          border: `1px dashed ${colors.border}`,
+          maxWidth: '640px',
+          width: '100%',
+        }}
+      >
+        <div style={{ fontWeight: 600, color: colors.textSecondary, marginBottom: theme.spacing.sm }}>
+          Need demo data?
         </div>
-      )}
-      <div style={buttonContainerStyle}>
-        <Link to="/login" style={primaryButtonStyle}>
-          Login
-        </Link>
-        <Link to="/register" style={secondaryButtonStyle}>
-          Register
-        </Link>
-        <button type="button" style={tertiaryButtonStyle} onClick={handleSeed}>
-          Seed Sample Data
-        </button>
-        <button
-          type="button"
-          style={{ ...tertiaryButtonStyle, color: colors.error, border: `1px solid ${colors.error}` }}
-          onClick={handleReset}
-        >
-          Clear Data
-        </button>
+        {!hasData && (
+          <div style={{ color: colors.warning, marginBottom: theme.spacing.sm }}>
+            No data found. Use the button below to load sample shops, products, and price updates.
+          </div>
+        )}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: theme.spacing.sm }}>
+          <button
+            type="button"
+            onClick={handleSeed}
+            style={{
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              borderRadius: theme.borderRadius.sm,
+              border: 'none',
+              backgroundColor: colors.secondary,
+              color: colors.white,
+              cursor: 'pointer',
+            }}
+          >
+            Seed Sample Data
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              borderRadius: theme.borderRadius.sm,
+              border: `1px solid ${colors.error}`,
+              backgroundColor: 'transparent',
+              color: colors.error,
+              cursor: 'pointer',
+            }}
+          >
+            Clear Data
+          </button>
+          <Link
+            to="/login"
+            style={{
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              borderRadius: theme.borderRadius.sm,
+              border: `1px solid ${colors.border}`,
+              color: colors.text,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            Quick Login
+          </Link>
+        </div>
       </div>
     </div>
   );

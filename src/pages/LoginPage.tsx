@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { colors, theme } from '../theme';
 import StorageService from '../services/StorageService';
@@ -46,6 +46,11 @@ const buttonStyle: React.CSSProperties = {
 };
 
 export default function LoginPage() {
+  const location = useLocation();
+  const preferredUserType = useMemo(() => {
+    const state = location.state as { userType?: 'shop_owner' | 'end_user' } | null;
+    return state?.userType;
+  }, [location.state]);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -80,7 +85,25 @@ export default function LoginPage() {
   return (
     <div style={styles}>
       <form style={formStyle} onSubmit={handleSubmit}>
-        <h2 style={{ marginBottom: theme.spacing.lg, color: colors.text }}>Login</h2>
+        <h2 style={{ marginBottom: theme.spacing.md, color: colors.text }}>Login</h2>
+        {preferredUserType && (
+          <div
+            style={{
+              marginBottom: theme.spacing.lg,
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              borderRadius: theme.borderRadius.md,
+              backgroundColor: colors.surface,
+              border: `1px solid ${colors.border}`,
+              color: colors.textSecondary,
+              fontSize: '14px',
+            }}
+          >
+            Returning as{' '}
+            <span style={{ fontWeight: 600, color: colors.text }}>
+              {preferredUserType === 'shop_owner' ? 'Shop Owner' : 'End User'}
+            </span>
+          </div>
+        )}
         {error && <div style={{ color: colors.error, marginBottom: theme.spacing.md }}>{error}</div>}
         <input
           type="tel"

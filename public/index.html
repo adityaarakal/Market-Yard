@@ -15,6 +15,19 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Market Yard - Price Comparison App</title>
+    <script>
+      (function () {
+        var redirect = sessionStorage.getItem('gh-spa-redirect');
+        if (!redirect) {
+          return;
+        }
+        sessionStorage.removeItem('gh-spa-redirect');
+        var base = '%PUBLIC_URL%';
+        var normalizedBase = base && base !== '.' ? base : '';
+        var cleanedRedirect = redirect.charAt(0) === '/' ? redirect : '/' + redirect;
+        window.history.replaceState(null, null, normalizedBase + cleanedRedirect);
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

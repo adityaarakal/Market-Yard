@@ -108,15 +108,15 @@ This document tracks all frontend development tasks for the Market Yard Progress
 
 ### Phase 2: Shop Owner Setup
 
-- [ ] **TASK-201**: Shop Registration Screen
-  - [ ] Multi-step form wizard
-  - [ ] Step 1: Shop name and category
-  - [ ] Step 2: Address input (with map picker - optional)
-  - [ ] Step 3: Contact details
-  - [ ] Step 4: Shop description and image upload
-  - [ ] Step 5: Review and submit
-  - [ ] Save shop data to AsyncStorage
-  - [ ] Link shop to logged-in user
+- [x] **TASK-201**: Shop Registration Screen
+  - [x] Multi-step form wizard
+  - [x] Step 1: Shop name and category
+  - [x] Step 2: Address input (with map picker - optional)
+  - [x] Step 3: Contact details
+  - [x] Step 4: Shop description and image upload
+  - [x] Step 5: Review and submit
+  - [x] Save shop data to AsyncStorage
+  - [x] Link shop to logged-in user
 
 - [ ] **TASK-202**: Shop Owner Dashboard
   - [ ] Overview statistics (total products, earnings, etc.)
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 11  
+**Completed**: 12  
 **In Progress**: 0  
-**Pending**: 49
+**Pending**: 48
 
 **Current Phase**: Project Setup
 

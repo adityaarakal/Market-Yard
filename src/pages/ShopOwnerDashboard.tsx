@@ -158,7 +158,17 @@ export default function ShopOwnerDashboard() {
                   Managing: {shop.shop_name} ({shop.category})
                 </div>
               ) : (
-                <div className="form-error" style={{ margin: 0 }}>No shop found for this account.</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div className="form-error" style={{ margin: 0 }}>No shop found for this account.</div>
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    style={{ width: 'auto' }}
+                    onClick={() => navigate('/shop-owner/register')}
+                  >
+                    Register your shop
+                  </button>
+                </div>
               )}
             </div>
             <div className="action-row" style={{ gap: '0.5rem' }}>

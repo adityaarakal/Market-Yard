@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
   PAYMENTS: '@market_yard_payments',
   SESSION: '@market_yard_session',
   SETTINGS: '@market_yard_settings',
+  REMEMBERED_LOGIN: '@market_yard_remembered_login',
 } as const;
 
 // App Constants

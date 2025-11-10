@@ -2,15 +2,18 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, Session } from '../types';
 import StorageService from '../services/StorageService';
 import SeedDataService from '../services/SeedDataService';
+import { APP_CONFIG } from '../utils/constants';
 
 type AuthResponse = { success: boolean; error?: string };
+type LoginOptions = { rememberMe?: boolean };
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (phone: string, password: string) => Promise<AuthResponse>;
+  login: (phone: string, password: string, options?: LoginOptions) => Promise<AuthResponse>;
+  loginWithOtp: (phone: string, otp: string, options?: LoginOptions) => Promise<AuthResponse>;
   logout: () => void;
   register: (userData: {
     phone: string;
@@ -51,7 +54,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (phone: string, password: string): Promise<AuthResponse> => {
+  const persistSession = (newSession: Session, rememberMe?: boolean) => {
+    if (rememberMe) {
+      StorageService.saveSession(newSession);
+    } else {
+      StorageService.clearSession();
+    }
+    setSession(newSession);
+    setUser(newSession.user);
+  };
+
+  const login = async (phone: string, password: string, options?: LoginOptions): Promise<AuthResponse> => {
     try {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
@@ -77,13 +90,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
       };
 
-      StorageService.saveSession(newSession);
-      setSession(newSession);
-      setUser(foundUser);
+      persistSession(newSession, options?.rememberMe);
 
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
+      return { success: false, error: 'Login failed' };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithOtp = async (phone: string, otp: string, options?: LoginOptions): Promise<AuthResponse> => {
+    try {
+      setIsLoading(true);
+      const normalizedPhone = phone.replace(/\D/g, '');
+      const foundUser = StorageService.getUserByPhone(normalizedPhone);
+
+      if (!foundUser) {
+        return { success: false, error: 'User not found' };
+      }
+
+      if (!foundUser.is_active) {
+        return { success: false, error: 'Account is inactive' };
+      }
+
+      if (otp !== APP_CONFIG.MOCK_OTP) {
+        return { success: false, error: 'Invalid OTP' };
+      }
+
+      const token = `mock_token_${Date.now()}`;
+      const newSession: Session = {
+        user: foundUser,
+        token,
+      };
+
+      persistSession(newSession, options?.rememberMe);
+
+      return { success: true };
+    } catch (error) {
+      console.error('OTP login error:', error);
       return { success: false, error: 'Login failed' };
     } finally {
       setIsLoading(false);
@@ -179,6 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     isAuthenticated: !!user,
     login,
+    loginWithOtp,
     logout,
     register,
     updateUser,

@@ -220,6 +220,24 @@ class StorageService {
   clearSession(): void {
     this.removeItem(STORAGE_KEYS.SESSION);
   }
+
+  // Remembered login helpers
+  saveRememberedLogin(data: { phone: string; userType?: 'shop_owner' | 'end_user' }): void {
+    this.setItem(STORAGE_KEYS.REMEMBERED_LOGIN, data);
+  }
+
+  getRememberedLogin():
+    | {
+        phone: string;
+        userType?: 'shop_owner' | 'end_user';
+      }
+    | null {
+    return this.getItem(STORAGE_KEYS.REMEMBERED_LOGIN);
+  }
+
+  clearRememberedLogin(): void {
+    this.removeItem(STORAGE_KEYS.REMEMBERED_LOGIN);
+  }
 }
 
 const storageService = new StorageService();

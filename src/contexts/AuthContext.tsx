@@ -36,6 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Load session on app start
   useEffect(() => {
     SeedDataService.seedAll();
+    // Always ensure admin user exists
+    SeedDataService.ensureAdminUser();
     loadSession();
   }, []);
 

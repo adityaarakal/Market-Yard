@@ -191,15 +191,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true);
 
+      // Normalize phone number
+      const normalizedPhone = userData.phone.replace(/\D/g, '');
+
       // Check if user already exists
-      const existingUser = await findUserByPhone(userData.phone);
+      const existingUser = await findUserByPhone(normalizedPhone);
       if (existingUser) {
-        return { success: false, error: 'Phone number already registered' };
+        return { success: false, error: 'Phone number already registered. Please log in instead.' };
       }
 
       // Create new user
       const newUser = await createUserRecord({
-        phone: userData.phone,
+        phone: normalizedPhone,
         name: userData.name,
         userType: userData.userType,
         password: userData.password,
@@ -209,10 +212,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isPremium: false,
       });
 
+      // Verify user was saved
+      const savedUser = await findUserByPhone(normalizedPhone);
+      if (!savedUser) {
+        console.error('User was not saved properly after registration');
+        return { success: false, error: 'Failed to save user. Please try again.' };
+      }
+
       // Auto-login after registration
       const token = `mock_token_${Date.now()}`;
       const newSession: Session = {
-        user: newUser,
+        user: savedUser,
         token,
       };
 
@@ -221,12 +231,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Update state synchronously
       setSession(newSession);
-      setUser(newUser);
+      setUser(savedUser);
+
+      console.log('User registered and logged in:', savedUser.phone_number);
 
       return { success: true };
     } catch (error) {
       console.error('Registration error:', error);
-      return { success: false, error: 'Registration failed' };
+      const errorMessage = error instanceof Error ? error.message : 'Registration failed';
+      return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }

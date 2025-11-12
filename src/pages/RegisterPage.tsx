@@ -146,11 +146,14 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (result.success) {
-      if (formData.userType === 'shop_owner') {
-        navigate('/shop-owner/dashboard');
-      } else {
-        navigate('/end-user/home');
-      }
+      // Small delay to ensure state is updated before navigation
+      setTimeout(() => {
+        if (formData.userType === 'shop_owner') {
+          navigate('/shop-owner/dashboard', { replace: true });
+        } else {
+          navigate('/end-user/home', { replace: true });
+        }
+      }, 100);
     } else {
       setError(result.error || 'Registration failed');
     }

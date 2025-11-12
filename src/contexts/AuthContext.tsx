@@ -55,29 +55,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const persistSession = (newSession: Session, _rememberMe?: boolean) => {
-    StorageService.saveSession(newSession);
-    setSession(newSession);
-    setUser(newSession.user);
-  };
-
   const login = async (phone: string, password: string, options?: LoginOptions): Promise<AuthResponse> => {
     try {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
+      
+      // Ensure seed data exists
+      SeedDataService.seedAll(false);
+      
       const foundUser = await findUserByPhone(normalizedPhone);
 
       if (!foundUser) {
-        return { success: false, error: 'User not found' };
+        return { success: false, error: 'User not found. Please register first or check your phone number.' };
       }
 
       // For local storage, simple password check (in production, use bcrypt)
-      if (foundUser.password_hash !== password) {
-        return { success: false, error: 'Invalid password' };
+      // Trim both to handle whitespace issues
+      const storedPassword = (foundUser.password_hash || '').trim();
+      const enteredPassword = (password || '').trim();
+      
+      if (storedPassword !== enteredPassword) {
+        return { success: false, error: 'Invalid password. Please check your password and try again.' };
       }
 
       if (!foundUser.is_active) {
-        return { success: false, error: 'Account is inactive' };
+        return { success: false, error: 'Account is inactive. Please contact support.' };
       }
 
       // Create session
@@ -87,12 +89,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
       };
 
-      persistSession(newSession, options?.rememberMe);
+      // Save session first
+      StorageService.saveSession(newSession);
+      
+      // Update state synchronously
+      setSession(newSession);
+      setUser(foundUser);
+      
+      // Save remembered login if needed
+      if (options?.rememberMe) {
+        StorageService.saveRememberedLogin({ 
+          phone: normalizedPhone, 
+          userType: foundUser.user_type 
+        });
+      } else {
+        StorageService.clearRememberedLogin();
+      }
 
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: 'Login failed' };
+      return { success: false, error: 'Login failed. Please try again.' };
     } finally {
       setIsLoading(false);
     }
@@ -102,18 +119,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
+      
+      // Ensure seed data exists
+      SeedDataService.seedAll(false);
+      
       const foundUser = await findUserByPhone(normalizedPhone);
 
       if (!foundUser) {
-        return { success: false, error: 'User not found' };
+        return { success: false, error: 'User not found. Please register first or check your phone number.' };
       }
 
       if (!foundUser.is_active) {
-        return { success: false, error: 'Account is inactive' };
+        return { success: false, error: 'Account is inactive. Please contact support.' };
       }
 
-      if (otp !== APP_CONFIG.MOCK_OTP) {
-        return { success: false, error: 'Invalid OTP' };
+      // Trim OTP to handle whitespace
+      const enteredOtp = (otp || '').trim();
+      if (enteredOtp !== APP_CONFIG.MOCK_OTP) {
+        return { success: false, error: `Invalid OTP. Use ${APP_CONFIG.MOCK_OTP} for testing.` };
       }
 
       const token = `mock_token_${Date.now()}`;
@@ -122,12 +145,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
       };
 
-      persistSession(newSession, options?.rememberMe);
+      // Save session first
+      StorageService.saveSession(newSession);
+      
+      // Update state synchronously
+      setSession(newSession);
+      setUser(foundUser);
+      
+      // Save remembered login if needed
+      if (options?.rememberMe) {
+        StorageService.saveRememberedLogin({ 
+          phone: normalizedPhone, 
+          userType: foundUser.user_type 
+        });
+      } else {
+        StorageService.clearRememberedLogin();
+      }
 
       return { success: true };
     } catch (error) {
       console.error('OTP login error:', error);
-      return { success: false, error: 'Login failed' };
+      return { success: false, error: 'Login failed. Please try again.' };
     } finally {
       setIsLoading(false);
     }
@@ -168,7 +206,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
       };
 
-      persistSession(newSession);
+      // Save session first
+      StorageService.saveSession(newSession);
+      
+      // Update state synchronously
+      setSession(newSession);
+      setUser(newUser);
 
       return { success: true };
     } catch (error) {

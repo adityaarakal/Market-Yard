@@ -64,21 +64,14 @@ export default function LoginPage() {
       setLoading(false);
 
       if (result.success) {
-        if (rememberMe) {
-          StorageService.saveRememberedLogin({ phone: normalizedPhone, userType: preferredUserType });
+        // Navigate immediately - session is already saved in AuthContext
+        const session = StorageService.getSession();
+        const currentUser = session?.user;
+        if (currentUser?.user_type === 'shop_owner') {
+          navigate('/shop-owner/dashboard', { replace: true });
         } else {
-          StorageService.clearRememberedLogin();
+          navigate('/end-user/home', { replace: true });
         }
-
-        setTimeout(() => {
-          const session = StorageService.getSession();
-          const currentUser = session?.user;
-          if (currentUser?.user_type === 'shop_owner') {
-            navigate('/shop-owner/dashboard', { replace: true });
-          } else {
-            navigate('/end-user/home', { replace: true });
-          }
-        }, 50);
       } else {
         setError(result.error || 'Login failed. Double-check your phone and password.');
       }
@@ -101,21 +94,14 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result.success) {
-      if (rememberMe) {
-        StorageService.saveRememberedLogin({ phone: normalizedPhone, userType: preferredUserType });
+      // Navigate immediately - session is already saved in AuthContext
+      const session = StorageService.getSession();
+      const currentUser = session?.user;
+      if (currentUser?.user_type === 'shop_owner') {
+        navigate('/shop-owner/dashboard', { replace: true });
       } else {
-        StorageService.clearRememberedLogin();
+        navigate('/end-user/home', { replace: true });
       }
-
-      setTimeout(() => {
-        const session = StorageService.getSession();
-        const currentUser = session?.user;
-        if (currentUser?.user_type === 'shop_owner') {
-          navigate('/shop-owner/dashboard', { replace: true });
-        } else {
-          navigate('/end-user/home', { replace: true });
-        }
-      }, 50);
     } else {
       setError(result.error || 'Invalid OTP. Use 123456 while testing.');
     }

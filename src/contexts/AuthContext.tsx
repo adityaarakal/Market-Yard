@@ -60,8 +60,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
       
-      // Ensure seed data exists
+      // Ensure seed data exists (including admin user)
       SeedDataService.seedAll(false);
+      // Always ensure admin user exists
+      SeedDataService.ensureAdminUser();
       
       const foundUser = await findUserByPhone(normalizedPhone);
 
@@ -122,8 +124,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
       
-      // Ensure seed data exists
+      // Ensure seed data exists (including admin user)
       SeedDataService.seedAll(false);
+      // Always ensure admin user exists
+      SeedDataService.ensureAdminUser();
       
       const foundUser = await findUserByPhone(normalizedPhone);
 

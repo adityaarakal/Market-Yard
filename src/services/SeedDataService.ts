@@ -145,7 +145,9 @@ class SeedDataService {
 
   seedUsers(): void {
     const now = new Date().toISOString();
-    const users: User[] = [
+    const existingUsers = StorageService.getUsers();
+    
+    const seedUsers: User[] = [
       {
         id: 'user_1',
         phone_number: '9876543210',
@@ -197,7 +199,21 @@ class SeedDataService {
       },
     ];
 
-    StorageService.setItem(STORAGE_KEYS.USERS, users);
+    // Merge seed users with existing users (update if exists, add if new)
+    const mergedUsers = [...existingUsers];
+    
+    seedUsers.forEach(seedUser => {
+      const existingIndex = mergedUsers.findIndex(u => u.id === seedUser.id || u.phone_number === seedUser.phone_number);
+      if (existingIndex >= 0) {
+        // Update existing user
+        mergedUsers[existingIndex] = seedUser;
+      } else {
+        // Add new user
+        mergedUsers.push(seedUser);
+      }
+    });
+
+    StorageService.setItem(STORAGE_KEYS.USERS, mergedUsers);
   }
 
   seedShops(): void {
@@ -320,6 +336,8 @@ class SeedDataService {
 
   seedAll(force = false): void {
     if (!force && this.hasSeedData()) {
+      // Even if data exists, ensure admin user is always present
+      this.ensureAdminUser();
       return;
     }
 
@@ -328,6 +346,30 @@ class SeedDataService {
     this.seedShops();
     this.seedShopInventory();
     console.log('Seed data created successfully!');
+  }
+
+  ensureAdminUser(): void {
+    const existingUsers = StorageService.getUsers();
+    const adminUser = existingUsers.find(u => u.phone_number === '9999999999' || u.id === 'user_admin');
+    
+    if (!adminUser) {
+      // Admin user doesn't exist, add it
+      const now = new Date().toISOString();
+      const newAdminUser: User = {
+        id: 'user_admin',
+        phone_number: '9999999999',
+        name: 'Admin User',
+        user_type: 'admin',
+        password_hash: 'admin123',
+        is_premium: true,
+        is_active: true,
+        is_verified: true,
+        created_at: now,
+        updated_at: now,
+      };
+      StorageService.saveUser(newAdminUser);
+      console.log('Admin user added to existing data');
+    }
   }
 
   clearAll(): void {

@@ -201,11 +201,11 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Sort options
   - [x] Product cards with images
 
-- [ ] **TASK-305**: Categories Screen
-  - [ ] Category grid/list view
-  - [ ] Category icons/images
-  - [ ] Product count per category
-  - [ ] Navigation to category products
+- [x] **TASK-305**: Categories Screen
+  - [x] Category grid/list view
+  - [x] Category icons/images
+  - [x] Product count per category
+  - [x] Navigation to category products
 
 ---
 
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 20  
+**Completed**: 21  
 **In Progress**: 0  
-**Pending**: 40
+**Pending**: 39
 
 **Current Phase**: End User Module (Phase 3)
 

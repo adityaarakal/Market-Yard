@@ -279,9 +279,9 @@ export default function EndUserHome() {
               type="button"
               className="button button--ghost"
               style={{ width: 'auto', marginLeft: 'auto' }}
-              onClick={handleViewAllProducts}
+              onClick={() => navigate('/end-user/categories')}
             >
-              View All Products
+              View All Categories
             </button>
           </div>
           <div

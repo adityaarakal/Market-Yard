@@ -77,6 +77,11 @@ export default function EndUserHome() {
             <div>
               <h1 className="page-heading__title" style={{ fontSize: 'clamp(1.75rem, 2vw + 1rem, 2.5rem)', textAlign: 'left' }}>
                 Market Yard Prices
+                {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
+                  <span className="welcome-option__tag" style={{ marginLeft: '0.75rem', background: 'rgba(156, 39, 176, 0.15)', color: '#9c27b0' }}>
+                    Admin
+                  </span>
+                )}
               </h1>
               <div className="form-helper" style={{ textAlign: 'left' }}>
                 Welcome, {user?.name}!{' '}
@@ -92,6 +97,16 @@ export default function EndUserHome() {
               </div>
             </div>
             <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+              {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
+                <button
+                  type="button"
+                  className="button button--outline"
+                  style={{ width: 'auto' }}
+                  onClick={() => navigate('/shop-owner/dashboard')}
+                >
+                  View as Shop Owner
+                </button>
+              )}
               <button
                 type="button"
                 className="button button--outline"

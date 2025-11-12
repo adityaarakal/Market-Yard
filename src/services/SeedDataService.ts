@@ -183,6 +183,18 @@ class SeedDataService {
         created_at: now,
         updated_at: now,
       },
+      {
+        id: 'user_admin',
+        phone_number: '9999999999',
+        name: 'Admin User',
+        user_type: 'admin',
+        password_hash: 'admin123',
+        is_premium: true,
+        is_active: true,
+        is_verified: true,
+        created_at: now,
+        updated_at: now,
+      },
     ];
 
     StorageService.setItem(STORAGE_KEYS.USERS, users);

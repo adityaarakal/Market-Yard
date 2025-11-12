@@ -187,6 +187,11 @@ export default function ShopOwnerDashboard() {
             <div>
               <h1 className="page-heading__title" style={{ fontSize: 'clamp(1.75rem, 2vw + 1rem, 2.5rem)', textAlign: 'left' }}>
                 Shop Owner Dashboard
+                {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
+                  <span className="welcome-option__tag" style={{ marginLeft: '0.75rem', background: 'rgba(156, 39, 176, 0.15)', color: '#9c27b0' }}>
+                    Admin
+                  </span>
+                )}
               </h1>
               {shop ? (
                 <div className="form-helper" style={{ textAlign: 'left' }}>
@@ -194,19 +199,36 @@ export default function ShopOwnerDashboard() {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <div className="form-error" style={{ margin: 0 }}>No shop found for this account.</div>
-                  <button
-                    type="button"
-                    className="button button--primary"
-                    style={{ width: 'auto' }}
-                    onClick={() => navigate('/shop-owner/register')}
-                  >
-                    Register your shop
-                  </button>
+                  <div className="form-helper" style={{ textAlign: 'left', margin: 0 }}>
+                    {(user?.user_type === 'admin' || user?.user_type === 'staff') 
+                      ? 'Admin view: No shop assigned to this account. You can access all shop owner features.'
+                      : 'No shop found for this account.'
+                    }
+                  </div>
+                  {(user?.user_type === 'shop_owner') && (
+                    <button
+                      type="button"
+                      className="button button--primary"
+                      style={{ width: 'auto' }}
+                      onClick={() => navigate('/shop-owner/register')}
+                    >
+                      Register your shop
+                    </button>
+                  )}
                 </div>
               )}
             </div>
             <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+              {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
+                <button
+                  type="button"
+                  className="button button--outline"
+                  style={{ width: 'auto' }}
+                  onClick={() => navigate('/end-user/home')}
+                >
+                  View as Customer
+                </button>
+              )}
               <button type="button" className="button button--outline" style={{ width: 'auto' }} onClick={() => navigate('/profile')}>
                 Profile
               </button>

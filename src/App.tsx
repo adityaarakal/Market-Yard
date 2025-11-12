@@ -11,6 +11,20 @@ import ShopRegistrationPage from './pages/ShopRegistrationPage';
 import ShopProductManagementPage from './pages/ShopProductManagementPage';
 import './App.css';
 
+// Helper function to check if user can access a route
+function canAccessRoute(userType: string | undefined, requiredUserType?: 'shop_owner' | 'end_user'): boolean {
+  if (!requiredUserType) return true; // No restriction
+  if (!userType) return false;
+  
+  // Admin can access everything
+  if (userType === 'admin' || userType === 'staff') {
+    return true;
+  }
+  
+  // Regular users can only access their own routes
+  return userType === requiredUserType;
+}
+
 // Protected Route Component
 function ProtectedRoute({ children, requiredUserType }: { children: React.ReactElement; requiredUserType?: 'shop_owner' | 'end_user' }) {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -23,9 +37,9 @@ function ProtectedRoute({ children, requiredUserType }: { children: React.ReactE
     return <Navigate to="/welcome" replace />;
   }
 
-  if (requiredUserType && user?.user_type !== requiredUserType) {
+  if (requiredUserType && !canAccessRoute(user?.user_type, requiredUserType)) {
     // Redirect to appropriate dashboard based on user type
-    if (user?.user_type === 'shop_owner') {
+    if (user?.user_type === 'shop_owner' || user?.user_type === 'admin' || user?.user_type === 'staff') {
       return <Navigate to="/shop-owner/dashboard" replace />;
     }
     return <Navigate to="/end-user/home" replace />;
@@ -43,7 +57,8 @@ function PublicRoute({ children }: { children: React.ReactElement }) {
   }
 
   if (isAuthenticated) {
-    if (user?.user_type === 'shop_owner') {
+    // Admin and staff default to shop owner dashboard, but can access both
+    if (user?.user_type === 'shop_owner' || user?.user_type === 'admin' || user?.user_type === 'staff') {
       return <Navigate to="/shop-owner/dashboard" replace />;
     }
     return <Navigate to="/end-user/home" replace />;

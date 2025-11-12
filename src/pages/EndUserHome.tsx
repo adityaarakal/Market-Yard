@@ -330,6 +330,32 @@ export default function EndUserHome() {
                   </button>
                 </div>
               </div>
+              <div
+                className="surface-card surface-card--compact"
+                style={{
+                  padding: '1.25rem',
+                  backgroundColor: colors.surface,
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <div className="action-row" style={{ alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>💡 Advanced Insights</h3>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: colors.textSecondary }}>
+                      Discover trends, popular shops, best deals, and personalized recommendations.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    style={{ width: 'auto' }}
+                    onClick={() => navigate('/end-user/insights')}
+                  >
+                    View Insights
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </header>

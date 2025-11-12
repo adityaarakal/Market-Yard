@@ -244,13 +244,13 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Price statistics (average, min, max)
   - [x] Shop-specific vs global view
 
-- [ ] **TASK-405**: Advanced Insights Dashboard
-  - [ ] Most popular shops
-  - [ ] Trending products
-  - [ ] Best deals section
-  - [ ] User purchasing patterns (mock data)
-  - [ ] Charts and graphs
-  - [ ] Recommendations
+- [x] **TASK-405**: Advanced Insights Dashboard
+  - [x] Most popular shops
+  - [x] Trending products
+  - [x] Best deals section
+  - [x] User purchasing patterns (mock data)
+  - [x] Charts and graphs
+  - [x] Recommendations
 
 - [ ] **TASK-406**: Subscription Management Screen
   - [ ] View subscription status
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 25  
+**Completed**: 26  
 **In Progress**: 0  
-**Pending**: 35
+**Pending**: 34
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

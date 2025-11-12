@@ -20,6 +20,7 @@ import PremiumUpgradePage from './pages/PremiumUpgradePage';
 import ShopSpecificPriceViewPage from './pages/ShopSpecificPriceViewPage';
 import AdvancedPriceComparisonPage from './pages/AdvancedPriceComparisonPage';
 import PriceHistoryTrendsPage from './pages/PriceHistoryTrendsPage';
+import AdvancedInsightsDashboardPage from './pages/AdvancedInsightsDashboardPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -214,6 +215,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <PriceHistoryTrendsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/end-user/insights"
+        element={
+          <ProtectedRoute requiredUserType="end_user">
+            <AdvancedInsightsDashboardPage />
           </ProtectedRoute>
         }
       />

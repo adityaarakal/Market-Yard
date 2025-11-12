@@ -23,18 +23,18 @@ function PriceTable({ data, onProductClick }: { data: GlobalPriceEntry[]; onProd
   return (
     <div className="table-container">
       <table className="data-table">
-        <thead>
-          <tr>
+      <thead>
+        <tr>
             <th>Product</th>
             <th>Category</th>
             <th>Best Price</th>
             <th>Best Shop</th>
             <th>Average Price</th>
             <th>Price Range</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(entry => (
+        </tr>
+      </thead>
+      <tbody>
+        {data.map(entry => (
             <tr
               key={entry.product.id}
               style={{ cursor: 'pointer' }}
@@ -47,21 +47,21 @@ function PriceTable({ data, onProductClick }: { data: GlobalPriceEntry[]; onProd
               }}
             >
               <td>
-                <div style={{ fontWeight: 600 }}>{entry.product.name}</div>
+              <div style={{ fontWeight: 600 }}>{entry.product.name}</div>
                 <div className="form-helper" style={{ marginTop: '0.25rem' }}>{entry.product.unit}</div>
-              </td>
+            </td>
               <td>{entry.product.category.replace('_', ' ')}</td>
               <td>{formatCurrency(entry.minPrice)}</td>
               <td>{entry.bestShop ? entry.bestShop.shop_name : 'N/A'}</td>
               <td>{formatCurrency(entry.avgPrice)}</td>
               <td>
-                {formatCurrency(entry.minPrice)} - {formatCurrency(entry.maxPrice)}
+              {formatCurrency(entry.minPrice)} - {formatCurrency(entry.maxPrice)}
                 <div className="form-helper" style={{ marginTop: '0.25rem' }}>{entry.shopCount} shops</div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
     </div>
   );
 }
@@ -355,8 +355,8 @@ export default function EndUserHome() {
                     View Insights
                   </button>
                 </div>
-              </div>
-            </div>
+          </div>
+        </div>
           )}
         </header>
 
@@ -371,8 +371,8 @@ export default function EndUserHome() {
               onClick={() => navigate('/end-user/categories')}
             >
               View All Categories
-            </button>
-          </div>
+        </button>
+      </div>
           <div
             style={{
               display: 'grid',
@@ -427,21 +427,21 @@ export default function EndUserHome() {
               View All
             </button>
           </div>
-          {bestDeals.length === 0 ? (
-            <p>No deals available yet.</p>
-          ) : (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        {bestDeals.length === 0 ? (
+          <p>No deals available yet.</p>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
                 gap: '1rem',
-              }}
-            >
-              {bestDeals.map(deal => (
-                <div
-                  key={deal.product.id}
+            }}
+          >
+            {bestDeals.map(deal => (
+              <div
+                key={deal.product.id}
                   className="surface-card surface-card--compact"
-                  style={{
+                style={{
                     boxShadow: 'var(--shadow-soft)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s, box-shadow 0.2s',
@@ -455,18 +455,18 @@ export default function EndUserHome() {
                     e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
                   }}
                   onClick={() => navigate(`/end-user/product/${deal.product.id}`)}
-                >
+              >
                   <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{deal.product.name}</div>
                   <div className="form-helper" style={{ marginBottom: '0.75rem' }}>
-                    {deal.product.category.replace('_', ' ')}
-                  </div>
+                  {deal.product.category.replace('_', ' ')}
+                </div>
                   <div style={{ fontSize: '1.5rem', fontWeight: 700, color: colors.primary }}>{formatCurrency(deal.minPrice)}</div>
                   <div className="form-helper">Best from {deal.bestShop ? deal.bestShop.shop_name : 'N/A'}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
         {/* Global Price Comparison - Quick View */}
         <section className="surface-card">
@@ -504,12 +504,12 @@ export default function EndUserHome() {
                     onClick={() => navigate('/end-user/global-prices')}
                   >
                     View All {filteredPrices.length} Products
-                  </button>
-                </div>
+          </button>
+        </div>
               )}
             </>
           )}
-        </section>
+      </section>
       </div>
     </div>
   );

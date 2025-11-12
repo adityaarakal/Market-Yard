@@ -266,14 +266,14 @@ This document tracks all frontend development tasks for the Market Yard Progress
 
 ### Phase 5: Reusable Components
 
-- [ ] **TASK-501**: Form Components
-  - [ ] TextInput with validation
-  - [ ] Phone number input with formatting
-  - [ ] Password input with show/hide
-  - [ ] OTP input (6 digits)
-  - [ ] Dropdown/Picker components
-  - [ ] Checkbox and Radio buttons
-  - [ ] Date picker
+- [x] **TASK-501**: Form Components
+  - [x] TextInput with validation
+  - [x] Phone number input with formatting
+  - [x] Password input with show/hide
+  - [x] OTP input (6 digits)
+  - [x] Dropdown/Picker components
+  - [x] Checkbox and Radio buttons
+  - [x] Date picker
 
 - [ ] **TASK-502**: Display Components
   - [ ] Product card
@@ -574,9 +574,11 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 27  
+**Completed**: 28  
 **In Progress**: 0  
-**Pending**: 33
+**Pending**: 32
+
+**Note**: TASK-501 (Form Components) has been completed. All reusable form components are available in `src/components/forms/` directory.
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

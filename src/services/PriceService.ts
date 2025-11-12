@@ -101,8 +101,8 @@ export function getGlobalPriceSummary(filters?: { category?: string; search?: st
   const shopProducts = StorageService.getShopProducts();
 
   let entries = products.map(product => {
-    const productShopProducts = shopProducts.filter(sp => sp.product_id === product.id);
-    return calculateGlobalPriceEntry(product, productShopProducts);
+      const productShopProducts = shopProducts.filter(sp => sp.product_id === product.id);
+      return calculateGlobalPriceEntry(product, productShopProducts);
   });
 
   if (filters?.category) {

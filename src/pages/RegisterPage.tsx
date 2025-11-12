@@ -148,11 +148,11 @@ export default function RegisterPage() {
     if (result.success) {
       // Small delay to ensure state is updated before navigation
       setTimeout(() => {
-        if (formData.userType === 'shop_owner') {
+      if (formData.userType === 'shop_owner') {
           navigate('/shop-owner/dashboard', { replace: true });
-        } else {
+      } else {
           navigate('/end-user/home', { replace: true });
-        }
+      }
       }, 100);
     } else {
       setError(result.error || 'Registration failed');
@@ -199,15 +199,15 @@ export default function RegisterPage() {
             </div>
             <div className="form-field">
               <label htmlFor="register-phone">Phone number</label>
-              <input
+        <input
                 id="register-phone"
                 className="form-input"
-                type="tel"
+          type="tel"
                 placeholder="Enter 10-digit phone"
-                value={formData.phone}
+          value={formData.phone}
                 onChange={event => setFormData(prev => ({ ...prev, phone: event.target.value }))}
-                required
-              />
+          required
+        />
             </div>
             <button type="submit" className="button button--primary">
               Send OTP
@@ -252,35 +252,35 @@ export default function RegisterPage() {
           <>
             <div className="form-field">
               <label htmlFor="register-name">Full name</label>
-              <input
+        <input
                 id="register-name"
                 className="form-input"
-                type="text"
+          type="text"
                 placeholder="Your name"
-                value={formData.name}
+          value={formData.name}
                 onChange={event => setFormData(prev => ({ ...prev, name: event.target.value }))}
-                required
-              />
+          required
+        />
             </div>
             <div className="form-field">
               <label htmlFor="register-email">Email (optional)</label>
-              <input
+        <input
                 id="register-email"
                 className="form-input"
-                type="email"
+          type="email"
                 placeholder="you@example.com"
-                value={formData.email}
+          value={formData.email}
                 onChange={event => setFormData(prev => ({ ...prev, email: event.target.value }))}
-              />
+        />
             </div>
             <div className="form-field">
               <label htmlFor="register-password">Password</label>
-              <input
+        <input
                 id="register-password"
                 className="form-input"
-                type="password"
+          type="password"
                 placeholder="Create a password"
-                value={formData.password}
+          value={formData.password}
                 onChange={event => setFormData(prev => ({ ...prev, password: event.target.value }))}
               />
               {passwordStrength.label && (
@@ -315,7 +315,7 @@ export default function RegisterPage() {
               </button>
               <button type="submit" className="button button--primary" disabled={loading}>
                 {loading ? 'Creating account...' : 'Create account'}
-              </button>
+        </button>
             </div>
           </>
         )}

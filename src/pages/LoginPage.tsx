@@ -59,11 +59,11 @@ export default function LoginPage() {
         return;
       }
 
-      setLoading(true);
+    setLoading(true);
       const result = await login(normalizedPhone, password, { rememberMe });
-      setLoading(false);
+    setLoading(false);
 
-      if (result.success) {
+    if (result.success) {
         // Navigate immediately - session is already saved in AuthContext
         const session = StorageService.getSession();
         const currentUser = session?.user;
@@ -146,29 +146,29 @@ export default function LoginPage() {
 
         <div className="form-field">
           <label htmlFor="phone">Phone number</label>
-          <input
+        <input
             id="phone"
             className="form-input"
-            type="tel"
+          type="tel"
             placeholder="Enter 10-digit phone"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-            required
-          />
+          value={phone}
+          onChange={e => setPhone(e.target.value)}
+          required
+        />
         </div>
 
         {loginMode === 'password' ? (
           <div className="form-field">
             <label htmlFor="password">Password</label>
-            <input
+        <input
               id="password"
               className="form-input"
-              type="password"
+          type="password"
               placeholder="Enter password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
           </div>
         ) : (
           otpSent && (

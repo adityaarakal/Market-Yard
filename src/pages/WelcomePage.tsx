@@ -102,24 +102,24 @@ export default function WelcomePage() {
 
         <section className="surface-card surface-card--compact dev-tools">
           <div className="dev-tools__title">Need demo data?</div>
-          {!hasData && (
+      {!hasData && (
             <div style={{ color: colors.warning }}>
               No data found. Use the button below to load sample shops, products, and price updates.
-            </div>
-          )}
+        </div>
+      )}
           {message && <div className="form-info">{message}</div>}
           <div className="dev-tools__actions">
             <button type="button" className="button button--primary" onClick={handleSeed} style={{ width: 'auto' }}>
-              Seed Sample Data
-            </button>
-            <button
-              type="button"
+          Seed Sample Data
+        </button>
+        <button
+          type="button"
               className="button button--outline"
-              onClick={handleReset}
+          onClick={handleReset}
               style={{ width: 'auto', borderColor: colors.error, color: colors.error }}
-            >
-              Clear Data
-            </button>
+        >
+          Clear Data
+        </button>
             <Link className="button button--ghost" to="/login" style={{ width: 'auto' }}>
               Quick Login
             </Link>

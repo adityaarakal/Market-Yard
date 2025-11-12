@@ -3,7 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { colors } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
+import { getProductsByCategory, getAllProducts } from '../services/ProductService';
 import { formatCurrency } from '../utils/format';
+
+interface CategoryInfo {
+  id: string;
+  name: string;
+  displayName: string;
+  icon: string;
+  color: string;
+  productCount: number;
+}
 
 function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
   if (data.length === 0) {
@@ -50,9 +60,12 @@ export default function EndUserHome() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [globalPrices, setGlobalPrices] = useState<GlobalPriceEntry[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPrices, setFilteredPrices] = useState<GlobalPriceEntry[]>([]);
 
   const refreshData = () => {
-    setGlobalPrices(getGlobalPriceSummary());
+    const prices = getGlobalPriceSummary();
+    setGlobalPrices(prices);
   };
 
   useEffect(() => {
@@ -62,6 +75,67 @@ export default function EndUserHome() {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredPrices(globalPrices);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = globalPrices.filter(entry =>
+        [entry.product.name, entry.product.category, entry.product.unit]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+          .includes(query)
+      );
+      setFilteredPrices(filtered);
+    }
+  }, [searchQuery, globalPrices]);
+
+  const categories: CategoryInfo[] = useMemo(() => {
+    const allProducts = getAllProducts();
+    const categoryData: Record<string, { name: string; displayName: string; icon: string; color: string }> = {
+      fruits: {
+        name: 'fruits',
+        displayName: 'Fruits',
+        icon: '🍎',
+        color: '#FF6B6B',
+      },
+      vegetables: {
+        name: 'vegetables',
+        displayName: 'Vegetables',
+        icon: '🥕',
+        color: '#4ECDC4',
+      },
+      farming_materials: {
+        name: 'farming_materials',
+        displayName: 'Farming Materials',
+        icon: '🌾',
+        color: '#FFE66D',
+      },
+      farming_products: {
+        name: 'farming_products',
+        displayName: 'Farming Products',
+        icon: '🌱',
+        color: '#95E1D3',
+      },
+    };
+
+    return Object.values(categoryData).map(cat => {
+      const products = getProductsByCategory(cat.name as any);
+      const categoryPrices = globalPrices.filter(p => p.product.category === cat.name);
+      const availableProducts = categoryPrices.filter(p => p.minPrice != null);
+
+      return {
+        id: cat.name,
+        name: cat.name,
+        displayName: cat.displayName,
+        icon: cat.icon,
+        color: cat.color,
+        productCount: availableProducts.length,
+      };
+    });
+  }, [globalPrices]);
+
   const bestDeals = useMemo(() => {
     return globalPrices
       .filter(entry => entry.minPrice != null)
@@ -69,32 +143,47 @@ export default function EndUserHome() {
       .slice(0, 3);
   }, [globalPrices]);
 
+  const handleCategoryClick = (categoryId: string) => {
+    navigate(`/products?category=${categoryId}`);
+  };
+
+  const handleViewAllProducts = () => {
+    navigate('/products');
+  };
+
+  const handleUpgradeToPremium = () => {
+    // TODO: Navigate to premium upgrade page when implemented
+    navigate('/profile');
+  };
+
+  const isFreeUser = !user?.is_premium;
+
   return (
     <div className="page-shell">
       <div className="page-shell__content" style={{ gap: '1.75rem' }}>
         <header className="surface-card surface-card--compact" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div className="action-row" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-            <div>
+          <div className="action-row" style={{ alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1 }}>
               <h1 className="page-heading__title" style={{ fontSize: 'clamp(1.75rem, 2vw + 1rem, 2.5rem)', textAlign: 'left' }}>
-                Market Yard Prices
+                {user?.name ? `Welcome, ${user.name}!` : 'Welcome to Market Yard'}
                 {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
                   <span className="welcome-option__tag" style={{ marginLeft: '0.75rem', background: 'rgba(156, 39, 176, 0.15)', color: '#9c27b0' }}>
                     Admin
                   </span>
                 )}
               </h1>
-              <div className="form-helper" style={{ textAlign: 'left' }}>
-                Welcome, {user?.name}!{' '}
+              <p className="form-helper" style={{ textAlign: 'left', marginTop: '0.5rem' }}>
+                Discover the best prices across all Market Yard shops
                 {user?.is_premium ? (
-                  <span className="welcome-option__tag" style={{ background: 'rgba(76, 175, 80, 0.18)', color: colors.primary }}>
+                  <span className="welcome-option__tag" style={{ marginLeft: '0.5rem', background: 'rgba(76, 175, 80, 0.18)', color: colors.primary }}>
                     Premium
                   </span>
                 ) : (
-                  <span className="welcome-option__tag" style={{ background: 'rgba(255, 152, 0, 0.15)', color: colors.secondary }}>
+                  <span className="welcome-option__tag" style={{ marginLeft: '0.5rem', background: 'rgba(255, 152, 0, 0.15)', color: colors.secondary }}>
                     Free
                   </span>
                 )}
-              </div>
+              </p>
             </div>
             <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
               {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
@@ -120,10 +209,125 @@ export default function EndUserHome() {
               </button>
             </div>
           </div>
+
+          {/* Search Bar */}
+          <div className="form-field" style={{ marginTop: '0.5rem' }}>
+            <label htmlFor="product-search">Search Products</label>
+            <input
+              id="product-search"
+              className="form-input"
+              type="text"
+              placeholder="Search products by name, category, or unit..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Upgrade to Premium CTA (for free users) */}
+          {isFreeUser && (
+            <div
+              className="surface-card surface-card--compact"
+              style={{
+                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
+                color: '#fff',
+                padding: '1.25rem',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-soft)',
+              }}
+            >
+              <div className="action-row" style={{ alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ margin: 0, marginBottom: '0.5rem', color: '#fff' }}>🚀 Upgrade to Premium</h3>
+                  <p style={{ margin: 0, opacity: 0.95, fontSize: '0.95rem' }}>
+                    Unlock shop-specific prices, detailed shop information, and advanced comparison features
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="button"
+                  style={{
+                    width: 'auto',
+                    background: '#fff',
+                    color: colors.primary,
+                    border: 'none',
+                    fontWeight: 600,
+                  }}
+                  onClick={handleUpgradeToPremium}
+                >
+                  Upgrade Now
+                </button>
+              </div>
+            </div>
+          )}
         </header>
 
+        {/* Category Cards */}
         <section className="surface-card surface-card--compact">
-          <h2 style={{ marginBottom: '1rem' }}>Top Deals</h2>
+          <div className="action-row" style={{ marginBottom: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <h2 style={{ margin: 0 }}>Browse by Category</h2>
+            <button
+              type="button"
+              className="button button--ghost"
+              style={{ width: 'auto', marginLeft: 'auto' }}
+              onClick={handleViewAllProducts}
+            >
+              View All Products
+            </button>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '1rem',
+            }}
+          >
+            {categories.map(category => (
+              <button
+                key={category.id}
+                type="button"
+                className="surface-card surface-card--compact"
+                onClick={() => handleCategoryClick(category.id)}
+                style={{
+                  boxShadow: 'var(--shadow-soft)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  padding: '1.25rem',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  background: '#fff',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
+                }}
+              >
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{category.icon}</div>
+                <div style={{ fontWeight: 600, marginBottom: '0.25rem', fontSize: '1.1rem' }}>{category.displayName}</div>
+                <div className="form-helper" style={{ fontSize: '0.9rem' }}>
+                  {category.productCount} {category.productCount === 1 ? 'product' : 'products'} available
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Quick Access: Top Deals */}
+        <section className="surface-card surface-card--compact">
+          <div className="action-row" style={{ marginBottom: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <h2 style={{ margin: 0 }}>Top Deals</h2>
+            <button
+              type="button"
+              className="button button--ghost"
+              style={{ width: 'auto', marginLeft: 'auto' }}
+              onClick={handleViewAllProducts}
+            >
+              View All
+            </button>
+          </div>
           {bestDeals.length === 0 ? (
             <p>No deals available yet.</p>
           ) : (
@@ -148,17 +352,36 @@ export default function EndUserHome() {
           )}
         </section>
 
+        {/* Global Price Comparison Table */}
         <section className="surface-card">
-          <div className="action-row" style={{ marginBottom: '1rem' }}>
-            <h2>Global Price Comparison</h2>
-            <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={refreshData}>
+          <div className="action-row" style={{ marginBottom: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <h2 style={{ margin: 0 }}>Global Price Comparison</h2>
+            {searchQuery && (
+              <span className="form-helper" style={{ marginLeft: 'auto' }}>
+                {filteredPrices.length} {filteredPrices.length === 1 ? 'result' : 'results'} for "{searchQuery}"
+              </span>
+            )}
+            <button type="button" className="button button--primary" style={{ width: 'auto', marginLeft: searchQuery ? '0.5rem' : 'auto' }} onClick={refreshData}>
               Refresh
             </button>
           </div>
-          <PriceTable data={globalPrices} />
+          {searchQuery && filteredPrices.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <p>No products found matching "{searchQuery}"</p>
+              <button
+                type="button"
+                className="button button--ghost"
+                style={{ marginTop: '1rem' }}
+                onClick={() => setSearchQuery('')}
+              >
+                Clear Search
+              </button>
+            </div>
+          ) : (
+            <PriceTable data={filteredPrices} />
+          )}
         </section>
       </div>
     </div>
   );
 }
-

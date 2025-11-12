@@ -170,12 +170,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
 
 ### Phase 3: Basic End User Features
 
-- [ ] **TASK-301**: Home Screen (Free User)
-  - [ ] Welcome message
-  - [ ] Quick access to global prices
-  - [ ] Search bar
-  - [ ] Category cards
-  - [ ] "Upgrade to Premium" CTA
+- [x] **TASK-301**: Home Screen (Free User)
+  - [x] Welcome message
+  - [x] Quick access to global prices
+  - [x] Search bar
+  - [x] Category cards
+  - [x] "Upgrade to Premium" CTA
 
 - [ ] **TASK-302**: Global Price Page
   - [ ] List all products with price ranges
@@ -574,11 +574,11 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 16  
+**Completed**: 17  
 **In Progress**: 0  
-**Pending**: 44
+**Pending**: 43
 
-**Current Phase**: Shop Owner Module (Phase 2)
+**Current Phase**: End User Module (Phase 3)
 
 ---
 

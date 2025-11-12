@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getAllProducts, getProductsByCategory, searchProducts } from '../services/ProductService';
 import { Product } from '../types';
@@ -10,10 +10,19 @@ const categories: Product['category'][] = ['fruits', 'vegetables', 'farming_mate
 export default function ProductMasterListPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Product['category'] | 'all'>('all');
   const [loading, setLoading] = useState(false);
+
+  // Initialize category from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && categories.includes(categoryParam as Product['category'])) {
+      setSelectedCategory(categoryParam as Product['category']);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     loadProducts();
@@ -110,19 +119,25 @@ export default function ProductMasterListPage() {
           </div>
 
           <div className="segmented-control" style={{ marginTop: '0.5rem' }}>
-            <button
-              type="button"
-              className={`segmented-control__button${selectedCategory === 'all' ? ' segmented-control__button--active' : ''}`}
-              onClick={() => setSelectedCategory('all')}
-            >
-              All ({categoryCounts.all})
-            </button>
+                <button
+                  type="button"
+                  className={`segmented-control__button${selectedCategory === 'all' ? ' segmented-control__button--active' : ''}`}
+                  onClick={() => {
+                    setSelectedCategory('all');
+                    setSearchParams({});
+                  }}
+                >
+                  All ({categoryCounts.all})
+                </button>
             {categories.map(category => (
               <button
                 key={category}
                 type="button"
                 className={`segmented-control__button${selectedCategory === category ? ' segmented-control__button--active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => {
+                  setSelectedCategory(category);
+                  setSearchParams({ category });
+                }}
               >
                 {category.replace('_', ' ')} ({categoryCounts[category]})
               </button>

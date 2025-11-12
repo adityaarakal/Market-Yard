@@ -96,12 +96,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(newSession);
       setUser(foundUser);
       
-      // Save remembered login if needed
+      // Save remembered login if needed (only for shop_owner and end_user)
       if (options?.rememberMe) {
-        StorageService.saveRememberedLogin({ 
-          phone: normalizedPhone, 
-          userType: foundUser.user_type 
-        });
+        if (foundUser.user_type === 'shop_owner' || foundUser.user_type === 'end_user') {
+          StorageService.saveRememberedLogin({ 
+            phone: normalizedPhone, 
+            userType: foundUser.user_type 
+          });
+        }
       } else {
         StorageService.clearRememberedLogin();
       }
@@ -152,12 +154,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(newSession);
       setUser(foundUser);
       
-      // Save remembered login if needed
+      // Save remembered login if needed (only for shop_owner and end_user)
       if (options?.rememberMe) {
-        StorageService.saveRememberedLogin({ 
-          phone: normalizedPhone, 
-          userType: foundUser.user_type 
-        });
+        if (foundUser.user_type === 'shop_owner' || foundUser.user_type === 'end_user') {
+          StorageService.saveRememberedLogin({ 
+            phone: normalizedPhone, 
+            userType: foundUser.user_type 
+          });
+        }
       } else {
         StorageService.clearRememberedLogin();
       }

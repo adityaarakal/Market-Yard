@@ -17,6 +17,7 @@ import GlobalPricePage from './pages/GlobalPricePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CategoriesPage from './pages/CategoriesPage';
 import PremiumUpgradePage from './pages/PremiumUpgradePage';
+import ShopSpecificPriceViewPage from './pages/ShopSpecificPriceViewPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -187,6 +188,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <PremiumUpgradePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/end-user/product/:productId/shops"
+        element={
+          <ProtectedRoute requiredUserType="end_user">
+            <ShopSpecificPriceViewPage />
           </ProtectedRoute>
         }
       />

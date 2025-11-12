@@ -220,14 +220,14 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Terms and conditions
   - [x] Upgrade button (simulate payment)
 
-- [ ] **TASK-402**: Shop-Specific Price View
-  - [ ] List all shops selling a product
-  - [ ] Shop details (name, address, phone)
-  - [ ] Price comparison table
-  - [ ] Distance calculation (if location enabled)
-  - [ ] Shop rating display
-  - [ ] Contact shop button
-  - [ ] Filter by location
+- [x] **TASK-402**: Shop-Specific Price View
+  - [x] List all shops selling a product
+  - [x] Shop details (name, address, phone)
+  - [x] Price comparison table
+  - [x] Distance calculation (if location enabled)
+  - [x] Shop rating display
+  - [x] Contact shop button
+  - [x] Filter by location
 
 - [ ] **TASK-403**: Advanced Price Comparison
   - [ ] Select multiple products
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 22  
+**Completed**: 23  
 **In Progress**: 0  
-**Pending**: 38
+**Pending**: 37
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

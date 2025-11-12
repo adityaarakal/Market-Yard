@@ -276,6 +276,16 @@ export default function ProductDetailPage() {
               <div style={{ fontWeight: 700, fontSize: '1.2rem', color: colors.primary, marginBottom: '0.75rem' }}>
                 {priceEntry.bestShop.shop_name}
               </div>
+              {!isFreeUser && priceEntry.shopCount > 1 && (
+                <button
+                  type="button"
+                  className="button button--primary"
+                  style={{ width: '100%', marginTop: '1rem' }}
+                  onClick={() => navigate(`/end-user/product/${productId}/shops`)}
+                >
+                  View All Shops ({priceEntry.shopCount})
+                </button>
+              )}
               {isFreeUser && (
                 <div
                   className="surface-card surface-card--compact"
@@ -300,6 +310,35 @@ export default function ProductDetailPage() {
                   </button>
                 </div>
               )}
+            </div>
+          </section>
+        )}
+
+        {/* Premium Users: View All Shops Button */}
+        {!isFreeUser && priceEntry && priceEntry.shopCount > 0 && (
+          <section className="surface-card">
+            <div
+              className="surface-card surface-card--compact"
+              style={{
+                padding: '1.5rem',
+                backgroundColor: colors.surface,
+                borderRadius: 'var(--radius-md)',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ margin: 0, marginBottom: '0.75rem' }}>Compare Prices Across All Shops</h3>
+              <p style={{ margin: 0, marginBottom: '1rem', fontSize: '0.95rem', color: colors.textSecondary }}>
+                View detailed shop information, prices, ratings, and contact details for all {priceEntry.shopCount}{' '}
+                {priceEntry.shopCount === 1 ? 'shop' : 'shops'} selling this product.
+              </p>
+              <button
+                type="button"
+                className="button button--primary"
+                style={{ width: '100%', maxWidth: '400px' }}
+                onClick={() => navigate(`/end-user/product/${productId}/shops`)}
+              >
+                View All Shops & Compare Prices
+              </button>
             </div>
           </section>
         )}

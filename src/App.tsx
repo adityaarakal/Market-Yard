@@ -9,6 +9,7 @@ import EndUserHome from './pages/EndUserHome';
 import ProfilePage from './pages/ProfilePage';
 import ShopRegistrationPage from './pages/ShopRegistrationPage';
 import ShopProductManagementPage from './pages/ShopProductManagementPage';
+import ProductMasterListPage from './pages/ProductMasterListPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -131,6 +132,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <ProductMasterListPage />
           </ProtectedRoute>
         }
       />

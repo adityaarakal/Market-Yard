@@ -133,12 +133,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Toggle product availability
   - [x] Product details view
 
-- [ ] **TASK-204**: Product Master List (Local Storage)
-  - [ ] Create seed data for common products
-  - [ ] Categories: Fruits, Vegetables, Farming Materials, Farming Products
-  - [ ] Product details (name, category, unit, image)
-  - [ ] Store in AsyncStorage as master list
-  - [ ] Search and filter functionality
+- [x] **TASK-204**: Product Master List (Local Storage)
+  - [x] Create seed data for common products
+  - [x] Categories: Fruits, Vegetables, Farming Materials, Farming Products
+  - [x] Product details (name, category, unit, image)
+  - [x] Store in AsyncStorage as master list
+  - [x] Search and filter functionality
 
 - [ ] **TASK-205**: Daily Price Update Screen
   - [ ] List all products in shop

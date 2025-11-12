@@ -140,15 +140,15 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Store in AsyncStorage as master list
   - [x] Search and filter functionality
 
-- [ ] **TASK-205**: Daily Price Update Screen
-  - [ ] List all products in shop
-  - [ ] Price input for each product
-  - [ ] Bulk update option
-  - [ ] Quick price entry (numeric keyboard)
-  - [ ] Save price updates to AsyncStorage
-  - [ ] Record timestamp and update type
-  - [ ] Calculate earnings (₹1 per update)
-  - [ ] Visual confirmation of updates
+- [x] **TASK-205**: Daily Price Update Screen
+  - [x] List all products in shop
+  - [x] Price input for each product
+  - [x] Bulk update option
+  - [x] Quick price entry (numeric keyboard)
+  - [x] Save price updates to AsyncStorage
+  - [x] Record timestamp and update type
+  - [x] Calculate earnings (₹1 per update)
+  - [x] Visual confirmation of updates
 
 - [ ] **TASK-206**: Price History Screen
   - [ ] View price history for each product

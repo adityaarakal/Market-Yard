@@ -251,15 +251,20 @@ export default function ShopOwnerDashboard() {
           </div>
 
           <div className="action-row" style={{ gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/register')}>
-              Edit shop details
+            <button type="button" className="button button--primary" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/price-update')}>
+              Update Prices
             </button>
             <button type="button" className="button button--outline" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/products')}>
               Manage catalog
             </button>
-            <button type="button" className="button button--ghost" style={{ width: 'auto' }} onClick={() => navigate('/end-user/home')}>
-              View as customer
+            <button type="button" className="button button--outline" style={{ width: 'auto' }} onClick={() => navigate('/shop-owner/register')}>
+              Edit shop details
             </button>
+            {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
+              <button type="button" className="button button--ghost" style={{ width: 'auto' }} onClick={() => navigate('/end-user/home')}>
+                View as customer
+              </button>
+            )}
           </div>
         </header>
 

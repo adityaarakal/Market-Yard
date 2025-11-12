@@ -236,13 +236,13 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Visual highlight of best prices
   - [x] Export comparison (optional)
 
-- [ ] **TASK-404**: Price History & Trends Screen
-  - [ ] Price history for selected product
-  - [ ] Price history for specific shop
-  - [ ] Date range selector
-  - [ ] Line chart visualization (use a chart library)
-  - [ ] Price statistics (average, min, max)
-  - [ ] Shop-specific vs global view
+- [x] **TASK-404**: Price History & Trends Screen
+  - [x] Price history for selected product
+  - [x] Price history for specific shop
+  - [x] Date range selector
+  - [x] Line chart visualization (use a chart library)
+  - [x] Price statistics (average, min, max)
+  - [x] Shop-specific vs global view
 
 - [ ] **TASK-405**: Advanced Insights Dashboard
   - [ ] Most popular shops
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 24  
+**Completed**: 25  
 **In Progress**: 0  
-**Pending**: 36
+**Pending**: 35
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

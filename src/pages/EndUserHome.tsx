@@ -272,29 +272,63 @@ export default function EndUserHome() {
           {/* Premium Features Quick Access */}
           {!isFreeUser && (
             <div
-              className="surface-card surface-card--compact"
               style={{
-                padding: '1.25rem',
-                backgroundColor: colors.surface,
-                borderRadius: 'var(--radius-md)',
-                boxShadow: 'var(--shadow-soft)',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '1rem',
               }}
             >
-              <div className="action-row" style={{ alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1 }}>
-                  <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>🔍 Advanced Price Comparison</h3>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: colors.textSecondary }}>
-                    Compare prices across multiple products and shops side-by-side.
-                  </p>
+              <div
+                className="surface-card surface-card--compact"
+                style={{
+                  padding: '1.25rem',
+                  backgroundColor: colors.surface,
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <div className="action-row" style={{ alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>🔍 Advanced Price Comparison</h3>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: colors.textSecondary }}>
+                      Compare prices across multiple products and shops side-by-side.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    style={{ width: 'auto' }}
+                    onClick={() => navigate('/end-user/price-comparison')}
+                  >
+                    Compare Prices
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="button button--primary"
-                  style={{ width: 'auto' }}
-                  onClick={() => navigate('/end-user/price-comparison')}
-                >
-                  Compare Prices
-                </button>
+              </div>
+              <div
+                className="surface-card surface-card--compact"
+                style={{
+                  padding: '1.25rem',
+                  backgroundColor: colors.surface,
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <div className="action-row" style={{ alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>📊 Price History & Trends</h3>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: colors.textSecondary }}>
+                      Analyze price trends over time for products and shops.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    style={{ width: 'auto' }}
+                    onClick={() => navigate('/end-user/price-history')}
+                  >
+                    View Trends
+                  </button>
+                </div>
               </div>
             </div>
           )}

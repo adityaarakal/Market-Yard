@@ -213,12 +213,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
 
 ### Phase 4: Premium Features
 
-- [ ] **TASK-401**: Premium Upgrade Screen
-  - [ ] Feature comparison (Free vs Premium)
-  - [ ] Pricing information (₹100/month)
-  - [ ] Payment integration UI (mock for now)
-  - [ ] Terms and conditions
-  - [ ] Upgrade button (simulate payment)
+- [x] **TASK-401**: Premium Upgrade Screen
+  - [x] Feature comparison (Free vs Premium)
+  - [x] Pricing information (₹100/month)
+  - [x] Payment integration UI (mock for now)
+  - [x] Terms and conditions
+  - [x] Upgrade button (simulate payment)
 
 - [ ] **TASK-402**: Shop-Specific Price View
   - [ ] List all shops selling a product
@@ -574,11 +574,11 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 21  
+**Completed**: 22  
 **In Progress**: 0  
-**Pending**: 39
+**Pending**: 38
 
-**Current Phase**: End User Module (Phase 3)
+**Current Phase**: End User Module (Premium Version) - Phase 4
 
 ---
 

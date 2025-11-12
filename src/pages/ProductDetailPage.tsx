@@ -60,8 +60,7 @@ export default function ProductDetailPage() {
   };
 
   const handleUpgradeToPremium = () => {
-    // TODO: Navigate to premium upgrade page when implemented
-    navigate('/profile');
+    navigate('/premium/upgrade');
   };
 
   const handleRelatedProductClick = (relatedProductId: string) => {

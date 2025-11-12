@@ -162,8 +162,7 @@ export default function EndUserHome() {
   };
 
   const handleUpgradeToPremium = () => {
-    // TODO: Navigate to premium upgrade page when implemented
-    navigate('/profile');
+    navigate('/premium/upgrade');
   };
 
   const isFreeUser = !user?.is_premium;

@@ -177,14 +177,14 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Category cards
   - [x] "Upgrade to Premium" CTA
 
-- [ ] **TASK-302**: Global Price Page
-  - [ ] List all products with price ranges
-  - [ ] Display: Product name, min price, max price, best shop
-  - [ ] Product images
-  - [ ] Category filter
-  - [ ] Search functionality
-  - [ ] Sort options (price, name)
-  - [ ] Pull to refresh
+- [x] **TASK-302**: Global Price Page
+  - [x] List all products with price ranges
+  - [x] Display: Product name, min price, max price, best shop
+  - [x] Product images
+  - [x] Category filter
+  - [x] Search functionality
+  - [x] Sort options (price, name)
+  - [x] Pull to refresh (refresh button)
 
 - [ ] **TASK-303**: Product Detail Screen (Free)
   - [ ] Product information
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 17  
+**Completed**: 18  
 **In Progress**: 0  
-**Pending**: 43
+**Pending**: 42
 
 **Current Phase**: End User Module (Phase 3)
 

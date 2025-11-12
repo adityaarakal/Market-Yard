@@ -352,33 +352,46 @@ export default function EndUserHome() {
           )}
         </section>
 
-        {/* Global Price Comparison Table */}
+        {/* Global Price Comparison - Quick View */}
         <section className="surface-card">
           <div className="action-row" style={{ marginBottom: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <h2 style={{ margin: 0 }}>Global Price Comparison</h2>
-            {searchQuery && (
-              <span className="form-helper" style={{ marginLeft: 'auto' }}>
-                {filteredPrices.length} {filteredPrices.length === 1 ? 'result' : 'results'} for "{searchQuery}"
-              </span>
-            )}
-            <button type="button" className="button button--primary" style={{ width: 'auto', marginLeft: searchQuery ? '0.5rem' : 'auto' }} onClick={refreshData}>
-              Refresh
+            <button
+              type="button"
+              className="button button--primary"
+              style={{ width: 'auto', marginLeft: 'auto' }}
+              onClick={() => navigate('/end-user/global-prices')}
+            >
+              View Full Price List
             </button>
           </div>
-          {searchQuery && filteredPrices.length === 0 ? (
+          {filteredPrices.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <p>No products found matching "{searchQuery}"</p>
+              <p>No pricing data available.</p>
               <button
                 type="button"
-                className="button button--ghost"
+                className="button button--primary"
                 style={{ marginTop: '1rem' }}
-                onClick={() => setSearchQuery('')}
+                onClick={() => navigate('/end-user/global-prices')}
               >
-                Clear Search
+                View All Prices
               </button>
             </div>
           ) : (
-            <PriceTable data={filteredPrices} />
+            <>
+              <PriceTable data={filteredPrices.slice(0, 10)} />
+              {filteredPrices.length > 10 && (
+                <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+                  <button
+                    type="button"
+                    className="button button--outline"
+                    onClick={() => navigate('/end-user/global-prices')}
+                  >
+                    View All {filteredPrices.length} Products
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </section>
       </div>

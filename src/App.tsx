@@ -13,6 +13,7 @@ import ProductMasterListPage from './pages/ProductMasterListPage';
 import DailyPriceUpdatePage from './pages/DailyPriceUpdatePage';
 import PriceHistoryPage from './pages/PriceHistoryPage';
 import EarningsDashboardPage from './pages/EarningsDashboardPage';
+import GlobalPricePage from './pages/GlobalPricePage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -151,6 +152,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <EndUserHome />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/end-user/global-prices"
+        element={
+          <ProtectedRoute requiredUserType="end_user">
+            <GlobalPricePage />
           </ProtectedRoute>
         }
       />

@@ -150,19 +150,19 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Calculate earnings (₹1 per update)
   - [x] Visual confirmation of updates
 
-- [ ] **TASK-206**: Price History Screen
-  - [ ] View price history for each product
-  - [ ] Filter by date range
-  - [ ] Price trend visualization (simple line chart)
-  - [ ] Export price history (optional)
+- [x] **TASK-206**: Price History Screen
+  - [x] View price history for each product
+  - [x] Filter by date range
+  - [x] Price trend visualization (simple line chart)
+  - [x] Export price history (optional)
 
-- [ ] **TASK-207**: Earnings Dashboard
-  - [ ] Total earnings display
-  - [ ] Earnings breakdown (today, this month, all time)
-  - [ ] Pending payments list
-  - [ ] Completed payments history
-  - [ ] Payment status indicators
-  - [ ] Export earnings report (optional)
+- [x] **TASK-207**: Earnings Dashboard
+  - [x] Total earnings display
+  - [x] Earnings breakdown (today, this month, all time)
+  - [x] Pending payments list
+  - [x] Completed payments history
+  - [x] Payment status indicators
+  - [x] Export earnings report (optional)
 
 ---
 
@@ -574,11 +574,11 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 14  
+**Completed**: 16  
 **In Progress**: 0  
-**Pending**: 46
+**Pending**: 44
 
-**Current Phase**: Project Setup
+**Current Phase**: Shop Owner Module (Phase 2)
 
 ---
 

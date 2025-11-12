@@ -11,6 +11,8 @@ import ShopRegistrationPage from './pages/ShopRegistrationPage';
 import ShopProductManagementPage from './pages/ShopProductManagementPage';
 import ProductMasterListPage from './pages/ProductMasterListPage';
 import DailyPriceUpdatePage from './pages/DailyPriceUpdatePage';
+import PriceHistoryPage from './pages/PriceHistoryPage';
+import EarningsDashboardPage from './pages/EarningsDashboardPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -125,6 +127,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="shop_owner">
             <DailyPriceUpdatePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/shop-owner/price-history"
+        element={
+          <ProtectedRoute requiredUserType="shop_owner">
+            <PriceHistoryPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/shop-owner/earnings"
+        element={
+          <ProtectedRoute requiredUserType="shop_owner">
+            <EarningsDashboardPage />
           </ProtectedRoute>
         }
       />

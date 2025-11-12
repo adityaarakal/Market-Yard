@@ -6,6 +6,7 @@ import {
   ShopProduct,
   PriceUpdate,
   Subscription,
+  Payment,
   Session,
 } from '../types';
 
@@ -240,6 +241,32 @@ class StorageService {
   deleteSubscription(subscriptionId: string): void {
     const subscriptions = this.getSubscriptions().filter(s => s.id !== subscriptionId);
     this.setItem(STORAGE_KEYS.SUBSCRIPTIONS, subscriptions);
+  }
+
+  // Payment methods
+  getPayments(): Payment[] {
+    return this.getItem<Payment[]>(STORAGE_KEYS.PAYMENTS) || [];
+  }
+
+  savePayment(payment: Payment): void {
+    const payments = this.getPayments();
+    const existingIndex = payments.findIndex(p => p.id === payment.id);
+
+    if (existingIndex >= 0) {
+      payments[existingIndex] = payment;
+    } else {
+      payments.push(payment);
+    }
+
+    this.setItem(STORAGE_KEYS.PAYMENTS, payments);
+  }
+
+  getPaymentsByUserId(userId: string): Payment[] {
+    return this.getPayments().filter(p => p.user_id === userId);
+  }
+
+  getPaymentsByType(userId: string, type: Payment['type']): Payment[] {
+    return this.getPaymentsByUserId(userId).filter(p => p.type === type);
   }
 
   // Session methods

@@ -87,9 +87,26 @@ export interface Subscription {
   updated_at: string;
 }
 
+// Payment Types
+export interface Payment {
+  id: string;
+  user_id: string;
+  shop_owner_id?: string;
+  type: 'subscription' | 'price_update_incentive' | 'refund';
+  razorpay_payment_id?: string;
+  razorpay_order_id?: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'processing' | 'success' | 'failed' | 'refunded';
+  method?: string;
+  description?: string;
+  metadata?: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
 // Session Types
 export interface Session {
   user: User;
   token: string;
 }
-

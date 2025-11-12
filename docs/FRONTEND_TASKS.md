@@ -252,13 +252,13 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Charts and graphs
   - [x] Recommendations
 
-- [ ] **TASK-406**: Subscription Management Screen
-  - [ ] View subscription status
-  - [ ] Subscription expiry date
-  - [ ] Renew subscription button
-  - [ ] Cancel subscription option
-  - [ ] Payment history
-  - [ ] Invoice download (mock)
+- [x] **TASK-406**: Subscription Management Screen
+  - [x] View subscription status
+  - [x] Subscription expiry date
+  - [x] Renew subscription button
+  - [x] Cancel subscription option
+  - [x] Payment history
+  - [x] Invoice download (mock)
 
 ---
 
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 26  
+**Completed**: 27  
 **In Progress**: 0  
-**Pending**: 34
+**Pending**: 33
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

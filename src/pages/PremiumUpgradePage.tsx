@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { createSubscription } from '../services/SubscriptionService';
+import { createPayment } from '../services/PaymentService';
 import { updateUser as updateUserRecord } from '../services/UserService';
 import { colors } from '../theme';
 import { formatCurrency } from '../utils/format';
@@ -143,6 +144,17 @@ export default function PremiumUpgradePage() {
       // Calculate expiration date (30 days from now)
       const now = new Date();
       const expiresAt = new Date(now.getTime() + SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000);
+
+      // Create payment record
+      const payment = createPayment({
+        userId: user.id,
+        type: 'subscription',
+        amount: PREMIUM_PRICE,
+        status: 'success',
+        method: 'Mock Payment',
+        description: `Premium subscription for ${SUBSCRIPTION_DURATION_DAYS} days`,
+        currency: 'INR',
+      });
 
       // Create subscription
       const subscription = createSubscription({

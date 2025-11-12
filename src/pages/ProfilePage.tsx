@@ -287,16 +287,31 @@ export default function ProfilePage() {
             </span>
           </div>
           {subscription ? (
-            <div style={{ color: colors.textSecondary }}>
-              <div>Renews On: {new Date(subscription.expires_at).toLocaleDateString()}</div>
-              <div>Amount: ₹{subscription.amount}</div>
+            <div style={{ color: colors.textSecondary, marginBottom: theme.spacing.sm }}>
+              <div>Expires On: {new Date(subscription.expires_at).toLocaleDateString()}</div>
+              <div>Amount: ₹{subscription.amount}/month</div>
+              <div>Auto Renew: {subscription.auto_renew ? 'Enabled' : 'Disabled'}</div>
+            </div>
+          ) : user.is_premium && user.subscription_expires_at ? (
+            <div style={{ color: colors.textSecondary, marginBottom: theme.spacing.sm }}>
+              <div>Expires On: {new Date(user.subscription_expires_at).toLocaleDateString()}</div>
             </div>
           ) : (
-            <div style={{ color: colors.textSecondary }}>No active subscription found.</div>
+            <div style={{ color: colors.textSecondary, marginBottom: theme.spacing.sm }}>
+              No active subscription found.
+            </div>
           )}
-          <div style={{ marginTop: theme.spacing.md, color: colors.textSecondary, fontSize: '14px' }}>
-            Subscription management (upgrade, renew, cancel) will be available once payment integration is complete.
-          </div>
+          {(user.user_type === 'end_user' || user.user_type === 'admin' || user.user_type === 'staff') && (
+            <div style={{ marginTop: theme.spacing.md }}>
+              <button
+                type="button"
+                style={primaryButtonStyle}
+                onClick={() => navigate('/subscription/manage')}
+              >
+                Manage Subscription
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

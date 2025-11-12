@@ -69,10 +69,44 @@ export function updateSubscription(subscriptionId: string, changes: UpdateSubscr
 }
 
 export function cancelSubscription(subscriptionId: string): Subscription {
-  return updateSubscription(subscriptionId, {
+  const subscription = StorageService.getSubscriptions().find(s => s.id === subscriptionId);
+  if (!subscription) {
+    throw new Error('Subscription not found');
+  }
+
+  const now = new Date();
+  
+  // Cancel subscription but keep it active until expiry date
+  const updated = updateSubscription(subscriptionId, {
     status: 'cancelled',
-    expiresAt: new Date().toISOString(),
     autoRenew: false,
+    // Don't change expires_at - let it expire naturally
+  });
+
+  // Set cancelled_at timestamp if not already set
+  const cancelledSubscription: Subscription = {
+    ...updated,
+    cancelled_at: updated.cancelled_at || now.toISOString(),
+  };
+
+  StorageService.saveSubscription(cancelledSubscription);
+  return cancelledSubscription;
+}
+
+export function renewSubscription(subscriptionId: string, durationInDays: number = 30): Subscription {
+  const subscription = StorageService.getSubscriptions().find(s => s.id === subscriptionId);
+  if (!subscription) {
+    throw new Error('Subscription not found');
+  }
+
+  const now = new Date();
+  const currentExpiry = new Date(subscription.expires_at);
+  const newExpiry = new Date(Math.max(now.getTime(), currentExpiry.getTime()) + durationInDays * 24 * 60 * 60 * 1000);
+
+  return updateSubscription(subscriptionId, {
+    status: 'active',
+    expiresAt: newExpiry.toISOString(),
+    autoRenew: subscription.auto_renew,
   });
 }
 

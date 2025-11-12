@@ -18,6 +18,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CategoriesPage from './pages/CategoriesPage';
 import PremiumUpgradePage from './pages/PremiumUpgradePage';
 import ShopSpecificPriceViewPage from './pages/ShopSpecificPriceViewPage';
+import AdvancedPriceComparisonPage from './pages/AdvancedPriceComparisonPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -196,6 +197,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <ShopSpecificPriceViewPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/end-user/price-comparison"
+        element={
+          <ProtectedRoute requiredUserType="end_user">
+            <AdvancedPriceComparisonPage />
           </ProtectedRoute>
         }
       />

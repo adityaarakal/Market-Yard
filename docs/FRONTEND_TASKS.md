@@ -229,12 +229,12 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] Contact shop button
   - [x] Filter by location
 
-- [ ] **TASK-403**: Advanced Price Comparison
-  - [ ] Select multiple products
-  - [ ] Select multiple shops
-  - [ ] Side-by-side comparison table
-  - [ ] Visual highlight of best prices
-  - [ ] Export comparison (optional)
+- [x] **TASK-403**: Advanced Price Comparison
+  - [x] Select multiple products
+  - [x] Select multiple shops
+  - [x] Side-by-side comparison table
+  - [x] Visual highlight of best prices
+  - [x] Export comparison (optional)
 
 - [ ] **TASK-404**: Price History & Trends Screen
   - [ ] Price history for selected product
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 23  
+**Completed**: 24  
 **In Progress**: 0  
-**Pending**: 37
+**Pending**: 36
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

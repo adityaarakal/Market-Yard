@@ -286,8 +286,7 @@ export default function GlobalPricePage() {
                     e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
                   }}
                   onClick={() => {
-                    // TODO: Navigate to product detail page when implemented
-                    console.log('Product clicked:', entry.product.id);
+                    navigate(`/end-user/product/${entry.product.id}`);
                   }}
                 >
                   {/* Product Image */}

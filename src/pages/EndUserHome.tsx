@@ -15,7 +15,7 @@ interface CategoryInfo {
   productCount: number;
 }
 
-function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
+function PriceTable({ data, onProductClick }: { data: GlobalPriceEntry[]; onProductClick: (productId: string) => void }) {
   if (data.length === 0) {
     return <p>No pricing data available. Seed sample data to get started.</p>;
   }
@@ -35,7 +35,17 @@ function PriceTable({ data }: { data: GlobalPriceEntry[] }) {
         </thead>
         <tbody>
           {data.map(entry => (
-            <tr key={entry.product.id}>
+            <tr
+              key={entry.product.id}
+              style={{ cursor: 'pointer' }}
+              onClick={() => onProductClick(entry.product.id)}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = colors.surface;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
               <td>
                 <div style={{ fontWeight: 600 }}>{entry.product.name}</div>
                 <div className="form-helper" style={{ marginTop: '0.25rem' }}>{entry.product.unit}</div>
@@ -339,7 +349,24 @@ export default function EndUserHome() {
               }}
             >
               {bestDeals.map(deal => (
-                <div key={deal.product.id} className="surface-card surface-card--compact" style={{ boxShadow: 'var(--shadow-soft)' }}>
+                <div
+                  key={deal.product.id}
+                  className="surface-card surface-card--compact"
+                  style={{
+                    boxShadow: 'var(--shadow-soft)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
+                  }}
+                  onClick={() => navigate(`/end-user/product/${deal.product.id}`)}
+                >
                   <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{deal.product.name}</div>
                   <div className="form-helper" style={{ marginBottom: '0.75rem' }}>
                     {deal.product.category.replace('_', ' ')}
@@ -379,7 +406,7 @@ export default function EndUserHome() {
             </div>
           ) : (
             <>
-              <PriceTable data={filteredPrices.slice(0, 10)} />
+              <PriceTable data={filteredPrices.slice(0, 10)} onProductClick={(productId) => navigate(`/end-user/product/${productId}`)} />
               {filteredPrices.length > 10 && (
                 <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                   <button

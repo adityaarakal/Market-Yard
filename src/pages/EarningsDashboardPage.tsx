@@ -111,17 +111,18 @@ export default function EarningsDashboardPage() {
     const shopProducts = StorageService.getShopProductsByShopId(shop.id);
     const allProducts = StorageService.getProducts();
 
-    let filtered = priceUpdates.map(update => {
+    let filtered: PaymentListItem[] = priceUpdates.map(update => {
       // Find the shop product by its ID
       const shopProduct = shopProducts.find(sp => sp.id === update.shop_product_id);
       // Find the product by product_id
       const product = shopProduct ? allProducts.find(p => p.id === shopProduct.product_id) : null;
 
-      return {
+      const item: PaymentListItem = {
         ...update,
         productName: product?.name || 'Unknown Product',
         productUnit: product?.unit || '',
       };
+      return item;
     });
 
     // Filter by status
@@ -399,10 +400,17 @@ export default function EarningsDashboardPage() {
                             display: 'inline-block',
                             padding: '0.35rem 0.75rem',
                             borderRadius: 'var(--radius-pill)',
-                            backgroundColor: getStatusColor(item.payment_status),
-                            color: '#fff',
-                            fontSize: '0.75rem',
-                            fontWeight: 600,
+                            backgroundColor:
+                              item.payment_status === 'paid'
+                                ? 'rgba(76, 175, 80, 0.15)'
+                                : item.payment_status === 'pending'
+                                ? 'rgba(255, 152, 0, 0.15)'
+                                : item.payment_status === 'processing'
+                                ? 'rgba(33, 150, 243, 0.15)'
+                                : 'rgba(244, 67, 54, 0.15)',
+                            color: getStatusColor(item.payment_status),
+                            fontSize: '0.85rem',
+                            fontWeight: 500,
                           }}
                         >
                           {getStatusLabel(item.payment_status)}

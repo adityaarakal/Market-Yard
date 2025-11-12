@@ -2,6 +2,9 @@ import { PriceUpdate, ShopProduct } from '../types';
 import StorageService from './StorageService';
 import { generateId } from '../utils/id';
 
+// Re-export PriceUpdate type for convenience
+export type { PriceUpdate } from '../types';
+
 export interface CreatePriceUpdateInput {
   shopProductId: string;
   price: number;

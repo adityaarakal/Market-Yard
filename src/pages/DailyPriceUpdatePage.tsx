@@ -97,7 +97,6 @@ export default function DailyPriceUpdatePage() {
 
     setUpdating(true);
     setMessage('');
-    setUpdatedCount(0);
 
     let successCount = 0;
     let errorCount = 0;

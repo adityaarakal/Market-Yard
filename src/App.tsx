@@ -22,6 +22,7 @@ import AdvancedPriceComparisonPage from './pages/AdvancedPriceComparisonPage';
 import PriceHistoryTrendsPage from './pages/PriceHistoryTrendsPage';
 import AdvancedInsightsDashboardPage from './pages/AdvancedInsightsDashboardPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
+import FavoritesPage from './pages/FavoritesPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -232,6 +233,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <SubscriptionManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/end-user/favorites"
+        element={
+          <ProtectedRoute requiredUserType="end_user">
+            <FavoritesPage />
           </ProtectedRoute>
         }
       />

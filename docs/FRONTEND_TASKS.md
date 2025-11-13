@@ -391,11 +391,11 @@ This document tracks all frontend development tasks for the Market Yard Progress
 
 ### Phase 8: Enhanced Features
 
-- [ ] **TASK-801**: Favorites/Bookmarks
-  - [ ] Add product to favorites
-  - [ ] Add shop to favorites
-  - [ ] View favorites list
-  - [ ] Remove from favorites
+- [x] **TASK-801**: Favorites/Bookmarks
+  - [x] Add product to favorites
+  - [x] Add shop to favorites
+  - [x] View favorites list
+  - [x] Remove from favorites
 
 - [ ] **TASK-802**: Notifications (Local)
   - [ ] In-app notification center
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 35  
+**Completed**: 36  
 **In Progress**: 0  
-**Pending**: 25
+**Pending**: 24
 
 **Note**: 
 - TASK-501 (Form Components) has been completed. All reusable form components are available in `src/components/forms/` directory.
@@ -587,6 +587,7 @@ interface Subscription {
 - TASK-701 (Seed Data Script) has been completed. Seed data service includes 52+ products, 7 shops, 7 users, price updates, and subscriptions.
 - TASK-702 (Data Reset Functionality) has been completed. SeedDataService includes clearAll(), resetToSeedData(), exportData(), exportDataAsFile(), importData(), and importDataFromFile() methods with merge and clear options.
 - TASK-704 (Mock Payment Flow) has been completed. PaymentService includes simulatePayment(), simulatePaymentSuccess(), and simulatePaymentFailure() functions with configurable success rate and failure scenarios.
+- TASK-801 (Favorites/Bookmarks) has been completed. FavoritesService includes add/remove/toggle functions for products and shops. FavoritesPage displays all favorites with tabs. Favorite buttons added to ProductDetailPage and ShopCard components.
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

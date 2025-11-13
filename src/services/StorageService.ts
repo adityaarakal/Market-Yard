@@ -8,6 +8,7 @@ import {
   Subscription,
   Payment,
   Session,
+  Favorite,
 } from '../types';
 
 class StorageService {
@@ -298,6 +299,50 @@ class StorageService {
 
   clearRememberedLogin(): void {
     this.removeItem(STORAGE_KEYS.REMEMBERED_LOGIN);
+  }
+
+  // Favorite methods
+  getFavorites(): Favorite[] {
+    return this.getItem<Favorite[]>(STORAGE_KEYS.FAVORITES) || [];
+  }
+
+  saveFavorite(favorite: Favorite): void {
+    const favorites = this.getFavorites();
+    const existingIndex = favorites.findIndex(
+      f => f.user_id === favorite.user_id && f.type === favorite.type && f.item_id === favorite.item_id
+    );
+
+    if (existingIndex >= 0) {
+      favorites[existingIndex] = favorite;
+    } else {
+      favorites.push(favorite);
+    }
+
+    this.setItem(STORAGE_KEYS.FAVORITES, favorites);
+  }
+
+  deleteFavorite(favoriteId: string): void {
+    const favorites = this.getFavorites().filter(f => f.id !== favoriteId);
+    this.setItem(STORAGE_KEYS.FAVORITES, favorites);
+  }
+
+  getFavoritesByUserId(userId: string): Favorite[] {
+    return this.getFavorites().filter(f => f.user_id === userId);
+  }
+
+  getFavoritesByType(userId: string, type: 'product' | 'shop'): Favorite[] {
+    return this.getFavoritesByUserId(userId).filter(f => f.type === type);
+  }
+
+  isFavorite(userId: string, type: 'product' | 'shop', itemId: string): boolean {
+    const favorites = this.getFavorites();
+    return favorites.some(f => f.user_id === userId && f.type === type && f.item_id === itemId);
+  }
+
+  removeFavorite(userId: string, type: 'product' | 'shop', itemId: string): void {
+    const favorites = this.getFavorites();
+    const filtered = favorites.filter(f => !(f.user_id === userId && f.type === type && f.item_id === itemId));
+    this.setItem(STORAGE_KEYS.FAVORITES, filtered);
   }
 }
 

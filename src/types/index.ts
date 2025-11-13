@@ -110,3 +110,12 @@ export interface Session {
   user: User;
   token: string;
 }
+
+// Favorite Types
+export interface Favorite {
+  id: string;
+  user_id: string;
+  type: 'product' | 'shop';
+  item_id: string; // product_id or shop_id
+  created_at: string;
+}

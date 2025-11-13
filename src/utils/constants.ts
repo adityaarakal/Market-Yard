@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   SESSION: '@market_yard_session',
   SETTINGS: '@market_yard_settings',
   REMEMBERED_LOGIN: '@market_yard_remembered_login',
+  FAVORITES: '@market_yard_favorites',
 } as const;
 
 // App Constants

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { colors } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
 import { getProductById, getProductsByCategory } from '../services/ProductService';
+import { isProductFavorite, toggleProductFavorite } from '../services/FavoritesService';
 import { Product } from '../types';
 import { formatCurrency } from '../utils/format';
 
@@ -15,6 +16,7 @@ export default function ProductDetailPage() {
   const [priceEntry, setPriceEntry] = useState<GlobalPriceEntry | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<GlobalPriceEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const isFreeUser = !user?.is_premium;
 
@@ -32,6 +34,11 @@ export default function ProductDetailPage() {
       }
 
       setProduct(productData);
+
+      // Check if product is favorited
+      if (user) {
+        setIsFavorite(isProductFavorite(user.id, productId));
+      }
 
       // Get price information for this product
       const globalPrices = getGlobalPriceSummary();
@@ -65,6 +72,12 @@ export default function ProductDetailPage() {
 
   const handleRelatedProductClick = (relatedProductId: string) => {
     navigate(`/end-user/product/${relatedProductId}`);
+  };
+
+  const handleFavoriteToggle = () => {
+    if (!user || !productId) return;
+    const newFavoriteState = toggleProductFavorite(user.id, productId);
+    setIsFavorite(newFavoriteState);
   };
 
   useEffect(() => {
@@ -123,6 +136,29 @@ export default function ProductDetailPage() {
             <h1 className="page-heading__title" style={{ fontSize: 'clamp(1.75rem, 2vw + 1rem, 2.3rem)', textAlign: 'left', flex: 1 }}>
               {product.name}
             </h1>
+            {user && (
+              <button
+                type="button"
+                onClick={handleFavoriteToggle}
+                style={{
+                  background: isFavorite ? colors.primary : 'transparent',
+                  color: isFavorite ? 'white' : colors.text,
+                  border: `2px solid ${isFavorite ? colors.primary : colors.border}`,
+                  borderRadius: 'var(--radius-md)',
+                  padding: '0.5rem 1rem',
+                  cursor: 'pointer',
+                  fontSize: '1.2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.2s',
+                }}
+                title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                {isFavorite ? '❤️' : '🤍'}
+                <span style={{ fontSize: '0.875rem' }}>{isFavorite ? 'Favorited' : 'Favorite'}</span>
+              </button>
+            )}
           </div>
         </header>
 

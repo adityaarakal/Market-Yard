@@ -16,6 +16,9 @@ export interface ShopCardProps {
   variant?: 'default' | 'compact' | 'detailed';
   price?: number;
   priceLabel?: string;
+  isFavorite?: boolean;
+  onFavoriteToggle?: (shopId: string) => void;
+  showFavoriteButton?: boolean;
 }
 
 /**
@@ -32,6 +35,9 @@ export default function ShopCard({
   variant = 'default',
   price,
   priceLabel,
+  isFavorite = false,
+  onFavoriteToggle,
+  showFavoriteButton = false,
 }: ShopCardProps) {
   const handleClick = () => {
     if (onClick) {
@@ -86,7 +92,39 @@ export default function ShopCard({
         }
       }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', height: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', height: '100%', position: 'relative' }}>
+        {/* Favorite Button */}
+        {showFavoriteButton && onFavoriteToggle && (
+          <button
+            type="button"
+            onClick={e => {
+              e.stopPropagation();
+              onFavoriteToggle(shop.id);
+            }}
+            style={{
+              position: 'absolute',
+              top: '0.5rem',
+              right: '0.5rem',
+              background: isFavorite ? colors.primary : 'rgba(255, 255, 255, 0.9)',
+              color: isFavorite ? 'white' : colors.text,
+              border: `2px solid ${isFavorite ? colors.primary : colors.border}`,
+              borderRadius: '50%',
+              width: '2rem',
+              height: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              fontSize: '1.2rem',
+              boxShadow: 'var(--shadow-soft)',
+              zIndex: 10,
+            }}
+            title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            {isFavorite ? '❤️' : '🤍'}
+          </button>
+        )}
+
         {/* Shop Image */}
         {showImage && (
           <div

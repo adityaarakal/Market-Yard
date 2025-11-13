@@ -18,6 +18,8 @@ export const APP_CONFIG = {
   PRICE_UPDATE_INCENTIVE: 1.0, // ₹1 per price update
   PREMIUM_SUBSCRIPTION_PRICE: 100.0, // ₹100 per month
   MOCK_OTP: '123456', // For testing
+  MOCK_PAYMENT_SUCCESS_RATE: 0.9, // 90% success rate for testing (0.0 to 1.0)
+  MOCK_PAYMENT_DELAY_MS: 1500, // Simulate payment processing delay
 };
 
 // Validation

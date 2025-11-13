@@ -1,6 +1,7 @@
 import { Payment } from '../types';
 import StorageService from './StorageService';
 import { generateId } from '../utils/id';
+import { APP_CONFIG } from '../utils/constants';
 
 export interface CreatePaymentInput {
   userId: string;
@@ -139,5 +140,85 @@ export function downloadInvoice(payment: Payment): void {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+/**
+ * Mock Payment Simulation Result
+ */
+export interface MockPaymentResult {
+  success: boolean;
+  payment: Payment;
+  error?: string;
+}
+
+/**
+ * Simulate payment processing with configurable success/failure
+ * @param input Payment input data
+ * @param forceResult Optional: 'success' | 'failure' to force a specific result, or undefined to use random based on success rate
+ * @returns Promise that resolves with payment result after simulated delay
+ */
+export async function simulatePayment(
+  input: CreatePaymentInput,
+  forceResult?: 'success' | 'failure'
+): Promise<MockPaymentResult> {
+  // Simulate payment processing delay
+  await new Promise(resolve => setTimeout(resolve, APP_CONFIG.MOCK_PAYMENT_DELAY_MS));
+
+  // Determine payment result
+  let willSucceed: boolean;
+  if (forceResult === 'success') {
+    willSucceed = true;
+  } else if (forceResult === 'failure') {
+    willSucceed = false;
+  } else {
+    // Use random based on success rate
+    willSucceed = Math.random() < APP_CONFIG.MOCK_PAYMENT_SUCCESS_RATE;
+  }
+
+  // Create payment record with appropriate status
+  const payment = createPayment({
+    ...input,
+    status: willSucceed ? 'success' : 'failed',
+    method: input.method || 'Mock Payment Gateway',
+    razorpayPaymentId: willSucceed ? `mock_pay_${generateId('payment').slice(0, 12)}` : undefined,
+    razorpayOrderId: willSucceed ? `mock_order_${generateId('order').slice(0, 12)}` : undefined,
+  });
+
+  if (willSucceed) {
+    return {
+      success: true,
+      payment,
+    };
+  } else {
+    // Simulate common payment failure reasons
+    const failureReasons = [
+      'Insufficient funds',
+      'Payment gateway timeout',
+      'Card declined',
+      'Network error',
+      'Invalid payment method',
+    ];
+    const randomReason = failureReasons[Math.floor(Math.random() * failureReasons.length)];
+
+    return {
+      success: false,
+      payment,
+      error: randomReason,
+    };
+  }
+}
+
+/**
+ * Simulate payment success (for testing)
+ */
+export async function simulatePaymentSuccess(input: CreatePaymentInput): Promise<MockPaymentResult> {
+  return simulatePayment(input, 'success');
+}
+
+/**
+ * Simulate payment failure (for testing)
+ */
+export async function simulatePaymentFailure(input: CreatePaymentInput): Promise<MockPaymentResult> {
+  return simulatePayment(input, 'failure');
 }
 

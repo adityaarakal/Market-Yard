@@ -380,10 +380,10 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [ ] Mock login validation
   - [ ] Auto-login for testing
 
-- [ ] **TASK-704**: Mock Payment Flow
-  - [ ] Simulate payment success
-  - [ ] Simulate payment failure
-  - [ ] Update subscription status
+- [x] **TASK-704**: Mock Payment Flow
+  - [x] Simulate payment success
+  - [x] Simulate payment failure
+  - [x] Update subscription status
 
 ---
 
@@ -574,9 +574,9 @@ interface Subscription {
 ## ✅ Progress Tracking
 
 **Total Tasks**: ~60 tasks  
-**Completed**: 34  
+**Completed**: 35  
 **In Progress**: 0  
-**Pending**: 26
+**Pending**: 25
 
 **Note**: 
 - TASK-501 (Form Components) has been completed. All reusable form components are available in `src/components/forms/` directory.
@@ -586,6 +586,7 @@ interface Subscription {
 - TASK-505 (List Components) has been completed. All reusable list components are available in `src/components/lists/` directory.
 - TASK-701 (Seed Data Script) has been completed. Seed data service includes 52+ products, 7 shops, 7 users, price updates, and subscriptions.
 - TASK-702 (Data Reset Functionality) has been completed. SeedDataService includes clearAll(), resetToSeedData(), exportData(), exportDataAsFile(), importData(), and importDataFromFile() methods with merge and clear options.
+- TASK-704 (Mock Payment Flow) has been completed. PaymentService includes simulatePayment(), simulatePaymentSuccess(), and simulatePaymentFailure() functions with configurable success rate and failure scenarios.
 
 **Current Phase**: End User Module (Premium Version) - Phase 4
 

@@ -1,6 +1,6 @@
 import StorageService from './StorageService';
 import { STORAGE_KEYS } from '../utils/constants';
-import { User, Shop, Product, ShopProduct, PriceUpdate, Subscription } from '../types';
+import { User, Shop, Product, ShopProduct, PriceUpdate, Subscription, Payment } from '../types';
 import { generateId } from '../utils/id';
 
 class SeedDataService {
@@ -1179,6 +1179,279 @@ class SeedDataService {
   clearAll(): void {
     StorageService.clear();
     console.log('All data cleared!');
+  }
+
+  resetToSeedData(): void {
+    this.clearAll();
+    this.seedAll(true);
+    console.log('Data reset to seed data!');
+  }
+
+  exportData(): string {
+    const data = {
+      version: '1.0.0',
+      exportedAt: new Date().toISOString(),
+      users: StorageService.getUsers(),
+      shops: StorageService.getShops(),
+      products: StorageService.getProducts(),
+      shopProducts: StorageService.getShopProducts(),
+      priceUpdates: StorageService.getPriceUpdates(),
+      subscriptions: StorageService.getSubscriptions(),
+      payments: StorageService.getPayments(),
+    };
+
+    return JSON.stringify(data, null, 2);
+  }
+
+  exportDataAsFile(filename?: string): void {
+    const data = this.exportData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename || `market-yard-data-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    console.log('Data exported successfully!');
+  }
+
+  importData(jsonData: string, options?: { merge?: boolean; clearBeforeImport?: boolean }): {
+    success: boolean;
+    message: string;
+    counts: {
+      users: number;
+      shops: number;
+      products: number;
+      shopProducts: number;
+      priceUpdates: number;
+      subscriptions: number;
+      payments: number;
+    };
+  } {
+    try {
+      const data = JSON.parse(jsonData);
+
+      // Validate data structure
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid data format');
+      }
+
+      const merge = options?.merge ?? false;
+      const clearBeforeImport = options?.clearBeforeImport ?? false;
+
+      if (clearBeforeImport) {
+        StorageService.clear();
+      }
+
+      const counts = {
+        users: 0,
+        shops: 0,
+        products: 0,
+        shopProducts: 0,
+        priceUpdates: 0,
+        subscriptions: 0,
+        payments: 0,
+      };
+
+      // Import users
+      if (Array.isArray(data.users)) {
+        if (merge) {
+          const existingUsers = StorageService.getUsers();
+          data.users.forEach((user: User) => {
+            const existingIndex = existingUsers.findIndex(u => u.id === user.id || u.phone_number === user.phone_number);
+            if (existingIndex >= 0) {
+              existingUsers[existingIndex] = user;
+            } else {
+              existingUsers.push(user);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.USERS, existingUsers);
+          counts.users = existingUsers.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.USERS, data.users);
+          counts.users = data.users.length;
+        }
+      }
+
+      // Import shops
+      if (Array.isArray(data.shops)) {
+        if (merge) {
+          const existingShops = StorageService.getShops();
+          data.shops.forEach((shop: Shop) => {
+            const existingIndex = existingShops.findIndex(s => s.id === shop.id);
+            if (existingIndex >= 0) {
+              existingShops[existingIndex] = shop;
+            } else {
+              existingShops.push(shop);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.SHOPS, existingShops);
+          counts.shops = existingShops.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.SHOPS, data.shops);
+          counts.shops = data.shops.length;
+        }
+      }
+
+      // Import products
+      if (Array.isArray(data.products)) {
+        if (merge) {
+          const existingProducts = StorageService.getProducts();
+          data.products.forEach((product: Product) => {
+            const existingIndex = existingProducts.findIndex(
+              p => p.id === product.id || p.name.toLowerCase() === product.name.toLowerCase()
+            );
+            if (existingIndex >= 0) {
+              existingProducts[existingIndex] = product;
+            } else {
+              existingProducts.push(product);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.PRODUCTS, existingProducts);
+          counts.products = existingProducts.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.PRODUCTS, data.products);
+          counts.products = data.products.length;
+        }
+      }
+
+      // Import shop products
+      if (Array.isArray(data.shopProducts)) {
+        if (merge) {
+          const existingShopProducts = StorageService.getShopProducts();
+          data.shopProducts.forEach((shopProduct: ShopProduct) => {
+            const existingIndex = existingShopProducts.findIndex(
+              sp => sp.id === shopProduct.id || (sp.shop_id === shopProduct.shop_id && sp.product_id === shopProduct.product_id)
+            );
+            if (existingIndex >= 0) {
+              existingShopProducts[existingIndex] = shopProduct;
+            } else {
+              existingShopProducts.push(shopProduct);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.SHOP_PRODUCTS, existingShopProducts);
+          counts.shopProducts = existingShopProducts.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.SHOP_PRODUCTS, data.shopProducts);
+          counts.shopProducts = data.shopProducts.length;
+        }
+      }
+
+      // Import price updates
+      if (Array.isArray(data.priceUpdates)) {
+        if (merge) {
+          const existingPriceUpdates = StorageService.getPriceUpdates();
+          data.priceUpdates.forEach((priceUpdate: PriceUpdate) => {
+            const existingIndex = existingPriceUpdates.findIndex(pu => pu.id === priceUpdate.id);
+            if (existingIndex >= 0) {
+              existingPriceUpdates[existingIndex] = priceUpdate;
+            } else {
+              existingPriceUpdates.push(priceUpdate);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.PRICE_UPDATES, existingPriceUpdates);
+          counts.priceUpdates = existingPriceUpdates.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.PRICE_UPDATES, data.priceUpdates);
+          counts.priceUpdates = data.priceUpdates.length;
+        }
+      }
+
+      // Import subscriptions
+      if (Array.isArray(data.subscriptions)) {
+        if (merge) {
+          const existingSubscriptions = StorageService.getSubscriptions();
+          data.subscriptions.forEach((subscription: Subscription) => {
+            const existingIndex = existingSubscriptions.findIndex(s => s.id === subscription.id);
+            if (existingIndex >= 0) {
+              existingSubscriptions[existingIndex] = subscription;
+            } else {
+              existingSubscriptions.push(subscription);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.SUBSCRIPTIONS, existingSubscriptions);
+          counts.subscriptions = existingSubscriptions.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.SUBSCRIPTIONS, data.subscriptions);
+          counts.subscriptions = data.subscriptions.length;
+        }
+      }
+
+      // Import payments
+      if (Array.isArray(data.payments)) {
+        if (merge) {
+          const existingPayments = StorageService.getPayments();
+          data.payments.forEach((payment: Payment) => {
+            const existingIndex = existingPayments.findIndex(p => p.id === payment.id);
+            if (existingIndex >= 0) {
+              existingPayments[existingIndex] = payment;
+            } else {
+              existingPayments.push(payment);
+            }
+          });
+          StorageService.setItem(STORAGE_KEYS.PAYMENTS, existingPayments);
+          counts.payments = existingPayments.length;
+        } else {
+          StorageService.setItem(STORAGE_KEYS.PAYMENTS, data.payments);
+          counts.payments = data.payments.length;
+        }
+      }
+
+      console.log('Data imported successfully!', counts);
+      return {
+        success: true,
+        message: 'Data imported successfully',
+        counts,
+      };
+    } catch (error) {
+      console.error('Error importing data:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Unknown error occurred',
+        counts: {
+          users: 0,
+          shops: 0,
+          products: 0,
+          shopProducts: 0,
+          priceUpdates: 0,
+          subscriptions: 0,
+          payments: 0,
+        },
+      };
+    }
+  }
+
+  importDataFromFile(file: File, options?: { merge?: boolean; clearBeforeImport?: boolean }): Promise<{
+    success: boolean;
+    message: string;
+    counts: {
+      users: number;
+      shops: number;
+      products: number;
+      shopProducts: number;
+      priceUpdates: number;
+      subscriptions: number;
+      payments: number;
+    };
+  }> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const jsonData = e.target?.result as string;
+          const result = this.importData(jsonData, options);
+          resolve(result);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+      reader.readAsText(file);
+    });
   }
 }
 

@@ -49,6 +49,43 @@ export default function WelcomePage() {
     setMessage('All data cleared. Seed sample data to get started.');
   };
 
+  const handleResetToSeed = () => {
+    SeedDataService.resetToSeedData();
+    setHasData(true);
+    setMessage('Data reset to seed data. You can log in with phone 9876543210 and password password123.');
+  };
+
+  const handleExport = () => {
+    try {
+      SeedDataService.exportDataAsFile();
+      setMessage('Data exported successfully!');
+    } catch (error) {
+      setMessage('Error exporting data: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
+  };
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const result = await SeedDataService.importDataFromFile(file, { clearBeforeImport: false, merge: true });
+      if (result.success) {
+        setHasData(true);
+        setMessage(
+          `Data imported successfully! Imported: ${result.counts.users} users, ${result.counts.shops} shops, ${result.counts.products} products, ${result.counts.shopProducts} shop products, ${result.counts.priceUpdates} price updates, ${result.counts.subscriptions} subscriptions, ${result.counts.payments} payments.`
+        );
+      } else {
+        setMessage('Error importing data: ' + result.message);
+      }
+    } catch (error) {
+      setMessage('Error importing data: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
+
+    // Reset file input
+    event.target.value = '';
+  };
+
   return (
     <div className="page-shell page-shell--center">
       <div className="page-shell__content">
@@ -108,18 +145,43 @@ export default function WelcomePage() {
         </div>
       )}
           {message && <div className="form-info">{message}</div>}
-          <div className="dev-tools__actions">
+          <div className="dev-tools__actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             <button type="button" className="button button--primary" onClick={handleSeed} style={{ width: 'auto' }}>
-          Seed Sample Data
-        </button>
-        <button
-          type="button"
+              Seed Sample Data
+            </button>
+            <button
+              type="button"
               className="button button--outline"
-          onClick={handleReset}
+              onClick={handleResetToSeed}
+              style={{ width: 'auto' }}
+            >
+              Reset to Seed Data
+            </button>
+            <button
+              type="button"
+              className="button button--outline"
+              onClick={handleReset}
               style={{ width: 'auto', borderColor: colors.error, color: colors.error }}
-        >
-          Clear Data
-        </button>
+            >
+              Clear All Data
+            </button>
+            <button type="button" className="button button--outline" onClick={handleExport} style={{ width: 'auto' }}>
+              Export Data
+            </button>
+            <label
+              htmlFor="import-file"
+              className="button button--outline"
+              style={{ width: 'auto', cursor: 'pointer', display: 'inline-block' }}
+            >
+              Import Data
+              <input
+                id="import-file"
+                type="file"
+                accept=".json"
+                style={{ display: 'none' }}
+                onChange={handleImport}
+              />
+            </label>
             <Link className="button button--ghost" to="/login" style={{ width: 'auto' }}>
               Quick Login
             </Link>

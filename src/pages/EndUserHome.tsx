@@ -5,6 +5,7 @@ import { colors } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
 import { getProductsByCategory, getAllProducts } from '../services/ProductService';
 import { formatCurrency } from '../utils/format';
+import NotificationBell from '../components/navigation/NotificationBell';
 
 interface CategoryInfo {
   id: string;
@@ -194,7 +195,8 @@ export default function EndUserHome() {
                 )}
               </p>
             </div>
-            <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div className="action-row" style={{ gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <NotificationBell size="medium" />
               {(user?.user_type === 'admin' || user?.user_type === 'staff') && (
                 <button
                   type="button"

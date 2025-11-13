@@ -9,6 +9,7 @@ import {
   Payment,
   Session,
   Favorite,
+  Notification,
 } from '../types';
 
 class StorageService {
@@ -343,6 +344,71 @@ class StorageService {
     const favorites = this.getFavorites();
     const filtered = favorites.filter(f => !(f.user_id === userId && f.type === type && f.item_id === itemId));
     this.setItem(STORAGE_KEYS.FAVORITES, filtered);
+  }
+
+  // Notification methods
+  getNotifications(): Notification[] {
+    return this.getItem<Notification[]>(STORAGE_KEYS.NOTIFICATIONS) || [];
+  }
+
+  saveNotification(notification: Notification): void {
+    const notifications = this.getNotifications();
+    const existingIndex = notifications.findIndex(n => n.id === notification.id);
+
+    if (existingIndex >= 0) {
+      notifications[existingIndex] = notification;
+    } else {
+      notifications.push(notification);
+    }
+
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+  }
+
+  deleteNotification(notificationId: string): void {
+    const notifications = this.getNotifications().filter(n => n.id !== notificationId);
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+  }
+
+  getNotificationsByUserId(userId: string): Notification[] {
+    return this.getNotifications().filter(n => n.user_id === userId);
+  }
+
+  getUnreadNotificationsByUserId(userId: string): Notification[] {
+    return this.getNotificationsByUserId(userId).filter(n => !n.is_read);
+  }
+
+  markNotificationAsRead(notificationId: string): void {
+    const notifications = this.getNotifications();
+    const notification = notifications.find(n => n.id === notificationId);
+    if (notification) {
+      notification.is_read = true;
+      notification.read_at = new Date().toISOString();
+      this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+    }
+  }
+
+  markAllNotificationsAsRead(userId: string): void {
+    const notifications = this.getNotifications();
+    const now = new Date().toISOString();
+    notifications.forEach(n => {
+      if (n.user_id === userId && !n.is_read) {
+        n.is_read = true;
+        n.read_at = now;
+      }
+    });
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+  }
+
+  // Notification preferences
+  getNotificationPreferences(userId: string): Record<string, boolean> {
+    const prefs = this.getItem<Record<string, Record<string, boolean>>>(STORAGE_KEYS.NOTIFICATION_PREFERENCES) || {};
+    return prefs[userId] || {};
+  }
+
+  saveNotificationPreferences(userId: string, preferences: Record<string, boolean>): void {
+    const allPrefs = this.getItem<Record<string, Record<string, boolean>>>(STORAGE_KEYS.NOTIFICATION_PREFERENCES) || {};
+    allPrefs[userId] = preferences;
+    this.setItem(STORAGE_KEYS.NOTIFICATION_PREFERENCES, allPrefs);
   }
 }
 

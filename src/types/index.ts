@@ -119,3 +119,17 @@ export interface Favorite {
   item_id: string; // product_id or shop_id
   created_at: string;
 }
+
+// Notification Types
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: 'price_drop' | 'price_increase' | 'new_product' | 'payment_received' | 'subscription_expiring' | 'subscription_expired' | 'system' | 'promotion';
+  title: string;
+  message: string;
+  is_read: boolean;
+  action_url?: string; // Optional URL to navigate to when clicked
+  metadata?: Record<string, any>; // Additional data (product_id, shop_id, etc.)
+  created_at: string;
+  read_at?: string;
+}

@@ -23,6 +23,8 @@ import PriceHistoryTrendsPage from './pages/PriceHistoryTrendsPage';
 import AdvancedInsightsDashboardPage from './pages/AdvancedInsightsDashboardPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
 import FavoritesPage from './pages/FavoritesPage';
+import NotificationCenterPage from './pages/NotificationCenterPage';
+import NotificationPreferencesPage from './pages/NotificationPreferencesPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -241,6 +243,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="end_user">
             <FavoritesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationCenterPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications/preferences"
+        element={
+          <ProtectedRoute>
+            <NotificationPreferencesPage />
           </ProtectedRoute>
         }
       />

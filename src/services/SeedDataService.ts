@@ -1,6 +1,6 @@
 import StorageService from './StorageService';
 import { STORAGE_KEYS } from '../utils/constants';
-import { User, Shop, Product, ShopProduct, PriceUpdate } from '../types';
+import { User, Shop, Product, ShopProduct, PriceUpdate, Subscription } from '../types';
 import { generateId } from '../utils/id';
 
 class SeedDataService {
@@ -370,6 +370,178 @@ class SeedDataService {
         is_active: true,
         created_at: now,
       },
+      // Additional Fruits (prod_36 to prod_50)
+      {
+        id: 'prod_36',
+        name: 'Strawberry',
+        category: 'fruits',
+        unit: 'kg',
+        description: 'Fresh red strawberries, sweet and juicy',
+        image_url: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_37',
+        name: 'Cherry',
+        category: 'fruits',
+        unit: 'kg',
+        description: 'Fresh red cherries, sweet and tart',
+        image_url: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_38',
+        name: 'Kiwi',
+        category: 'fruits',
+        unit: 'piece',
+        description: 'Fresh kiwi fruit, rich in Vitamin C',
+        image_url: 'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_39',
+        name: 'Dragon Fruit',
+        category: 'fruits',
+        unit: 'piece',
+        description: 'Exotic dragon fruit, refreshing and nutritious',
+        image_url: 'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_40',
+        name: 'Lychee',
+        category: 'fruits',
+        unit: 'kg',
+        description: 'Fresh lychee, sweet and aromatic',
+        image_url: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_41',
+        name: 'Custard Apple',
+        category: 'fruits',
+        unit: 'kg',
+        description: 'Sweet custard apple (sitaphal), creamy texture',
+        image_url: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_42',
+        name: 'Sapota',
+        category: 'fruits',
+        unit: 'kg',
+        description: 'Sweet sapota (chikoo), rich and flavorful',
+        image_url: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      // Additional Vegetables (prod_43 to prod_50)
+      {
+        id: 'prod_43',
+        name: 'Green Beans',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh green beans, crisp and nutritious',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_44',
+        name: 'Peas',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh green peas, sweet and tender',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_45',
+        name: 'Bottle Gourd',
+        category: 'vegetables',
+        unit: 'piece',
+        description: 'Fresh bottle gourd (lauki), light and healthy',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_46',
+        name: 'Ridge Gourd',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh ridge gourd (turai), nutritious vegetable',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_47',
+        name: 'Bitter Gourd',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh bitter gourd (karela), known for health benefits',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_48',
+        name: 'Drumstick',
+        category: 'vegetables',
+        unit: 'bunch',
+        description: 'Fresh drumstick (moringa), rich in nutrients',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_49',
+        name: 'Broccoli',
+        category: 'vegetables',
+        unit: 'piece',
+        description: 'Fresh broccoli, rich in vitamins and fiber',
+        image_url: 'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_50',
+        name: 'Zucchini',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh zucchini, versatile and healthy',
+        image_url: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_51',
+        name: 'Sweet Potato',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh sweet potato, nutritious and flavorful',
+        image_url: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400',
+        is_active: true,
+        created_at: now,
+      },
+      {
+        id: 'prod_52',
+        name: 'Yam',
+        category: 'vegetables',
+        unit: 'kg',
+        description: 'Fresh yam, starchy and nutritious',
+        image_url: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400',
+        is_active: true,
+        created_at: now,
+      },
     ];
 
     // Merge seed products with existing products (update if exists, add if new)
@@ -413,9 +585,45 @@ class SeedDataService {
         updated_at: now,
       },
       {
+        id: 'user_4',
+        phone_number: '9876543213',
+        name: 'Shop Owner 2',
+        user_type: 'shop_owner',
+        password_hash: 'password123',
+        is_premium: false,
+        is_active: true,
+        is_verified: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'user_5',
+        phone_number: '9876543214',
+        name: 'Shop Owner 3',
+        user_type: 'shop_owner',
+        password_hash: 'password123',
+        is_premium: false,
+        is_active: true,
+        is_verified: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
         id: 'user_2',
         phone_number: '9876543211',
         name: 'End User 1',
+        user_type: 'end_user',
+        password_hash: 'password123',
+        is_premium: false,
+        is_active: true,
+        is_verified: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'user_6',
+        phone_number: '9876543215',
+        name: 'End User 2',
         user_type: 'end_user',
         password_hash: 'password123',
         is_premium: false,
@@ -499,6 +707,76 @@ class SeedDataService {
         created_at: now,
         updated_at: now,
       },
+      {
+        id: 'shop_3',
+        owner_id: 'user_4',
+        shop_name: 'Green Groceries',
+        address: 'Market Yard, Shop No. 8',
+        city: 'Your City',
+        category: 'mixed',
+        goodwill_score: 92,
+        total_ratings: 15,
+        average_rating: 4.6,
+        is_active: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'shop_4',
+        owner_id: 'user_4',
+        shop_name: 'Farming Supplies Center',
+        address: 'Market Yard, Shop No. 30',
+        city: 'Your City',
+        category: 'farming_materials',
+        goodwill_score: 85,
+        total_ratings: 12,
+        average_rating: 4.3,
+        is_active: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'shop_5',
+        owner_id: 'user_5',
+        shop_name: 'Grain Market',
+        address: 'Market Yard, Shop No. 18',
+        city: 'Your City',
+        category: 'farming_products',
+        goodwill_score: 90,
+        total_ratings: 20,
+        average_rating: 4.7,
+        is_active: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'shop_6',
+        owner_id: 'user_5',
+        shop_name: 'Tropical Fruits',
+        address: 'Market Yard, Shop No. 5',
+        city: 'Your City',
+        category: 'fruits',
+        goodwill_score: 87,
+        total_ratings: 9,
+        average_rating: 4.4,
+        is_active: true,
+        created_at: now,
+        updated_at: now,
+      },
+      {
+        id: 'shop_7',
+        owner_id: 'user_1',
+        shop_name: 'Organic Vegetables',
+        address: 'Market Yard, Shop No. 15',
+        city: 'Your City',
+        category: 'vegetables',
+        goodwill_score: 93,
+        total_ratings: 18,
+        average_rating: 4.8,
+        is_active: true,
+        created_at: now,
+        updated_at: now,
+      },
     ];
 
     StorageService.setItem(STORAGE_KEYS.SHOPS, shops);
@@ -532,6 +810,37 @@ class SeedDataService {
       {
         id: 'shop_prod_3',
         shop_id: 'shop_1',
+        product_id: 'prod_3',
+        is_available: true,
+        current_price: 90,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_4',
+        shop_id: 'shop_1',
+        product_id: 'prod_4',
+        is_available: true,
+        current_price: 80,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_5',
+        shop_id: 'shop_1',
+        product_id: 'prod_5',
+        is_available: true,
+        current_price: 60,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 2 - Vegetable Paradise
+      {
+        id: 'shop_prod_6',
+        shop_id: 'shop_2',
         product_id: 'prod_6',
         is_available: true,
         current_price: 30,
@@ -540,7 +849,7 @@ class SeedDataService {
         updated_at: isoNow,
       },
       {
-        id: 'shop_prod_4',
+        id: 'shop_prod_7',
         shop_id: 'shop_2',
         product_id: 'prod_7',
         is_available: true,
@@ -550,7 +859,7 @@ class SeedDataService {
         updated_at: isoNow,
       },
       {
-        id: 'shop_prod_5',
+        id: 'shop_prod_8',
         shop_id: 'shop_2',
         product_id: 'prod_8',
         is_available: true,
@@ -560,30 +869,266 @@ class SeedDataService {
         updated_at: isoNow,
       },
       {
-        id: 'shop_prod_6',
+        id: 'shop_prod_9',
         shop_id: 'shop_2',
-        product_id: 'prod_3',
+        product_id: 'prod_9',
         is_available: true,
-        current_price: 90,
+        current_price: 35,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_10',
+        shop_id: 'shop_2',
+        product_id: 'prod_10',
+        is_available: true,
+        current_price: 25,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 3 - Green Groceries (Mixed)
+      {
+        id: 'shop_prod_11',
+        shop_id: 'shop_3',
+        product_id: 'prod_1',
+        is_available: true,
+        current_price: 115,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_12',
+        shop_id: 'shop_3',
+        product_id: 'prod_6',
+        is_available: true,
+        current_price: 32,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_13',
+        shop_id: 'shop_3',
+        product_id: 'prod_7',
+        is_available: true,
+        current_price: 30,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_14',
+        shop_id: 'shop_3',
+        product_id: 'prod_14',
+        is_available: true,
+        current_price: 45,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 4 - Farming Supplies Center
+      {
+        id: 'shop_prod_15',
+        shop_id: 'shop_4',
+        product_id: 'prod_11',
+        is_available: true,
+        current_price: 250,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_16',
+        shop_id: 'shop_4',
+        product_id: 'prod_12',
+        is_available: true,
+        current_price: 150,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_17',
+        shop_id: 'shop_4',
+        product_id: 'prod_13',
+        is_available: true,
+        current_price: 180,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 5 - Grain Market
+      {
+        id: 'shop_prod_18',
+        shop_id: 'shop_5',
+        product_id: 'prod_14',
+        is_available: true,
+        current_price: 42,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_19',
+        shop_id: 'shop_5',
+        product_id: 'prod_15',
+        is_available: true,
+        current_price: 50,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_20',
+        shop_id: 'shop_5',
+        product_id: 'prod_32',
+        is_available: true,
+        current_price: 38,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_21',
+        shop_id: 'shop_5',
+        product_id: 'prod_35',
+        is_available: true,
+        current_price: 120,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 6 - Tropical Fruits
+      {
+        id: 'shop_prod_22',
+        shop_id: 'shop_6',
+        product_id: 'prod_4',
+        is_available: true,
+        current_price: 85,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_23',
+        shop_id: 'shop_6',
+        product_id: 'prod_17',
+        is_available: true,
+        current_price: 35,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_24',
+        shop_id: 'shop_6',
+        product_id: 'prod_18',
+        is_available: true,
+        current_price: 55,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      // Shop 7 - Organic Vegetables
+      {
+        id: 'shop_prod_25',
+        shop_id: 'shop_7',
+        product_id: 'prod_9',
+        is_available: true,
+        current_price: 38,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_26',
+        shop_id: 'shop_7',
+        product_id: 'prod_25',
+        is_available: true,
+        current_price: 20,
+        last_price_update_at: isoNow,
+        created_at: isoNow,
+        updated_at: isoNow,
+      },
+      {
+        id: 'shop_prod_27',
+        shop_id: 'shop_7',
+        product_id: 'prod_49',
+        is_available: true,
+        current_price: 60,
         last_price_update_at: isoNow,
         created_at: isoNow,
         updated_at: isoNow,
       },
     ];
 
-    const priceUpdates: PriceUpdate[] = shopProducts.map(sp => ({
-      id: generateId('price_update'),
-      shop_product_id: sp.id,
-      price: sp.current_price || 0,
-      updated_by_type: 'shop_owner',
-      updated_by_id: 'user_1',
-      payment_status: 'paid',
-      payment_amount: 1,
-      created_at: sp.last_price_update_at || isoNow,
-    }));
+    const priceUpdates: PriceUpdate[] = shopProducts.map(sp => {
+      // Determine owner based on shop_id
+      let ownerId = 'user_1';
+      if (sp.shop_id === 'shop_3' || sp.shop_id === 'shop_4') {
+        ownerId = 'user_4';
+      } else if (sp.shop_id === 'shop_5' || sp.shop_id === 'shop_6') {
+        ownerId = 'user_5';
+      }
+      
+      return {
+        id: generateId('price_update'),
+        shop_product_id: sp.id,
+        price: sp.current_price || 0,
+        updated_by_type: 'shop_owner',
+        updated_by_id: ownerId,
+        payment_status: 'paid',
+        payment_amount: 1,
+        created_at: sp.last_price_update_at || isoNow,
+      };
+    });
 
     StorageService.setItem(STORAGE_KEYS.SHOP_PRODUCTS, shopProducts);
     StorageService.setItem(STORAGE_KEYS.PRICE_UPDATES, priceUpdates);
+  }
+
+  seedSubscriptions(): void {
+    const now = new Date();
+    const isoNow = now.toISOString();
+    const existingSubscriptions = StorageService.getSubscriptions();
+    
+    const subscriptions: Subscription[] = [
+      {
+        id: generateId('subscription'),
+        user_id: 'user_3',
+        status: 'active',
+        amount: 100,
+        started_at: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        expires_at: new Date(now.getTime() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+        auto_renew: true,
+        created_at: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        updated_at: isoNow,
+      },
+      {
+        id: generateId('subscription'),
+        user_id: 'user_admin',
+        status: 'active',
+        amount: 100,
+        started_at: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        expires_at: new Date(now.getTime() + 25 * 24 * 60 * 60 * 1000).toISOString(),
+        auto_renew: true,
+        created_at: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        updated_at: isoNow,
+      },
+    ];
+
+    // Merge with existing subscriptions (only add if user doesn't have an active subscription)
+    subscriptions.forEach(subscription => {
+      const existingActive = existingSubscriptions.find(
+        s => s.user_id === subscription.user_id && s.status === 'active'
+      );
+      if (!existingActive) {
+        StorageService.saveSubscription(subscription);
+      }
+    });
   }
 
   seedAll(force = false): void {
@@ -597,7 +1142,14 @@ class SeedDataService {
     this.seedUsers();
     this.seedShops();
     this.seedShopInventory();
+    this.seedSubscriptions();
     console.log('Seed data created successfully!');
+    console.log(`- ${StorageService.getProducts().length} products`);
+    console.log(`- ${StorageService.getUsers().length} users`);
+    console.log(`- ${StorageService.getShops().length} shops`);
+    console.log(`- ${StorageService.getShopProducts().length} shop products`);
+    console.log(`- ${StorageService.getPriceUpdates().length} price updates`);
+    console.log(`- ${StorageService.getSubscriptions().length} subscriptions`);
   }
 
   ensureAdminUser(): void {

@@ -39,6 +39,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Always ensure admin user exists
     SeedDataService.ensureAdminUser();
     loadSession();
+    
+    // Auto-login for testing in development mode
+    if (APP_CONFIG.AUTO_LOGIN_ENABLED && !StorageService.getSession()) {
+      autoLoginForTesting();
+    }
   }, []);
 
   const loadSession = () => {
@@ -143,7 +148,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Trim OTP to handle whitespace
       const enteredOtp = (otp || '').trim();
-      if (enteredOtp !== APP_CONFIG.MOCK_OTP) {
+      // In development, accept any 6-digit OTP for testing
+      const isValidOtp = process.env.NODE_ENV === 'development' 
+        ? /^\d{6}$/.test(enteredOtp)
+        : enteredOtp === APP_CONFIG.MOCK_OTP;
+      
+      if (!isValidOtp) {
         return { success: false, error: `Invalid OTP. Use ${APP_CONFIG.MOCK_OTP} for testing.` };
       }
 
@@ -270,6 +280,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Update user error:', error);
       throw error;
+    }
+  };
+
+  /**
+   * Auto-login for testing in development mode
+   */
+  const autoLoginForTesting = async () => {
+    if (process.env.NODE_ENV !== 'development') return;
+
+    try {
+      // Check URL parameters for auto-login credentials
+      const urlParams = new URLSearchParams(window.location.search);
+      const autoLoginPhone = urlParams.get('autoLoginPhone') || APP_CONFIG.AUTO_LOGIN_PHONE;
+      const autoLoginPassword = urlParams.get('autoLoginPassword') || APP_CONFIG.AUTO_LOGIN_PASSWORD;
+
+      // Try to find or create test user
+      let testUser = await findUserByPhone(autoLoginPhone);
+      
+      if (!testUser) {
+        // Create test user if doesn't exist
+        testUser = await createUserRecord({
+          phone: autoLoginPhone,
+          name: 'Test User',
+          userType: 'end_user',
+          password: autoLoginPassword,
+          isVerified: true,
+          isActive: true,
+          isPremium: false,
+        });
+      }
+
+      // Auto-login
+      const result = await login(autoLoginPhone, autoLoginPassword);
+      if (result.success) {
+        console.log('✅ Auto-logged in for testing:', testUser.phone_number);
+      }
+    } catch (error) {
+      console.warn('Auto-login failed (this is OK if no test user exists):', error);
     }
   };
 

@@ -20,9 +20,12 @@ export const STORAGE_KEYS = {
 export const APP_CONFIG = {
   PRICE_UPDATE_INCENTIVE: 1.0, // ₹1 per price update
   PREMIUM_SUBSCRIPTION_PRICE: 100.0, // ₹100 per month
-  MOCK_OTP: '123456', // For testing
+  MOCK_OTP: '123456', // For testing - accepts any 6 digits in development
   MOCK_PAYMENT_SUCCESS_RATE: 0.9, // 90% success rate for testing (0.0 to 1.0)
   MOCK_PAYMENT_DELAY_MS: 1500, // Simulate payment processing delay
+  AUTO_LOGIN_ENABLED: process.env.NODE_ENV === 'development', // Auto-login in development mode
+  AUTO_LOGIN_PHONE: '9999999999', // Default test phone for auto-login
+  AUTO_LOGIN_PASSWORD: 'test123', // Default test password for auto-login
 };
 
 // Validation

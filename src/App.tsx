@@ -25,6 +25,9 @@ import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
 import FavoritesPage from './pages/FavoritesPage';
 import NotificationCenterPage from './pages/NotificationCenterPage';
 import NotificationPreferencesPage from './pages/NotificationPreferencesPage';
+import SettingsPage from './pages/SettingsPage';
+import AboutPage from './pages/AboutPage';
+import HelpSupportPage from './pages/HelpSupportPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -267,6 +270,30 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings/about"
+        element={
+          <ProtectedRoute>
+            <AboutPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings/help"
+        element={
+          <ProtectedRoute>
+            <HelpSupportPage />
           </ProtectedRoute>
         }
       />

@@ -6,6 +6,8 @@ import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceServic
 import { getProductsByCategory, getAllProducts } from '../services/ProductService';
 import { formatCurrency } from '../utils/format';
 import NotificationBell from '../components/navigation/NotificationBell';
+import SearchInput from '../components/forms/SearchInput';
+import { saveSearchHistory } from '../services/SearchService';
 
 interface CategoryInfo {
   id: string;
@@ -224,13 +226,18 @@ export default function EndUserHome() {
           {/* Search Bar */}
           <div className="form-field" style={{ marginTop: '0.5rem' }}>
             <label htmlFor="product-search">Search Products</label>
-            <input
-              id="product-search"
-              className="form-input"
-              type="text"
-              placeholder="Search products by name, category, or unit..."
+            <SearchInput
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={setSearchQuery}
+              onSearch={(query) => {
+                if (user) {
+                  saveSearchHistory(user.id, query, filteredPrices.length);
+                }
+              }}
+              placeholder="Search products by name, category, or unit..."
+              showSuggestions={true}
+              showHistory={true}
+              showPopular={true}
             />
           </div>
 

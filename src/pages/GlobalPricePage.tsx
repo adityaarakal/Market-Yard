@@ -5,6 +5,8 @@ import { colors } from '../theme';
 import { getGlobalPriceSummary, GlobalPriceEntry } from '../services/PriceService';
 import { Product } from '../types';
 import { formatCurrency } from '../utils/format';
+import SearchInput from '../components/forms/SearchInput';
+import { saveSearchHistory } from '../services/SearchService';
 
 type SortOption = 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
 type CategoryFilter = Product['category'] | 'all';
@@ -167,13 +169,18 @@ export default function GlobalPricePage() {
           {/* Search Bar */}
           <div className="form-field">
             <label htmlFor="price-search">Search Products</label>
-            <input
-              id="price-search"
-              className="form-input"
-              type="text"
-              placeholder="Search products by name, category, or unit..."
+            <SearchInput
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={setSearchQuery}
+              onSearch={(query) => {
+                if (user) {
+                  saveSearchHistory(user.id, query, filteredPrices.length);
+                }
+              }}
+              placeholder="Search products by name, category, or unit..."
+              showSuggestions={true}
+              showHistory={true}
+              showPopular={true}
             />
           </div>
 

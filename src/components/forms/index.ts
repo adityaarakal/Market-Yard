@@ -7,6 +7,7 @@ export { default as Checkbox } from './Checkbox';
 export { default as Radio } from './Radio';
 export { default as DatePicker } from './DatePicker';
 export { default as SearchInput } from './SearchInput';
+export { default as ImagePicker } from './ImagePicker';
 
 export type { TextInputProps } from './TextInput';
 export type { PhoneInputProps } from './PhoneInput';
@@ -17,4 +18,5 @@ export type { CheckboxProps } from './Checkbox';
 export type { RadioOption, RadioProps } from './Radio';
 export type { DatePickerProps } from './DatePicker';
 export type { SearchInputProps } from './SearchInput';
+export type { ImagePickerProps } from './ImagePicker';
 

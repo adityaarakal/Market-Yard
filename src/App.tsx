@@ -28,6 +28,7 @@ import NotificationPreferencesPage from './pages/NotificationPreferencesPage';
 import SettingsPage from './pages/SettingsPage';
 import AboutPage from './pages/AboutPage';
 import HelpSupportPage from './pages/HelpSupportPage';
+import FeatureFlagsPage from './pages/FeatureFlagsPage';
 import './App.css';
 
 // Helper function to check if user can access a route
@@ -294,6 +295,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <HelpSupportPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings/feature-flags"
+        element={
+          <ProtectedRoute>
+            <FeatureFlagsPage />
           </ProtectedRoute>
         }
       />

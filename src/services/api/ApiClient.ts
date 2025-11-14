@@ -249,6 +249,13 @@ class ApiClient {
   setLocalStorageMode(enabled: boolean): void {
     this.useLocalStorage = enabled;
   }
+
+  /**
+   * Static method to set localStorage mode (for FeatureFlagsService)
+   */
+  static setLocalStorageMode(enabled: boolean): void {
+    apiClient.setLocalStorageMode(enabled);
+  }
 }
 
 const apiClient = new ApiClient();

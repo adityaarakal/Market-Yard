@@ -26,6 +26,18 @@ export const APP_CONFIG = {
   AUTO_LOGIN_ENABLED: process.env.NODE_ENV === 'development', // Auto-login in development mode
   AUTO_LOGIN_PHONE: '9999999999', // Default test phone for auto-login
   AUTO_LOGIN_PASSWORD: 'test123', // Default test password for auto-login
+  // Feature Flags (can be overridden by environment variables)
+  FEATURE_FLAGS: {
+    USE_API_MODE: process.env.REACT_APP_USE_API === 'true',
+    ENABLE_IMAGE_CACHE: process.env.REACT_APP_ENABLE_IMAGE_CACHE !== 'false',
+    ENABLE_SEARCH_HISTORY: process.env.REACT_APP_ENABLE_SEARCH_HISTORY !== 'false',
+    ENABLE_NOTIFICATIONS: process.env.REACT_APP_ENABLE_NOTIFICATIONS !== 'false',
+    ENABLE_FAVORITES: process.env.REACT_APP_ENABLE_FAVORITES !== 'false',
+    ENABLE_PRICE_COMPARISON: process.env.REACT_APP_ENABLE_PRICE_COMPARISON !== 'false',
+    ENABLE_ADVANCED_SEARCH: process.env.REACT_APP_ENABLE_ADVANCED_SEARCH !== 'false',
+    ENABLE_IMAGE_COMPRESSION: process.env.REACT_APP_ENABLE_IMAGE_COMPRESSION !== 'false',
+    ENABLE_OFFLINE_MODE: process.env.REACT_APP_ENABLE_OFFLINE_MODE !== 'false',
+  },
 };
 
 // Validation

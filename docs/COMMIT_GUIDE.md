@@ -71,6 +71,23 @@ git push              # Push the commit
 
 ## Scripts Available
 
+- `scripts/commit-and-push.ps1` - **RECOMMENDED**: Commits and pushes automatically, avoids confusion
 - `scripts/commit.ps1` - Single-line commit helper
 - `scripts/commit-multi.ps1` - Multi-line commit helper
+
+## Recommended Workflow
+
+**Use the automated script to avoid confusion:**
+```powershell
+.\scripts\commit-and-push.ps1 "feat: Your commit message"
+```
+
+This script:
+1. Adds all changes
+2. Commits with your message
+3. Verifies the commit exists
+4. Pushes automatically
+5. Shows clear success/failure messages
+
+**No more "interrupted" confusion!**
 

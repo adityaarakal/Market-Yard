@@ -128,6 +128,10 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             id={props.id}
             name={props.name}
             autoComplete={props.autoComplete}
+            aria-label={label || props['aria-label']}
+            aria-invalid={displayError ? 'true' : 'false'}
+            aria-describedby={displayError ? `${props.id}-error` : helperText ? `${props.id}-helper` : undefined}
+            aria-required={required}
             style={{
               flex: 1,
               padding: 'var(--spacing-sm) var(--spacing-md)',
@@ -154,6 +158,9 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         </div>
         {displayError && (
           <div
+            id={props.id ? `${props.id}-error` : undefined}
+            role="alert"
+            aria-live="polite"
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',
@@ -165,6 +172,7 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         )}
         {helperText && !displayError && (
           <div
+            id={props.id ? `${props.id}-helper` : undefined}
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',

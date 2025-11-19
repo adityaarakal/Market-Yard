@@ -60,6 +60,10 @@ const Dropdown = forwardRef<HTMLSelectElement, DropdownProps>(
             value={value}
             onChange={handleChange}
             {...props}
+            aria-label={label || props['aria-label']}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={error ? `${props.id}-error` : helperText ? `${props.id}-helper` : undefined}
+            aria-required={required}
             style={{
               width: '100%',
               padding: 'var(--spacing-sm) var(--spacing-md)',
@@ -119,6 +123,9 @@ const Dropdown = forwardRef<HTMLSelectElement, DropdownProps>(
         </div>
         {error && (
           <div
+            id={props.id ? `${props.id}-error` : undefined}
+            role="alert"
+            aria-live="polite"
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',
@@ -130,6 +137,7 @@ const Dropdown = forwardRef<HTMLSelectElement, DropdownProps>(
         )}
         {helperText && !error && (
           <div
+            id={props.id ? `${props.id}-helper` : undefined}
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',

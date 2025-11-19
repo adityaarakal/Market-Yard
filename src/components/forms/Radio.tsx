@@ -65,6 +65,9 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
                 disabled={option.disabled || props.disabled}
                 required={required}
                 {...props}
+                aria-label={option.label}
+                aria-invalid={error ? 'true' : 'false'}
+                aria-describedby={error ? `${props.id || name}-error` : helperText ? `${props.id || name}-helper` : undefined}
                 style={{
                   width: '20px',
                   height: '20px',
@@ -102,6 +105,9 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
         </div>
         {error && (
           <div
+            id={props.id ? `${props.id}-error` : `${name}-error`}
+            role="alert"
+            aria-live="polite"
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',
@@ -113,6 +119,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
         )}
         {helperText && !error && (
           <div
+            id={props.id ? `${props.id}-helper` : `${name}-helper`}
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',

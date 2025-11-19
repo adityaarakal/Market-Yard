@@ -41,6 +41,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             checked={checked}
             onChange={handleChange}
             {...props}
+            aria-label={label || props['aria-label']}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={error ? `${props.id}-error` : helperText ? `${props.id}-helper` : undefined}
             style={{
               width: '20px',
               height: '20px',
@@ -75,6 +78,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               )}
               {error && (
                 <div
+                  id={props.id ? `${props.id}-error` : undefined}
+                  role="alert"
+                  aria-live="polite"
                   style={{
                     marginTop: 'var(--spacing-xs)',
                     fontSize: '0.875rem',

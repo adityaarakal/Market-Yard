@@ -103,8 +103,8 @@ export default function ImagePicker({
         style={{
           position: 'relative',
           width: '100%',
-          aspectRatio: '4/3',
-          borderRadius: 'var(--radius-md)',
+          aspectRatio: type === 'user' ? '1/1' : '4/3',
+          borderRadius: type === 'user' ? '50%' : 'var(--radius-md)',
           overflow: 'hidden',
           backgroundColor: colors.surface,
           border: `2px dashed ${disabled ? colors.border : colors.primary}`,
@@ -114,6 +114,8 @@ export default function ImagePicker({
           justifyContent: 'center',
           transition: 'all 0.2s',
           opacity: disabled ? 0.6 : 1,
+          maxWidth: type === 'user' ? '200px' : '100%',
+          margin: type === 'user' ? '0 auto' : '0',
         }}
         onMouseEnter={e => {
           if (!disabled) {

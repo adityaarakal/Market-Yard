@@ -148,9 +148,16 @@ export default function FavoritesPage() {
                   <EmptyState
                     icon="🛒"
                     title="No favorite products"
-                    message="Start adding products to your favorites to see them here."
-                    actionLabel="Browse Products"
-                    onAction={() => navigate('/end-user/global-prices')}
+                    description="Start adding products to your favorites to see them here."
+                    action={
+                      <button
+                        type="button"
+                        className="button button--primary"
+                        onClick={() => navigate('/end-user/global-prices')}
+                      >
+                        Browse Products
+                      </button>
+                    }
                   />
                 ) : (
                   <div
@@ -168,7 +175,7 @@ export default function FavoritesPage() {
                             product={product}
                             minPrice={priceInfo.minPrice}
                             maxPrice={priceInfo.maxPrice}
-                            bestShop={priceInfo.bestShop}
+                            bestShop={priceInfo.bestShop || undefined}
                             shopCount={priceInfo.shopCount}
                             onClick={() => navigate(`/end-user/product/${product.id}`)}
                             variant="default"
@@ -219,9 +226,16 @@ export default function FavoritesPage() {
                   <EmptyState
                     icon="🏪"
                     title="No favorite shops"
-                    message="Start adding shops to your favorites to see them here."
-                    actionLabel="Browse Shops"
-                    onAction={() => navigate('/end-user/global-prices')}
+                    description="Start adding shops to your favorites to see them here."
+                    action={
+                      <button
+                        type="button"
+                        className="button button--primary"
+                        onClick={() => navigate('/end-user/global-prices')}
+                      >
+                        Browse Shops
+                      </button>
+                    }
                   />
                 ) : (
                   <div
@@ -255,9 +269,16 @@ export default function FavoritesPage() {
               <EmptyState
                 icon="⭐"
                 title="No favorites yet"
-                message="Start adding products and shops to your favorites to see them here."
-                actionLabel="Browse Products"
-                onAction={() => navigate('/end-user/global-prices')}
+                description="Start adding products and shops to your favorites to see them here."
+                action={
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    onClick={() => navigate('/end-user/global-prices')}
+                  >
+                    Browse Products
+                  </button>
+                }
               />
             )}
           </>

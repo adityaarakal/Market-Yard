@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import StorageService from '../services/StorageService';
 import { colors, theme } from '../theme';
+import ImagePicker from '../components/forms/ImagePicker';
 
 const containerStyle: React.CSSProperties = {
   minHeight: '100vh',
@@ -79,6 +80,7 @@ export default function ProfilePage() {
   const [profileForm, setProfileForm] = useState({
     name: user?.name || '',
     email: user?.email || '',
+    profilePicture: user?.profile_picture_url || '',
   });
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
@@ -116,6 +118,7 @@ export default function ProfilePage() {
       ...user,
       name: trimmedName,
       email: trimmedEmail || undefined,
+      profile_picture_url: profileForm.profilePicture || undefined,
       updated_at: new Date().toISOString(),
     };
 
@@ -222,6 +225,21 @@ export default function ProfilePage() {
               Phone Number
             </label>
             <input id="profile-phone" type="tel" value={user.phone_number} style={inputStyle} disabled />
+            <label style={labelStyle}>
+              Profile Picture
+            </label>
+            <ImagePicker
+              value={profileForm.profilePicture}
+              onChange={(dataUrl) => setProfileForm({ ...profileForm, profilePicture: dataUrl })}
+              type="user"
+              maxSize={2}
+              compressionOptions={{
+                maxWidth: 400,
+                maxHeight: 400,
+                quality: 0.9,
+              }}
+              placeholder="Upload profile picture"
+            />
             <div style={buttonRowStyle}>
               <button type="submit" style={primaryButtonStyle}>
                 Save Changes

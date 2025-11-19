@@ -214,7 +214,7 @@ export default function NotificationCenterPage() {
           <EmptyState
             icon="🔔"
             title={activeTab === 'unread' ? 'No unread notifications' : 'No notifications'}
-            message={
+            description={
               activeTab === 'unread'
                 ? 'You have no unread notifications. Great job staying on top of things!'
                 : 'You don\'t have any notifications yet. They will appear here when you receive updates.'

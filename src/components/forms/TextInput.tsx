@@ -40,6 +40,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           type="text"
           {...props}
           className={`form-input ${error ? 'form-input--error' : ''} ${className || ''}`}
+          aria-label={label || props['aria-label']}
+          aria-invalid={error ? 'true' : 'false'}
+          aria-describedby={error ? `${props.id}-error` : helperText ? `${props.id}-helper` : undefined}
           style={{
             width: '100%',
             padding: 'var(--spacing-sm) var(--spacing-md)',
@@ -70,6 +73,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         />
         {error && (
           <div
+            id={props.id ? `${props.id}-error` : undefined}
+            role="alert"
+            aria-live="polite"
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',
@@ -81,6 +87,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
         {helperText && !error && (
           <div
+            id={props.id ? `${props.id}-helper` : undefined}
             style={{
               marginTop: 'var(--spacing-xs)',
               fontSize: '0.875rem',

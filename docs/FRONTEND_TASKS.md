@@ -53,20 +53,20 @@ This document tracks all frontend development tasks for the Market Yard Progress
   - [x] ~~Create seed data function for initial testing~~ *(SeedDataService implemented)*
   - [x] ~~Implement data export/import utilities~~ *(MigrationService implemented)*
 
-- [ ] **TASK-004**: Set up UI foundation
-  - [ ] Install UI library (React Native Paper or NativeBase)
-  - [ ] Define color scheme and theme
-  - [ ] Create typography system
-  - [ ] Set up reusable components (Button, Input, Card, etc.)
-  - [ ] Create layout components (Container, Header, Footer)
-  - [ ] Set up loading and error states
+- [x] **TASK-004**: Set up UI foundation *(Completed - React PWA)*
+  - [x] ~~Install UI library (React Native Paper or NativeBase)~~ *(Not needed - CSS-based design system)*
+  - [x] Define color scheme and theme *(Theme defined in src/theme/colors.ts)*
+  - [x] Create typography system *(CSS variables and theme system)*
+  - [x] Set up reusable components (Button, Input, Card, etc.) *(All components in src/components/)*
+  - [x] Create layout components (Container, Header, Footer) *(Header, navigation components created)*
+  - [x] Set up loading and error states *(LoadingSpinner, ErrorMessage, Toast components)*
 
-- [ ] **TASK-005**: Create authentication context/state management
-  - [ ] Set up React Context for auth state
-  - [ ] Implement login/logout functions
-  - [ ] Create user session management
-  - [ ] Implement "Remember me" functionality
-  - [ ] Store auth token in AsyncStorage
+- [x] **TASK-005**: Create authentication context/state management *(Completed)*
+  - [x] Set up React Context for auth state *(AuthContext.tsx)*
+  - [x] Implement login/logout functions *(AuthContext with login/logout)*
+  - [x] Create user session management *(Session stored in localStorage)*
+  - [x] Implement "Remember me" functionality *(Session persistence)*
+  - [x] Store auth token in AsyncStorage *(localStorage used for web)*
 
 ---
 
@@ -99,7 +99,7 @@ This document tracks all frontend development tasks for the Market Yard Progress
 - [x] **TASK-104**: Profile Management Screen
   - [x] View profile information
   - [x] Edit profile form
-  - [ ] Profile picture upload (local storage)
+  - [x] Profile picture upload (local storage)
   - [x] Change password (update in storage)
   - [x] View subscription status
   - [x] Logout functionality

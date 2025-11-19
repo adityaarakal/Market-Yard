@@ -1,35 +1,45 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import WelcomePage from './pages/WelcomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ShopOwnerDashboard from './pages/ShopOwnerDashboard';
-import EndUserHome from './pages/EndUserHome';
-import ProfilePage from './pages/ProfilePage';
-import ShopRegistrationPage from './pages/ShopRegistrationPage';
-import ShopProductManagementPage from './pages/ShopProductManagementPage';
-import ProductMasterListPage from './pages/ProductMasterListPage';
-import DailyPriceUpdatePage from './pages/DailyPriceUpdatePage';
-import PriceHistoryPage from './pages/PriceHistoryPage';
-import EarningsDashboardPage from './pages/EarningsDashboardPage';
-import GlobalPricePage from './pages/GlobalPricePage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CategoriesPage from './pages/CategoriesPage';
-import PremiumUpgradePage from './pages/PremiumUpgradePage';
-import ShopSpecificPriceViewPage from './pages/ShopSpecificPriceViewPage';
-import AdvancedPriceComparisonPage from './pages/AdvancedPriceComparisonPage';
-import PriceHistoryTrendsPage from './pages/PriceHistoryTrendsPage';
-import AdvancedInsightsDashboardPage from './pages/AdvancedInsightsDashboardPage';
-import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
-import FavoritesPage from './pages/FavoritesPage';
-import NotificationCenterPage from './pages/NotificationCenterPage';
-import NotificationPreferencesPage from './pages/NotificationPreferencesPage';
-import SettingsPage from './pages/SettingsPage';
-import AboutPage from './pages/AboutPage';
-import HelpSupportPage from './pages/HelpSupportPage';
-import FeatureFlagsPage from './pages/FeatureFlagsPage';
+import LoadingSpinner from './components/feedback/LoadingSpinner';
 import './App.css';
+
+// Lazy load pages for code splitting
+const WelcomePage = lazy(() => import('./pages/WelcomePage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ShopOwnerDashboard = lazy(() => import('./pages/ShopOwnerDashboard'));
+const EndUserHome = lazy(() => import('./pages/EndUserHome'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ShopRegistrationPage = lazy(() => import('./pages/ShopRegistrationPage'));
+const ShopProductManagementPage = lazy(() => import('./pages/ShopProductManagementPage'));
+const ProductMasterListPage = lazy(() => import('./pages/ProductMasterListPage'));
+const DailyPriceUpdatePage = lazy(() => import('./pages/DailyPriceUpdatePage'));
+const PriceHistoryPage = lazy(() => import('./pages/PriceHistoryPage'));
+const EarningsDashboardPage = lazy(() => import('./pages/EarningsDashboardPage'));
+const GlobalPricePage = lazy(() => import('./pages/GlobalPricePage'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'));
+const PremiumUpgradePage = lazy(() => import('./pages/PremiumUpgradePage'));
+const ShopSpecificPriceViewPage = lazy(() => import('./pages/ShopSpecificPriceViewPage'));
+const AdvancedPriceComparisonPage = lazy(() => import('./pages/AdvancedPriceComparisonPage'));
+const PriceHistoryTrendsPage = lazy(() => import('./pages/PriceHistoryTrendsPage'));
+const AdvancedInsightsDashboardPage = lazy(() => import('./pages/AdvancedInsightsDashboardPage'));
+const SubscriptionManagementPage = lazy(() => import('./pages/SubscriptionManagementPage'));
+const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
+const NotificationCenterPage = lazy(() => import('./pages/NotificationCenterPage'));
+const NotificationPreferencesPage = lazy(() => import('./pages/NotificationPreferencesPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const HelpSupportPage = lazy(() => import('./pages/HelpSupportPage'));
+const FeatureFlagsPage = lazy(() => import('./pages/FeatureFlagsPage'));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+    <LoadingSpinner size="large" />
+  </div>
+);
 
 // Helper function to check if user can access a route
 function canAccessRoute(userType: string | undefined, requiredUserType?: 'shop_owner' | 'end_user'): boolean {
@@ -50,7 +60,7 @@ function ProtectedRoute({ children, requiredUserType }: { children: React.ReactE
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>;
+    return <PageLoader />;
   }
 
   if (!isAuthenticated) {
@@ -73,7 +83,7 @@ function PublicRoute({ children }: { children: React.ReactElement }) {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>;
+    return <PageLoader />;
   }
 
   if (isAuthenticated) {
@@ -89,7 +99,8 @@ function PublicRoute({ children }: { children: React.ReactElement }) {
 
 function AppRoutes() {
   return (
-    <Routes>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
       <Route
         path="/welcome"
         element={
@@ -315,7 +326,8 @@ function AppRoutes() {
         }
       />
       <Route path="/" element={<Navigate to="/welcome" replace />} />
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 }
 

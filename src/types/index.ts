@@ -6,6 +6,7 @@ export interface User {
   name: string;
   user_type: 'shop_owner' | 'end_user' | 'staff' | 'admin';
   password_hash?: string;
+  profile_picture_url?: string;
   is_premium: boolean;
   subscription_expires_at?: string;
   is_active: boolean;

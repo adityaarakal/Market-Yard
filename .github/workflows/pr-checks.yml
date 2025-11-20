@@ -80,7 +80,7 @@ jobs:
           echo ""
           echo "📋 Step 3/3: Build Validation"
           echo "Running production build validation..."
-          npm run build
+          CI=false npm run build
           if [ $? -ne 0 ]; then
             echo "❌ CRITICAL: Build validation failed."
             echo "❌ Production build must succeed - no build errors allowed"

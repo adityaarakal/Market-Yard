@@ -28,10 +28,23 @@ PROTECTED_FILES=(
 mkdir -p "$LOCK_DIR"
 
 # Function to calculate file checksum
+# Normalizes line endings to prevent false positives on Windows (CRLF vs LF)
 calculate_checksum() {
   local file="$1"
   if [ -f "$file" ]; then
-    sha256sum "$file" 2>/dev/null | cut -d' ' -f1 || md5sum "$file" 2>/dev/null | cut -d' ' -f1 || echo "0"
+    # Normalize line endings: convert CRLF to LF before calculating checksum
+    # This ensures checksums match regardless of OS line ending differences
+    if command -v dos2unix >/dev/null 2>&1; then
+      # Use dos2unix if available
+      normalized_content=$(dos2unix < "$file" 2>/dev/null || cat "$file" | tr -d '\r')
+    else
+      # Fallback: use tr to remove carriage returns
+      normalized_content=$(cat "$file" | tr -d '\r')
+    fi
+    # Calculate checksum on normalized content
+    echo "$normalized_content" | sha256sum 2>/dev/null | cut -d' ' -f1 || \
+    echo "$normalized_content" | md5sum 2>/dev/null | cut -d' ' -f1 || \
+    echo "0"
   else
     echo "0"
   fi

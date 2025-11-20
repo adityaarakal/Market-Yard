@@ -28,11 +28,27 @@ PROTECTED_FILES=(
 mkdir -p "$LOCK_DIR"
 
 # Function to calculate file checksum
+# Uses Git's version from index to avoid line ending issues on Windows
 calculate_checksum() {
   local file="$1"
-  if [ -f "$file" ]; then
-    sha256sum "$file" 2>/dev/null | cut -d' ' -f1 || md5sum "$file" 2>/dev/null | cut -d' ' -f1 || echo "0"
+  local full_path="$REPO_ROOT/$file"
+  
+  if [ ! -f "$full_path" ]; then
+    echo "0"
+    return
+  fi
+  
+  # Use Git's version from index (HEAD) to avoid line ending differences
+  # This ensures checksums match regardless of OS line ending conversions
+  if git ls-files --error-unmatch "$file" >/dev/null 2>&1; then
+    # File is tracked in Git - use Git's version from index
+    git show ":$file" 2>/dev/null | sha256sum 2>/dev/null | cut -d' ' -f1 || \
+    git show ":$file" 2>/dev/null | md5sum 2>/dev/null | cut -d' ' -f1 || \
+    echo "0"
   else
+    # File not in Git - use working directory version (normalize line endings)
+    cat "$full_path" | tr -d '\r' | sha256sum 2>/dev/null | cut -d' ' -f1 || \
+    cat "$full_path" | tr -d '\r' | md5sum 2>/dev/null | cut -d' ' -f1 || \
     echo "0"
   fi
 }

@@ -1172,7 +1172,22 @@ class SeedDataService {
         updated_at: now,
       };
       StorageService.saveUser(newAdminUser);
-      console.log('Admin user added to existing data');
+      console.log('✅ Admin user created. Phone: 9999999999, Password: admin123');
+    } else {
+      // Ensure admin user has correct properties
+      if (adminUser.password_hash !== 'admin123' || adminUser.user_type !== 'admin') {
+        const updatedAdmin: User = {
+          ...adminUser,
+          password_hash: 'admin123',
+          user_type: 'admin',
+          is_active: true,
+          is_verified: true,
+          is_premium: true,
+          updated_at: new Date().toISOString(),
+        };
+        StorageService.saveUser(updatedAdmin);
+        console.log('✅ Admin user updated with correct credentials');
+      }
     }
   }
 

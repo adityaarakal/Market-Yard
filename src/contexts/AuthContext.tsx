@@ -35,9 +35,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load session on app start
   useEffect(() => {
-    SeedDataService.seedAll();
-    // Always ensure admin user exists
+    // Always ensure admin user exists FIRST (before any other operations)
     SeedDataService.ensureAdminUser();
+    
+    // Seed other data
+    SeedDataService.seedAll();
+    
+    // Load existing session
     loadSession();
     
     // Auto-login for testing in development mode
@@ -67,10 +71,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
       
-      // Ensure seed data exists (including admin user)
-      SeedDataService.seedAll(false);
-      // Always ensure admin user exists
+      // Always ensure admin user exists FIRST
       SeedDataService.ensureAdminUser();
+      
+      // Ensure seed data exists
+      SeedDataService.seedAll(false);
       
       const foundUser = await findUserByPhone(normalizedPhone);
 
@@ -131,10 +136,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       const normalizedPhone = phone.replace(/\D/g, '');
       
-      // Ensure seed data exists (including admin user)
-      SeedDataService.seedAll(false);
-      // Always ensure admin user exists
+      // Always ensure admin user exists FIRST
       SeedDataService.ensureAdminUser();
+      
+      // Ensure seed data exists
+      SeedDataService.seedAll(false);
       
       const foundUser = await findUserByPhone(normalizedPhone);
 

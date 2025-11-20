@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { colors } from '../theme';
 import SeedDataService from '../services/SeedDataService';
 import StorageService from '../services/StorageService';
 
 export default function WelcomePage() {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [hasData, setHasData] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedUserType, setSelectedUserType] = useState<'shop_owner' | 'end_user'>('shop_owner');
@@ -13,7 +15,16 @@ export default function WelcomePage() {
   useEffect(() => {
     const products = StorageService.getProducts();
     setHasData(products.length > 0);
-  }, []);
+    
+    // If already logged in, redirect to appropriate dashboard
+    if (isAuthenticated && user) {
+      if (user.user_type === 'shop_owner' || user.user_type === 'admin' || user.user_type === 'staff') {
+        navigate('/shop-owner/dashboard', { replace: true });
+      } else {
+        navigate('/end-user/home', { replace: true });
+      }
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const userTypeDescriptions = useMemo(
     () => ({
@@ -31,8 +42,14 @@ export default function WelcomePage() {
     []
   );
 
-  const handleContinue = () => {
+  const handleRegister = () => {
     navigate('/register', {
+      state: { userType: selectedUserType },
+    });
+  };
+
+  const handleLogin = () => {
+    navigate('/login', {
       state: { userType: selectedUserType },
     });
   };
@@ -121,29 +138,25 @@ export default function WelcomePage() {
         </section>
 
         <div className="cta-buttons">
-          <button type="button" className="button button--primary" onClick={handleContinue}>
-            Continue as {userTypeDescriptions[selectedUserType].title}
+          <button type="button" className="button button--primary" onClick={handleLogin}>
+            Login
           </button>
-          <button
-            type="button"
-            className="button button--outline"
-            onClick={() =>
-              navigate('/login', {
-                state: { userType: selectedUserType },
-              })
-            }
-          >
-            Already onboarded? Log in
+          <button type="button" className="button button--outline" onClick={handleRegister}>
+            Create New Account
           </button>
         </div>
 
         <section className="surface-card surface-card--compact dev-tools">
-          <div className="dev-tools__title">Need demo data?</div>
-      {!hasData && (
+          <div className="dev-tools__title">Quick Access</div>
+          <div className="form-info" style={{ marginBottom: '0.75rem' }}>
+            <strong>Admin Login:</strong> Phone: <code>9999999999</code> | Password: <code>admin123</code>
+          </div>
+          <div className="dev-tools__title" style={{ marginTop: '1rem' }}>Need demo data?</div>
+          {!hasData && (
             <div style={{ color: colors.warning }}>
               No data found. Use the button below to load sample shops, products, and price updates.
-        </div>
-      )}
+            </div>
+          )}
           {message && <div className="form-info">{message}</div>}
           <div className="dev-tools__actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             <button type="button" className="button button--primary" onClick={handleSeed} style={{ width: 'auto' }}>

@@ -1,26 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { colors } from '../theme';
 import StorageService from '../services/StorageService';
-import { APP_CONFIG, VALIDATION } from '../utils/constants';
+import { VALIDATION } from '../utils/constants';
 
 export default function LoginPage() {
-  const location = useLocation();
-  const preferredUserType = useMemo(() => {
-    const state = location.state as { userType?: 'shop_owner' | 'end_user' } | null;
-    return state?.userType;
-  }, [location.state]);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [loginMode, setLoginMode] = useState<'password' | 'otp'>('password');
   const [error, setError] = useState('');
-  const [info, setInfo] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, loginWithOtp } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,21 +21,9 @@ export default function LoginPage() {
     }
   }, []);
 
-  const handleModeChange = (mode: 'password' | 'otp') => {
-    setLoginMode(mode);
-    setError('');
-    setInfo('');
-    setOtp('');
-    setOtpSent(false);
-    if (mode === 'password') {
-      setPassword('');
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setInfo('');
 
     const normalizedPhone = phone.replace(/\D/g, '');
     if (!VALIDATION.PHONE_NUMBER_REGEX.test(normalizedPhone)) {
@@ -53,57 +31,26 @@ export default function LoginPage() {
       return;
     }
 
-    if (loginMode === 'password') {
-      if (!password) {
-        setError('Enter your password to continue.');
-        return;
-      }
-
-    setLoading(true);
-      const result = await login(normalizedPhone, password, { rememberMe });
-    setLoading(false);
-
-    if (result.success) {
-        // Navigate immediately - session is already saved in AuthContext
-        const session = StorageService.getSession();
-        const currentUser = session?.user;
-        if (currentUser?.user_type === 'shop_owner') {
-          navigate('/shop-owner/dashboard', { replace: true });
-        } else {
-          navigate('/end-user/home', { replace: true });
-        }
-      } else {
-        setError(result.error || 'Login failed. Double-check your phone and password.');
-      }
-      return;
-    }
-
-    if (!otpSent) {
-      setOtpSent(true);
-      setInfo(`Mock OTP ${APP_CONFIG.MOCK_OTP} sent to your phone. Enter it below to log in.`);
-      return;
-    }
-
-    if (!otp || otp.length !== 6) {
-      setError('Enter the 6-digit OTP sent to your phone.');
+    if (!password) {
+      setError('Enter your password to continue.');
       return;
     }
 
     setLoading(true);
-    const result = await loginWithOtp(normalizedPhone, otp, { rememberMe });
+    const result = await login(normalizedPhone, password, { rememberMe });
     setLoading(false);
 
     if (result.success) {
       // Navigate immediately - session is already saved in AuthContext
       const session = StorageService.getSession();
       const currentUser = session?.user;
-      if (currentUser?.user_type === 'shop_owner') {
+      if (currentUser?.user_type === 'shop_owner' || currentUser?.user_type === 'admin' || currentUser?.user_type === 'staff') {
         navigate('/shop-owner/dashboard', { replace: true });
       } else {
         navigate('/end-user/home', { replace: true });
       }
     } else {
-      setError(result.error || 'Invalid OTP. Use 123456 while testing.');
+      setError(result.error || 'Login failed. Please check your phone number and password.');
     }
   };
 
@@ -111,83 +58,37 @@ export default function LoginPage() {
     <div className="auth-layout">
       <form className="auth-card" onSubmit={handleSubmit}>
         <div className="auth-card__heading">
-          <span className="auth-card__title">Welcome back</span>
-          <p className="auth-card__subtitle">Choose your login method and continue to Market Yard.</p>
-        </div>
-
-        {preferredUserType && (
-          <div className="form-info" style={{ color: colors.text }}>
-            Returning as{' '}
-            <span style={{ fontWeight: 600 }}>
-              {preferredUserType === 'shop_owner' ? 'Shop Owner' : 'End User'}
-            </span>
-          </div>
-        )}
-
-        <div className="segmented-control">
-          <button
-            type="button"
-            className={`segmented-control__button${loginMode === 'password' ? ' segmented-control__button--active' : ''}`}
-            onClick={() => handleModeChange('password')}
-          >
-            Password
-          </button>
-          <button
-            type="button"
-            className={`segmented-control__button${loginMode === 'otp' ? ' segmented-control__button--active' : ''}`}
-            onClick={() => handleModeChange('otp')}
-          >
-            OTP
-          </button>
+          <span className="auth-card__title">Login</span>
+          <p className="auth-card__subtitle">Enter your phone number and password to continue.</p>
         </div>
 
         {error && <div className="form-error">{error}</div>}
-        {info && <div className="form-info">{info}</div>}
 
         <div className="form-field">
           <label htmlFor="phone">Phone number</label>
-        <input
+          <input
             id="phone"
             className="form-input"
-          type="tel"
+            type="tel"
             placeholder="Enter 10-digit phone"
-          value={phone}
-          onChange={e => setPhone(e.target.value)}
-          required
-        />
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+            required
+          />
         </div>
 
-        {loginMode === 'password' ? (
-          <div className="form-field">
-            <label htmlFor="password">Password</label>
-        <input
-              id="password"
-              className="form-input"
-          type="password"
-              placeholder="Enter password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
-          </div>
-        ) : (
-          otpSent && (
-            <div className="form-field">
-              <label htmlFor="otp">Enter OTP</label>
-              <input
-                id="otp"
-                className="form-input"
-                type="tel"
-                placeholder="123456"
-                value={otp}
-                onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                inputMode="numeric"
-                maxLength={6}
-                style={{ letterSpacing: '6px', textAlign: 'center', fontWeight: 600 }}
-              />
-            </div>
-          )
-        )}
+        <div className="form-field">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            className="form-input"
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
         <label className="checkbox-row">
           <input type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />
@@ -195,24 +96,12 @@ export default function LoginPage() {
         </label>
 
         <button type="submit" className="button button--primary" disabled={loading}>
-          {loading
-            ? 'Please wait...'
-            : loginMode === 'password'
-            ? 'Login'
-            : otpSent
-            ? 'Verify & Login'
-            : 'Send OTP'}
+          {loading ? 'Logging in...' : 'Login'}
         </button>
 
-        {loginMode === 'password' && (
-          <div className="action-row" style={{ justifyContent: 'flex-end' }}>
-            <span className="form-helper">Forgot password? (Coming soon)</span>
-          </div>
-        )}
-
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
           <Link to="/register" className="link">
-            Don't have an account? Register
+            Don't have an account? Create one
           </Link>
         </div>
       </form>

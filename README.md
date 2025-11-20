@@ -182,6 +182,26 @@ The app will open at `http://localhost:3000`
 npm run build
 ```
 
+## 🔧 Git Hooks & Workflows
+
+This project uses **Husky** for git hooks and **GitHub Actions** for CI/CD.
+
+### Pre-Commit Hook
+- Automatically runs linting and formatting on staged files
+- Performs TypeScript type checking
+- Ensures code quality before commits
+
+### Pre-Push Hook
+- Runs full test suite
+- Verifies project builds successfully
+- Prevents pushing broken code
+
+### GitHub Actions
+- Automated checks on pull requests
+- Runs linting, type checking, tests, and build verification
+
+**📖 For detailed information, see [GIT_HOOKS_WORKFLOW.md](./docs/GIT_HOOKS_WORKFLOW.md)**
+
 ## 📱 Mobile App
 
 The former React Native mobile app has been removed from this repository. The Progressive Web App now serves as the single codebase and works across desktop and mobile browsers.

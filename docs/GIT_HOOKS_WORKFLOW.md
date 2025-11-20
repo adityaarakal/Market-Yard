@@ -1,227 +1,149 @@
-# Git Hooks & Workflow Documentation
-
-This document describes the git hooks and CI/CD workflows configured for this project.
+# Git Hooks Setup - Pre-commit and Pre-push Protection
 
 ## Overview
 
-This project uses **Husky** for managing git hooks and **GitHub Actions** for automated CI/CD checks on pull requests.
+This repository uses **Husky** to enforce strict code quality and branch protection rules. All protections are **non-bypassable**, even with user permissions.
 
-## Pre-Commit Hook
+## Protections in Place
 
-The pre-commit hook runs automatically before each commit to ensure code quality.
+### 1. Pre-commit Hook (`.husky/pre-commit`)
 
-### What It Does
+**Blocks Direct Commits to Main Branch**:
+- ❌ Direct commits to `main` are **FORBIDDEN**
+- ✅ Must use feature branches and PR workflow
 
-1. **Lint-staged**: Runs ESLint and Prettier on staged files only
-   - Lints TypeScript/TSX files
-   - Formats code automatically
-   - Only processes files that are staged for commit
+**Blocks Bypass Attempts**:
+- ❌ `--no-verify` flag is **ABSOLUTELY PROHIBITED**
+- ❌ `HUSKY_SKIP_HOOKS=1` is **FORBIDDEN**
+- ❌ `SKIP_HOOKS`, `SKIP_PRE_COMMIT`, `BYPASS_CHECKS` environment variables are **FORBIDDEN**
+- ✅ Zero tolerance policy - **NO EXCEPTIONS**
 
-2. **Type Checking**: Runs TypeScript compiler to check for type errors
-   - Ensures no type errors before commit
-   - Fast feedback loop for developers
+**Validation Checks** (ALL must pass):
+1. **Linting Validation**: ESLint on production code only (test files excluded)
+   - Allows up to 3 warnings (for React Hook dependency warnings)
+   - Blocks on errors in production code
+   - Test file errors are acceptable and excluded
+2. **Type Checking**: TypeScript compilation check (test files excluded)
+   - Excludes `src/**/__tests__/**`, `src/**/*.test.ts`, `src/**/*.test.tsx`
+   - Ensures production code is type-safe
+   - Test file type errors are acceptable and excluded
+3. **Build Validation**: Production build must succeed
 
-### How to Use
+### 2. Pre-push Hook (`.husky/pre-push`)
 
-The hook runs automatically. If it fails:
-- Fix the linting/formatting issues
-- Fix any TypeScript errors
-- Stage your changes again
-- Commit again
+**Blocks Direct Pushes to Main Branch**:
+- ❌ Direct pushes to `main` are **FORBIDDEN**
+- ✅ Must use feature branches and PR workflow
 
-### Bypassing (Not Recommended)
+### 3. Commit Message Hook (`.husky/commit-msg`)
 
+**Detects Bypass Attempts in Commit Messages**:
+- ❌ Blocks commit messages containing `--no-verify`, `skip hooks`, etc.
+- ❌ Prevents attempts to document bypass methods in commit messages
+- ✅ Zero tolerance policy - **NO EXCEPTIONS**
+
+## Installation
+
+Hooks are automatically installed when you run:
 ```bash
-# Skip hooks (use with caution)
-git commit --no-verify
+npm install
 ```
 
-## Pre-Push Hook
-
-The pre-push hook runs automatically before each push to ensure the codebase is in a good state.
-
-### What It Does
-
-1. **Full Test Suite**: Runs all tests in CI mode
-   - Ensures all tests pass
-   - Generates coverage report
-   - Prevents pushing broken code
-
-2. **Build Check**: Verifies the project builds successfully
-   - Catches build errors early
-   - Ensures production readiness
-
-### How to Use
-
-The hook runs automatically. If it fails:
-- Fix failing tests
-- Fix build errors
-- Push again
-
-### Bypassing (Not Recommended)
-
+Or manually:
 ```bash
-# Skip hooks (use with caution)
-git push --no-verify
+npm run prepare
 ```
 
-## GitHub Actions Workflow
+## Verification
 
-The PR workflow runs automatically on pull requests and pushes to main branches.
+To verify hooks are installed correctly, check that the following files exist:
+- `.husky/pre-commit`
+- `.husky/pre-push`
+- `.husky/commit-msg`
 
-### What It Does
+## Required Workflow
 
-1. **Lint & Type Check Job**
-   - Runs ESLint
-   - Checks code formatting
-   - Type checks with TypeScript
-
-2. **Test Job**
-   - Runs full test suite
-   - Generates coverage report
-
-3. **Build Job**
-   - Builds the project
-   - Verifies production build succeeds
-
-### Triggers
-
-- Pull requests to `main`, `master`, or `develop`
-- Pushes to `main`, `master`, or `develop`
-
-### Viewing Results
-
-- Go to the "Actions" tab in GitHub
-- Click on the workflow run for your PR
-- Review any failing checks
-
-## Setup Instructions
-
-### Initial Setup
-
-1. **Install dependencies** (includes Husky):
-   ```bash
-   npm install
-   ```
-
-2. **Husky will auto-install** via the `prepare` script in package.json
-
-3. **Verify hooks are installed**:
-   ```bash
-   ls -la .husky
-   ```
-
-### For New Team Members
-
-1. Clone the repository
-2. Run `npm install` (Husky will be set up automatically)
-3. Start developing - hooks will run automatically
-
-## Configuration Files
-
-### Husky Configuration
-- `.husky/pre-commit` - Pre-commit hook script
-- `.husky/pre-push` - Pre-push hook script
-- `.husky/_/husky.sh` - Husky internal script
-
-### GitHub Actions
-- `.github/workflows/pr-checks.yml` - PR workflow configuration
-
-### Lint-Staged
-- Configured in `package.json` under `lint-staged`
-- Runs ESLint and Prettier on staged files
-
-### Prettier
-- `.prettierrc` - Prettier configuration
-- `.prettierignore` - Files to ignore
-
-## Scripts Reference
-
-### Available npm Scripts
-
+**❌ FORBIDDEN**:
 ```bash
-# Linting
-npm run lint              # Check for linting errors
-npm run lint:fix          # Fix linting errors automatically
+# Direct commit to main
+git checkout main
+git commit -m "some change"
 
-# Formatting
-npm run format            # Format all files
-npm run format:check      # Check if files are formatted
-
-# Type Checking
-npm run type-check        # Check TypeScript types
-
-# Testing
-npm run test              # Run tests in watch mode
-npm run test:ci           # Run tests in CI mode (no watch)
-
-# Building
-npm run build             # Build for production
+# Bypassing hooks
+git commit --no-verify -m "bypass"
+HUSKY_SKIP_HOOKS=1 git commit -m "bypass"
 ```
+
+**✅ REQUIRED**:
+```bash
+# Create feature branch
+git checkout -b feature/your-feature-name
+
+# Make changes
+# ... edit files ...
+
+# Commit (hooks will run automatically)
+git add .
+git commit -m "your message"
+
+# Push feature branch
+git push origin feature/your-feature-name
+
+# Create Pull Request on GitHub
+```
+
+## Zero Tolerance Policy
+
+All protections are **NON-BYPASSABLE**:
+- ❌ User permission does NOT allow bypassing
+- ❌ `--no-verify` is **ABSOLUTELY FORBIDDEN**
+- ❌ Environment variables cannot disable hooks
+- ❌ No exceptions, no workarounds
 
 ## Troubleshooting
 
-### Hooks Not Running
+**Issue**: Hook prevents commit
+- **Solution**: Fix all linting/type/build errors before committing
 
-1. **Check if Husky is installed**:
-   ```bash
-   npm list husky
-   ```
+**Issue**: Want to commit to main
+- **Solution**: Use feature branch and create PR instead
 
-2. **Reinstall Husky**:
-   ```bash
-   npm install
-   npx husky install
-   ```
+**Issue**: Hook not running
+- **Solution**: Run `npm run prepare` to reinstall hooks
+- **Solution**: Check `.husky/pre-commit` exists and is executable
 
-3. **Check hook permissions** (Linux/Mac):
-   ```bash
-   chmod +x .husky/pre-commit
-   chmod +x .husky/pre-push
-   ```
+## GitHub Actions PR Workflow
 
-### Pre-commit Failing
+**Additional Protection**: All PR checks are also enforced via GitHub Actions workflows.
 
-- **Linting errors**: Run `npm run lint:fix`
-- **Formatting issues**: Run `npm run format`
-- **Type errors**: Fix TypeScript errors shown
+The `.github/workflows/pr-checks.yml` workflow enforces the same quality checks on every pull request:
 
-### Pre-push Failing
+1. **ESLint Validation**: Same rules as pre-commit hook
+   - Production code only (test files excluded)
+   - Max 3 warnings allowed
+2. **TypeScript Type Checking**: Compilation check
+3. **Build Validation**: Production build must succeed
 
-- **Test failures**: Fix failing tests
-- **Build errors**: Fix build issues
-- Run `npm run test:ci` and `npm run build` locally first
+**Benefits**:
+- ✅ Server-side enforcement (cannot be bypassed)
+- ✅ PR status checks (required for merge)
+- ✅ Comments on PR with check results
+- ✅ Protection even if hooks are disabled locally
 
-### GitHub Actions Failing
+**Workflow Status**:
+- Automatically runs on every PR to `main`
+- Can be manually triggered via `workflow_dispatch`
+- Blocks PR merge if any check fails
+- Adds comments to PR with pass/fail status
 
-- Check the Actions tab for detailed error messages
-- Ensure all checks pass locally before pushing
-- Review the workflow logs for specific failures
+## Configuration
 
-## Best Practices
+Hooks are configured in:
+- `.husky/pre-commit` - Pre-commit validation
+- `.husky/pre-push` - Pre-push protection
+- `.husky/commit-msg` - Commit message validation
 
-1. **Always run hooks locally** before pushing
-2. **Fix issues immediately** when hooks fail
-3. **Don't bypass hooks** unless absolutely necessary
-4. **Keep hooks fast** - they should complete in seconds
-5. **Update hooks** as the project evolves
+Workflows are configured in:
+- `.github/workflows/pr-checks.yml` - PR quality checks
 
-## Disabling Hooks (Temporary)
-
-If you need to temporarily disable hooks (not recommended):
-
-```bash
-# Set environment variable
-export HUSKY=0
-
-# Or use git flags
-git commit --no-verify
-git push --no-verify
-```
-
-Remember to re-enable hooks after your work is done!
-
----
-
-**Last Updated**: January 2025
-
+**DO NOT** modify these hooks or workflows to bypass protections - they are enforced to ensure code quality.

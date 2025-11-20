@@ -10,10 +10,56 @@ set -e
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VERSION_FILE="$REPO_ROOT/VERSION.txt"
 
+# Source OS detection utility
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/detect-os.sh" ]; then
+  source "$(dirname "${BASH_SOURCE[0]}")/detect-os.sh"
+else
+  # Fallback OS detection if detect-os.sh not available
+  detect_os() {
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ -n "$WINDIR" ]]; then
+      echo "windows"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+      echo "macos"
+    else
+      echo "unix"
+    fi
+  }
+fi
+
+# Convert Unix-style path to Windows path if on Windows
+# NOTE: This function ONLY converts paths on Windows. On Mac/Linux, paths are returned as-is.
+convert_path_for_node() {
+  local path="$1"
+  local current_os=$(detect_os)
+  
+  # Only convert paths on Windows (Git Bash on Windows uses /c/... format)
+  if [[ "$current_os" == "windows" ]]; then
+    # Convert /c/Users/... to C:/Users/... (Node.js on Windows accepts forward slashes)
+    if [[ "$path" =~ ^/([a-zA-Z])/(.*)$ ]]; then
+      local drive="${BASH_REMATCH[1]}"
+      local rest="${BASH_REMATCH[2]}"
+      echo "${drive^^}:/${rest}"
+    else
+      echo "$path"
+    fi
+  else
+    # On Mac/Linux, return path as-is (no conversion needed)
+    echo "$path"
+  fi
+}
+
 # Get current version from package.json
 get_current_version() {
   if [ -f "$REPO_ROOT/package.json" ]; then
-    node -p "require('$REPO_ROOT/package.json').version"
+    # Convert path for Node.js on Windows (ONLY on Windows)
+    local current_os=$(detect_os)
+    if [[ "$current_os" == "windows" ]]; then
+      local node_path=$(convert_path_for_node "$REPO_ROOT/package.json")
+      node -p "require('$node_path').version"
+    else
+      # On Mac/Linux, use path directly (no conversion needed)
+      node -p "require('$REPO_ROOT/package.json').version"
+    fi
   elif [ -f "$VERSION_FILE" ]; then
     cat "$VERSION_FILE"
   else

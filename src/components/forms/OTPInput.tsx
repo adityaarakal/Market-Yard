@@ -40,7 +40,6 @@ export default function OTPInput({
     } else {
       setOtp(new Array(length).fill(''));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, length]);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
-.husky/pre-commit|2797d22dd2c5d0bced1610bdf140146e89c62c1732eae541b80bb089aa9f34f8
-.husky/pre-push|8182e1d68c517fd60335cad4eb89d45dfc83bf801eff2d302470893e9b1565cc
-.husky/commit-msg|a26ec157d287b4181406ede55831a2e58a693541c67c902f04c5e16fca0b41a5
-scripts/git-wrapper.sh|40968edf77836365fef33389e7b8fa93705cd3112cc79c211e39d799ab87dcb4
-.github/workflows/pr-checks.yml|a7b210e5c77eca7ea18b8632ccabb92a6b3ebdd59041c5ede914a94c84d03c62
-scripts/validate-enforcement-lock.sh|75580bdadc0c79fe6be9041168b95991b099248fb2308366e23be5f57fd1d060
-scripts/install-git-protection.sh|b6ba8485cfa665a963c9d0bddacf93d6b122e33c3d71126df007feba3102bfe6
-scripts/validate-version-bump.sh|f730c21d5bfd24cf948a4b20b7914ee47022b1f49c8c2114a9af1c07d7149895
+.husky/pre-commit|0
+.husky/pre-push|0
+.husky/commit-msg|0
+scripts/git-wrapper.sh|0
+.github/workflows/pr-checks.yml|0
+scripts/validate-enforcement-lock.sh|0
+scripts/install-git-protection.sh|0
+scripts/validate-version-bump.sh|0

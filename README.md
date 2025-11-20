@@ -165,6 +165,23 @@ PostgreSQL + Redis + Razorpay
 - User engagement and retention
 - Goodwill scores (Phase 2)
 
+## 💻 Platform Compatibility
+
+This project works seamlessly on **both macOS and Windows**!
+
+- 🍎 **macOS/Linux**: Works out of the box - no special setup needed
+- 🪟 **Windows**: Requires Git Bash (automatically detected)
+- ✅ **Automatic OS Detection**: All scripts adapt to your platform automatically
+- ✅ **Same Codebase**: Works on both platforms from the same repository
+- ✅ **Windows Code Only on Windows**: Windows-specific features only run on Windows
+- ✅ **Mac Code Only on Mac**: Mac-specific code only runs on Mac
+
+**📖 For details, see:**
+- [Quick Start Guide](./docs/QUICK_START.md) - Get started quickly
+- [Platform Compatibility](./docs/PLATFORM_COMPATIBILITY.md) - Detailed platform info with clear Mac vs Windows disclaimers
+
+> **Note for AI Agents**: All scripts automatically detect OS. Windows-specific code only runs on Windows, Mac code only runs on Mac. No manual configuration needed!
+
 ## 🛠️ Development Setup
 
 ### Web App (PWA)

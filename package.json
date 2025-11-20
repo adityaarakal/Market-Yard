@@ -1,6 +1,6 @@
 {
   "name": "market-yard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "https://adityaarakal.github.io/Market-Yard",
   "dependencies": {
@@ -30,7 +30,15 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "test:ci": "react-scripts test --watchAll=false --coverage",
-    "prepare": "husky"
+    "prepare": "husky",
+    "version": "node -p \"require('./package.json').version\"",
+    "version:set": "bash scripts/version-utils.sh && bash -c 'set_version $1' _",
+    "version:major": "bash scripts/bump-version.sh major",
+    "version:minor": "bash scripts/bump-version.sh minor",
+    "version:patch": "bash scripts/bump-version.sh patch",
+    "install-protection": "bash scripts/install-git-protection.sh",
+    "init-enforcement-lock": "bash scripts/validate-enforcement-lock.sh",
+    "unlock-enforcement": "bash scripts/unlock-enforcement.sh"
   },
   "eslintConfig": {
     "extends": [

@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Enforcement lock backups and logs (but track checksums.txt)
+.enforcement-lock/*.backup.*
+.enforcement-lock/unlock-log.txt

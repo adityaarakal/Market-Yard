@@ -214,8 +214,13 @@ This project uses **Husky** for git hooks and **GitHub Actions** for CI/CD.
 - Prevents pushing broken code
 
 ### GitHub Actions
-- Automated checks on pull requests
-- Runs linting, type checking, tests, and build verification
+- **PR Quality Checks**: Automated checks on pull requests
+  - Runs linting, type checking, tests, and build verification
+  - Validates version bumps
+- **GitHub Pages Deployment**: Automated deployment to GitHub Pages
+  - Deploys on push to main branch
+  - Uses `npm ci` for reliable dependency installation
+  - Builds with `CI=false` to allow warnings (matching PR checks workflow)
 
 **📖 For detailed information, see [GIT_HOOKS_WORKFLOW.md](./docs/GIT_HOOKS_WORKFLOW.md)**
 
@@ -269,5 +274,10 @@ The former React Native mobile app has been removed from this repository. The Pr
 
 ---
 
-**Last Updated**: 2024
+**Last Updated**: January 2025
+
+**Recent Updates**:
+- ✅ Fixed GitHub Pages deployment workflow (v0.1.3)
+  - Added `CI=false` to build step to allow warnings
+  - Changed to `npm ci` for faster, reliable installs
 

@@ -35,19 +35,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load session on app start
   useEffect(() => {
-    // Always ensure admin user exists FIRST (before any other operations)
-    SeedDataService.ensureAdminUser();
+    const initializeApp = async () => {
+      try {
+        // Always ensure admin user exists FIRST (before any other operations)
+        SeedDataService.ensureAdminUser();
+        
+        // Seed other data
+        SeedDataService.seedAll();
+        
+        // Load existing session
+        loadSession();
+        
+        // Auto-login for testing in development mode
+        if (APP_CONFIG.AUTO_LOGIN_ENABLED && !StorageService.getSession()) {
+          autoLoginForTesting();
+        }
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        // Ensure loading state is set to false even if there's an error
+        setIsLoading(false);
+      }
+    };
     
-    // Seed other data
-    SeedDataService.seedAll();
-    
-    // Load existing session
-    loadSession();
-    
-    // Auto-login for testing in development mode
-    if (APP_CONFIG.AUTO_LOGIN_ENABLED && !StorageService.getSession()) {
-      autoLoginForTesting();
-    }
+    initializeApp();
   }, []);
 
   const loadSession = () => {

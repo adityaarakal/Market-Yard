@@ -332,9 +332,15 @@ function AppRoutes() {
 }
 
 function App() {
+  // Only use basename in production (for GitHub Pages deployment)
+  // In development, use empty string so app loads at root
+  const basename = process.env.NODE_ENV === 'production' && process.env.PUBLIC_URL 
+    ? process.env.PUBLIC_URL 
+    : '';
+  
   return (
     <AuthProvider>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename={basename}>
         <AppRoutes />
       </Router>
     </AuthProvider>
